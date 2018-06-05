@@ -52,12 +52,67 @@ minor是将多个HFile合并为一个HFile，只是一个多路归并的过程�
 * major压缩合并(majar compaction)  
 major是将一个region中一个列族的若干HFile重写为一个新HFile，与minor相比，major会扫描所有键值对，顺序重写全部数据，过滤掉有删除标记以及超过版本号限制的数据。
 
-
 <div align="center"><img src="../resources/images/hbase/hbase-files.png" width="600"></div>
+
+
+## 架构
+> HBase3个主要组件：客户端库、一台主服务器(master)、多台region服务器。
+<div align="center"><img src="../resources/images/hbase/httpatomoreillycomsourceoreillyimages889242.png" ></div>
+
+* **Master server**  
+负责跨region server的全局region的负载均衡，将繁忙的region server中的region移到负载较轻的region server中。不参与数据存储或检索服务，仅提供负载均衡和集群管理，因此是轻量级服务器。提供元数据的管理操作，如建表和创建列族。
+
+* **Region server**   
+负责region的读写请求，提供拆分超过配置大小region的接口。客户端直接与region server通信，处理所有数据相关操作。
+
+### 树结构比较
+* [从B树、B+树、B*树谈到R 树](https://www.cnblogs.com/hdk1993/p/5840599.html)  
+    * B+树优点  
+        * B+树能够通过主键对记录进行高效插入、查找和删除，并且提供高效的范围扫描功能。
+        * B+树叶节点相互连接并且按主键有序，扫描时避免了耗时的遍历树操作。
+        <div align="center"><img src="../resources/images/hbase/400px-Bplustree.png" ></div>  
+
+    * B+树缺点  
+        * 页表在磁盘中不一定是相邻的，范围查询可能跨页表的时候，效率很低。
+        * 不适合太多修改的操作。
+
+
+* LSM树(Log-Structured Merge Tree) 
+    * 过程  
+        * 数据首先存储在日志文件中，并且完全有序，当文件被修改，对应的更新会先保存在内存中加速查询。
+        * 内存空间到一定大小，LSM会把数据有序的写到磁盘中，内存的老数据会被丢弃
+        * 小文件多了之后，后台线程会自动将小文件 聚合成大文件。
+        * 删除添加标记，并不是实际的从磁盘中删除。
+    * 优点
+        * 存储文件组织与B树类似，不过其为磁盘顺序读取做了优化，所有节点都是满的并且按页存储。系统将现有的页与内存刷写数据混合在一起进行管理，指导数据达到容量。  
+
+        <div align="center"><img src="../resources/images/hbase/2mw8nky.jpg" ></div>  
+
+        * 查询时先查找内存，在查找磁盘。
+        * 查询次数在可预测的范围内，成本透明。
+    * 缺点
+        为了提高读性能牺牲了部分写性能。
+
+> B树和LSM树的主要区别在于他们的结构如何利用硬件，特别是磁盘。
+
+#### **查找与排序和合并的性能瓶颈**
+* RDBMS中B树和B+树工作速度受制于磁盘寻道速度，每次查找需要访问磁盘log(N)次。
+* LSM使用存储的连续传输能力，并以一定的传输速率排序和合并文件，需要执行log(updates)次操作。
+
+## 客户端API
+* 若需要频繁的修改某一行，put操作时设置rawlock，防止其他客户端访问这些行。
+* put为RPC操作，不适合短时间发送大量请求。可以使用缓冲区(writer buffer)，缓冲区收集put操作，然后一次调用RPC。使用方法是将autoflush设为false。
+    ```java
+    table.setAutoFlush(false);
+    ...
+    flushCommits();
+    //or
+    setWriteBufferSize();
+    ```
 
 # 参考书籍  
 * 《HBase权威指南》  
-    <img src="../resources/images/hbase/hbase_definitive.jpg" height="400" width="300">
+    <div align="center"><img src="../resources/images/hbase/hbase_definitive.jpg" height="400" width="300"></div>
 
 * 《HBase应用架构》   
-    <img src="../resources/images/hbase/hbase_arch.jpg" height="400" width = 300>
+    <div align="center"><img src="../resources/images/hbase/hbase_arch.jpg" height="400" width = 300></div>

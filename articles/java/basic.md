@@ -1,9 +1,25 @@
 ### 解决Hash冲突
 * [链表法](https://www.cs.usfca.edu/~galles/visualization/OpenHash.html)  
 将所有hash地址为i的元素构成一个称为同义词链的单链表，并将单链表的头指针存在hash表的第i个元素中。因为查找、插入和删除主要在同义词链中进行，所以链表法比较适合经常进行插入和删除的情况。
-* [开放地址法(再散列法)](https://www.cs.usfca.edu/~galles/visualization/ClosedHash.html)  
-当关键字key的hash地址p=H(key)出现冲突时，以p为基础，产生另一个hash地址p1，如果p1仍然冲突，再以p为基础，产生另一个hash地址p2，... ，知道产生不冲突的hash地址pi，通用再散列函数形式：  
-<div align="center"><img src="../../resources/images/java/eqn4431.png"></div>  
-其中H(key)为hash函数，m为表长，
+* [开放地址法(再散列法)]            (https://www.cs.usfca.edu/~galles/visualization/ClosedHash.html)  
+    当关键字key的hash地址p=H(key)出现冲突时，以p为基础，产生另一个hash地址p1，如果p1仍然冲突，再以p为基础，产生另一个hash地址p2，... ，知道产生不冲突的hash地址pi，通用再散列函数形式：  
+    <div align="center"><img src="../../resources/images/java/eqn4431.png"></div>  
+    其中H(key)为hash函数，m为表长，di称为增量序列。增量序列的取值方式不同，相应的再散列方式不同。主要以下三种：  
 
-* 再哈希法
+    * 线性探测再散列  
+        <div align="center"><img src="../../resources/images/java/eqn4432.png"></div>  
+        冲突发生时，顺序查看表中下一单元，直到找出一个空单元或查遍全表。  
+
+    * 二次探测再散列  
+        <div align="center"><img src="../../resources/images/java/eqn4433.png"></div>  
+        冲突发生时，在表的左右进行跳跃式探测，比较灵活。
+
+    * 伪随机探测再散列
+        di=伪随机序列。  
+        具体实现时，建立一个伪随机数发生器，如i=(i+p)%m，并给定一个随机数做起点。  
+        例如，已知哈希表长度m=11，哈希函数为：H（key）= key  %  11，则H（47）=3，H（26）=4，H（60）=5，假设下一个关键字为69，则H（69）=3，与47冲突。  
+        如果用线性探测再散列处理冲突，下一个哈希地址为H1=（3 + 1）% 11 = 4，仍然冲突，再找下一个哈希地址为H2=（3 + 2）% 11 = 5，还是冲突，继续找下一个哈希地址为H3=（3 + 3）% 11 = 6，此时不再冲突，将69填入5号单元。  
+        如果用二次探测再散列处理冲突，下一个哈希地址为H1=（3 + 12）% 11 = 4，仍然冲突，再找下一个哈希地址为H2=（3 - 12）% 11 = 2，此时不再冲突，将69填入2号单元。  
+        如果用伪随机探测再散列处理冲突，且伪随机数序列为：2，5，9，……..，则下一个哈希地址为H1=（3 + 2）% 11 = 5，仍然冲突，再找下一个哈希地址为H2=（3 + 5）% 11 = 8，此时不再冲突，将69填入8号单元。  
+* 再哈希法  
+    

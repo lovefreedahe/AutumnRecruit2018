@@ -1,3 +1,105 @@
+## 关键字
+
+### 线程相关
+* synchronized
+
+* transient
+
+* volatile
+
+## Hash
+### HashTable,HashMap,ConcurrentHashMap,LinkedhashMap和TreeMap
+> HashTable是线程安全的，如果不需要线程安全，则推荐使用HashMap，如果线程高度并发，则推荐使用ConcurrentHashMap。  
+
+<div align="center"><img src="../../resources/images/java/hash.jpg"></div></br>  
+
+* HashMap  
+    它根据键的hashCode值存储数据，大多数情况下可以直接定位到它的值，因而具有很快的访问速度，但遍历顺序却是不确定的。 HashMap最多只允许一条记录的键为null，允许多条记录的值为null。HashMap非线程安全，即任一时刻可以有多个线程同时写HashMap，可能会导致数据的不一致。如果需要满足线程安全，可以用 Collections的synchronizedMap方法使HashMap具有线程安全的能力，或者使用ConcurrentHashMap。  
+
+* HashTable  
+    Hashtable是**遗留类**，很多映射的常用功能与HashMap类似，不同的是它承自Dictionary类，并且是线程安全的，任一时间只有一个线程能写Hashtable，并发性不如ConcurrentHashMap，因为ConcurrentHashMap引入了分段锁。Hashtable不建议在新代码中使用，不需要线程安全的场合可以用HashMap替换，需要线程安全的场合可以用ConcurrentHashMap替换。
+
+* LinkedHashMap  
+    LinkedHashMap是HashMap的一个子类，保存了记录的插入顺序，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的，也可以在构造时带参数，按照访问次序排序。
+
+* TreeMap  
+    TreeMap实现SortedMap接口，能够把它保存的记录根据键排序，默认是按键值的升序排序，也可以指定排序的比较器，当用Iterator遍历TreeMap时，得到的记录是排过序的。如果使用排序的映射，建议使用TreeMap。在使用TreeMap时，key必须实现Comparable接口或者在构造TreeMap传入自定义的Comparator，否则会在运行时抛出java.lang.ClassCastException类型的异常。非线程安全，当多个线程应如下：
+    ```java
+    SortedMap m = Collections.synchronizedSortedMap(new TreeMap(...))
+    ```
+
+名称 | 是否线程安全 | 数据结构 | 父类 | 继承接口 
+---|---|---|---|---|
+HashTable | 是 | | Dictionary | Map
+HashMap | 否 | 数组、链表和红黑树(JDK1.8加入) | AbstractMap | Map
+ConcurrentHashMap | 是 | | AbstractMap | ConcurrentMap
+TreeMap | 否 | 红黑树 | AbstractMap | NavigableMap
+
+### HashMapc存储结构和功能方法
+HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的,如下图：  
+<div align="center"><img src="../../resources/images/java/hashmap.jpg"></div></br>  
+
+* Node类  
+    Node[] table, 即Hash桶数组。Node是HashMap中的一个内部类,实现了Map.Entry接口,本质就是一个键值映射, 上图中黑色圆点就是一个Node
+    ```java
+    transient Node<K,V>[] table;
+    ```
+
+    ```java
+     /**
+     * Basic hash bin node, used for most entries.  (See below for
+     * TreeNode subclass, and in LinkedHashMap for its Entry subclass.)
+     */
+    static class Node<K,V> implements Map.Entry<K,V> {
+        final int hash;
+        final K key;
+        V value;
+        Node<K,V> next;
+
+        Node(int hash, K key, V value, Node<K,V> next) {
+            this.hash = hash;
+            this.key = key;
+            this.value = value;
+            this.next = next;
+        }
+
+        public final K getKey()        { return key; }
+        public final V getValue()      { return value; }
+        public final String toString() { return key + "=" + value; }
+
+        public final int hashCode() {
+            return Objects.hashCode(key) ^ Objects.hashCode(value);
+        }
+
+        public final V setValue(V newValue) {
+            V oldValue = value;
+            value = newValue;
+            return oldValue;
+        }
+
+        public final boolean equals(Object o) {
+            if (o == this)
+                return true;
+            if (o instanceof Map.Entry) {
+                Map.Entry<?,?> e = (Map.Entry<?,?>)o;
+                if (Objects.equals(key, e.getKey()) &&
+                    Objects.equals(value, e.getValue()))
+                    return true;
+            }
+            return false;
+        }
+    }
+    ```
+
+* 存储  
+    HashMap使用哈希表来存储.哈希表为解决冲突,可以采用开放地址法和链表法, 这里HashMap使用的**链表法**。  
+    如果哈希桶数组很大，即使较差的Hash算法也会比较分散，如果哈希桶数组数组很小，即使好的Hash算法也会出现较多碰撞，所以就需要在**空间成本和时间成本**之间权衡，其实就是在根据实际情况确定哈希桶数组的大小，并在此基础上设计好的hash算法减少Hash碰撞。那么通过什么方式来控制map使得Hash碰撞的概率又小，哈希桶数组（Node[] table）占用空间又少呢？答案就是好的Hash算法和扩容机制。
+
+
+### hash表查找为什么快?
+#### 背景知识
+* 数组是一个简单的线性序列，这使得元素访问非常快速。
+
 ### 解决Hash冲突
 * [链表法](https://www.cs.usfca.edu/~galles/visualization/OpenHash.html)  
 将所有hash地址为i的元素构成一个称为同义词链的单链表，并将单链表的头指针存在hash表的第i个元素中。因为查找、插入和删除主要在同义词链中进行，所以链表法比较适合经常进行插入和删除的情况。
@@ -47,3 +149,10 @@
         * 使用探测序列，有可能其计算的时间成本过高，导致哈希表的处理性能降低  
         * 由于记录是存放在桶数组中的，而桶数组必然存在空槽，所以当记录本身尺寸（size）很大并且记录总数规模很大时，空槽占用的空间会导致明显的内存浪费  
         * 删除记录时，比较麻烦。比如需要删除记录a，记录b是在a之后插入桶数组的，但是和记录a有冲突，是通过探测序列再次跳转找到的地址，所以如果直接删除a，a的位置变为空槽，而空槽是查询记录失败的终止条件，这样会导致记录b在a的位置重新插入数据前不可见，所以不能直接删除a，而是设置删除标记。这就需要额外的空间和操作。
+
+
+
+# 参考书籍
+* 《Java编程思想》(第四版)
+
+

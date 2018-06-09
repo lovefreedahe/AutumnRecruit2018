@@ -16,6 +16,7 @@
     * [2.7 深度学习](#2.7)
     * [2.8 区块链](#2.8)
     * [2.9 数据结构](#2.9)
+    * [2.10 设计模式](#2.10)
 * [3 信息](#3)
 
 ## 1 准备计划
@@ -31,7 +32,12 @@
 > 
 
 ### 2.4 Java
-> [Java基础](articles/java/basic.md)
+> Java基础
+
+* [基础](articles/java/basic.md)
+* [数据结构](articles/java/datastructure.md)
+* 
+
 
 > Effective Java  
 

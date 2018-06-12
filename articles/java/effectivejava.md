@@ -154,6 +154,100 @@ public class AutoBoxing {
     }
 }
 ```
+> 由于小对象的构造器只做很少量的显示工作，所以，小对象的创建和挥手动作是非常廉价的。  
+> 除非对象池(object pool)中的对象非常重量级，否则维护对象池来避免重复创建对象不是好方法。  
+
+
+## 第6条 消除过期的对象引用
+```java
+public class Stack {
+    private Object[] elements;
+    private int size = 0;
+    private static final int DEFAULT_INITIAL_CAPACITY = 16;
+    public Stack() {
+        elements = new Object[DEFAULT_INITIAL_CAPACITY];
+    }
+    public void push(Object e) {
+        ensureCapacity();
+        elements[++size] = e;
+    }
+
+    public Object pop() {
+        if (size == 0) {
+            throw new EmptyStackException();
+        }
+        //memory leak happens here
+        return elements[--size];
+    }
+    public Object popTrue() {
+        if (size == 0) {
+            throw new EmptyStackException();
+        }
+        Object e = elements[--size];
+        elements[size] = null;
+        return e;
+    }
+
+    public void ensureCapacity() {
+        if (elements.length == size) {
+            elements = Arrays.copyOf(elements, 2 * size - 1);
+        }
+    }
+}
+```
+> 清空对象应该是一种例外，而不是规范行为。  
+
+> 一旦数组元素变成了非法活动的部分，就手工清空这些数组元素。
+
+常见来源
+* 缓存  
+    用WeakHashMap代替缓存
+* 缓存的生命周期是否有意义不是不容易确定。  
+    清除工作可以由一个后台线程(Timer或者ScheduledTheadPoolExecutor)完成或者在Tina及新条目的时候处理。LinkedHashmap类利用removeEldestEntry。
+* 监听和其他回调  
+
+## 第7条 避免使用终结方法
+终结方法(finializer)通常是不可预测的，也是非常危险的，一般情况下是不必要的。  
+```java
+Foo foo = new Foo();
+try {
+    //Do what must be done with foo
+    ...
+} finally {
+    foo.terminate();
+}
+```
+
+# 第3章 对于多有对象都适用的方法
+## 第8条 覆盖equals时请遵守通用约定
+覆盖满足条件
+* 类的每个实例本质上都是唯一的
+* 不关心类是否提供了"逻辑相等(logical equality)"的测试功能
+* 超类已经覆盖了equals, 从超类继承过来的行为对于子类也合适
+* 类是私有的或包级私有的, 可以确定它的equals方法永远不会被调用。
+
+等价关系(equivalence relation)
+* 自反性(reflexive)
+* 对称性(symmetric)
+* 传递性(transitive)
+* 一致性(consistent)
+* 非空性(Nonnullity)
+
+实现技巧
+1. 使用==操作符检查“参数是否为正确的引用”
+2. 使用instanceof检查“参数是否为正确的类型”
+3. 吧参数转换成正确的类型
+4. 对于该类中的每个“关键(gisnificant)”域，检查参数中的域是否与该对象中对应的域匹配
+5. 单元测试equales方法是否满足对称性、传递性、一致性。
+
+## 第9条 覆盖equals是总要覆盖hashCode
+* 只要equals没有被修改，每次调用hashCode都返回相同的整数。在一个程序的多次执行过程中，可以不一致。
+* 两个对象equals相等，则hashCode也相等
+* 如果equals不相等，则hashCode不一定不相等，但是给不一样的hashCode可以提高 散列表(hash table)的性能。
+
+## 第10条 始终覆盖toString
+
+## 第11条 紧身覆盖clone
 
 
 

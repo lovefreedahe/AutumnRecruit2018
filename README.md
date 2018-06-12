@@ -56,7 +56,7 @@
 > [Kubernetes](articles/Kubernetes.md)
 
 ### 2.6 工具
-> git
+> [git](tools/git.md)
 
 > docker 
 

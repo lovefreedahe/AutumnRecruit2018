@@ -39,7 +39,7 @@
 * 
 
 
-> Effective Java  
+> [Effective Java](articles/java/effectivejava.md)  
 
 
 ### 2.5 分布式

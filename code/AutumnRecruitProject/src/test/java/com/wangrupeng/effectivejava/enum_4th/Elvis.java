@@ -1,4 +1,4 @@
-package com.wangrupeng.test;
+package com.wangrupeng.effectivejava.enum_4th;
 
 public enum Elvis {
     INSTANCE;

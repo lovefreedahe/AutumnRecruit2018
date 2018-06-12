@@ -1,5 +1,6 @@
 package com.wangrupeng.test;
 
+import com.wangrupeng.effectivejava.enum_4th.Elvis;
 import com.wangrupeng.utils.MapUtils;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.wangrupeng.builder;
+package com.wangrupeng.effectivejava.builder_5th;
 
 public class NutritionFacts {
     private final int servingSize;

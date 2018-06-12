@@ -105,4 +105,57 @@ String s = "test";
 
 > 对于所有在同一台虚拟机中运行的代码，只要它们包含相同的字符串字面常量，该对象就会被重用[JLS,3.10.5]  
 
-> 同时有构造器和静态工厂，优先使用静态工厂。构造器每次调用都会创建一个新的对象，静态工厂不会。
+> 同时有构造器和静态工厂，优先使用静态工厂。构造器每次调用都会创建一个新的对象，静态工厂不会。  
+
+```java
+public class Person {
+    private final Date birthDate = null;
+
+    //DO NOT DO THIS!
+    public boolean isBabyBoomer() {
+        Calendar gmtCal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        gmtCal.set(1946, Calendar.JANUARY, 1, 0, 0, 0);
+        Date boomStart = gmtCal.getTime();
+        gmtCal.set(1965, Calendar.JANUARY, 1, 0, 0, 0);
+        Date boomEnd = gmtCal.getTime();
+        return birthDate.compareTo(boomStart) >= 0 && birthDate.compareTo(boomEnd) < 0;
+    }
+}
+```
+```java
+public class Person2 {
+    private final Date birthDate = null;
+    private static final Date BOOM_START;
+    private static final Date BOOM_END;
+    static {
+        Calendar gmtCal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        gmtCal.set(1946, Calendar.JANUARY, 1, 0, 0, 0);
+        BOOM_START = gmtCal.getTime();
+        gmtCal.set(1965, Calendar.JANUARY, 1, 0, 0, 0);
+        BOOM_END = gmtCal.getTime();
+    }
+    public boolean isBabyBoomer() {
+        return birthDate.compareTo(BOOM_START) >= 0 && birthDate.compareTo(BOOM_END) < 0;
+    }
+}
+```
+> 要优先使用基本类型而不是装箱基本类型  
+下面这段代码如果sum使用Long类型，会重复创建2^31个Long实例。
+```java
+public class AutoBoxing {
+    public static void main(String[] args) {
+        //DO NOT DO THIS
+        //Long sum = 0L;
+        long sum = 0L;
+        for (long i = 0; i < Integer.MAX_VALUE; i++) {
+            sum += i;
+        }
+        System.out.println(sum);
+    }
+}
+```
+
+
+
+
+

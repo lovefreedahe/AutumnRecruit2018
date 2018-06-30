@@ -5,7 +5,6 @@
 
 设计一个类，只能生成该类的一个实例。
 
-
 > ## 解决方法  
 ### 1. 急切初始化  
 最简单的方法，即使没有被调用也会被初始化，浪费资源。而且getInstance无法抛出异常。
@@ -183,5 +182,36 @@ public class SingletonSerializedTest {
 
 # 二维数组查找
 > ## 题目描述
-
+在二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数输入一个这样的数组和一个整数，判断数组中是否含有改整数。
 > ## 解决方法
+
+```java
+public boolean find(int[][] array, int width, int height, int value) {
+    if(width < 0 || height < 0 || array == null) {
+        return false;
+    }
+    int row = 0;
+    int column = width - 1;
+    while(row < height && column > 0) {
+        if(value == array[row][column]) {
+            return true;
+        } else if (value > array[row][column]) {
+            row++;
+        } else {
+            column--;
+        }
+    }
+    return false;
+}
+```
+
+# 替换空格
+> ## 题目描述
+实现一个函数,讲一个字符串中的空格替换成"%20"
+> ## 解决方法
+
+```java
+public String replaceSpace(String str) {
+    
+}
+```

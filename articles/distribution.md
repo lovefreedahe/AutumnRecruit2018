@@ -98,25 +98,25 @@ ACID(关系型数据库采纳的原则) 要求强一致性，通常运用在传�
 * 提议者(Proposer):提议一个值
 * 接受者(Accepter):对每个提议进行投票
 * 告知者(Learner):被告知投票结果,不参与投票过程
-<div align="center"><img src="../resources/images/distribution/PAxos_1.jpg"></div>
+<div align="center"><img src="../resources/images/distribution/Paxos_1.jpg"></div>
 
 ## 执行过程
 ### 第一步
 规定一个提议包含两个字段：[n, v]，其中 n 为序号（具有唯一性），v 为提议值。
 
 下图演示了两个 Proposer 和三个 Acceptor 的系统中运行该算法的初始过程，每个 Proposer 都会向所有 Acceptor 发送提议请求。
-<div align="center"><img src="../resources/images/distribution/PAxos_2.png"></div>
+<div align="center"><img src="../resources/images/distribution/Paxos_2.png"></div>
 
 ### 第二步
 当 Acceptor 接收到一个提议请求，包含的提议为 [n1, v1]，并且之前还未接收过提议请求，那么发送一个提议响应，设置当前接收到的提议为 [n1, v1]，并且保证以后不会再接受序号小于 n1 的提议。
 
 如下图，Acceptor X 在收到 [n=2, v=8] 的提议请求时，由于之前没有接收过提议，因此就发送一个 [no previous] 的提议响应，设置当前接收到的提议为 [n=2, v=8]，并且保证以后不会再接受序号小于 2 的提议。其它的 Acceptor 类似。
-<div align="center"><img src="../resources/images/distribution/PAxos_3.jpg"></div>
+<div align="center"><img src="../resources/images/distribution/Paxos_3.jpg"></div>
 ### 第三步
 如果 Acceptor 接收到一个提议请求，包含的提议为 [n2, v2]，并且之前已经接收过提议 [n1, v1]。如果 n1 > n2，那么就丢弃该提议请求；否则，发送提议响应，该提议响应包含之前已经接收过的提议 [n1, v1]，设置当前接收到的提议为 [n2, v2]，并且保证以后不会再接受序号小于 n2 的提议。
 
 如下图，Acceptor Z 收到 Proposer A 发来的 [n=2, v=8] 的提议请求，由于之前已经接收过 [n=4, v=5] 的提议，并且 n > 2，因此就抛弃该提议请求；Acceptor X 收到 Proposer B 发来的 [n=4, v=5] 的提议请求，因为之前接收到的提议为 [n=2, v=8]，并且 2 <= 4，因此就发送 [n=2, v=8] 的提议响应，设置当前接收到的提议为 [n=4, v=5]，并且保证以后不会再接受序号小于 4 的提议。Acceptor Y 类似。
-<div align="center"><img src="../resources/images/distribution/PAxos_4.jpg"></div>
+<div align="center"><img src="../resources/images/distribution/Paxos_4.jpg"></div>
 
 ### 第四步
 当一个 Proposer 接收到超过一半 Acceptor 的提议响应时，就可以发送接受请求。
@@ -124,11 +124,11 @@ ACID(关系型数据库采纳的原则) 要求强一致性，通常运用在传�
 Proposer A 接收到两个提议响应之后，就发送 [n=2, v=8] 接受请求。该接受请求会被所有 Acceptor 丢弃，因为此时所有 Acceptor 都保证不接受序号小于 4 的提议。
 
 Proposer B 过后也收到了两个提议响应，因此也开始发送接受请求。需要注意的是，接受请求的 v 需要取它收到的最大 v 值，也就是 8。因此它发送 [n=4, v=8] 的接受请求。
-<div align="center"><img src="../resources/images/distribution/PAxos_5.png"></div>
+<div align="center"><img src="../resources/images/distribution/Paxos_5.png"></div>
 
 ### 第五步
 Acceptor 接收到接受请求时，如果序号大于等于该 Acceptor 承诺的最小序号，那么就发送通知给所有的 Learner。当 Learner 发现有大多数的 Acceptor 接收了某个提议，那么该提议的提议值就被 Paxos 选择出来。
-<div align="center"><img src="../resources/images/distribution/PAxos_5.jpg"></div>
+<div align="center"><img src="../resources/images/distribution/Paxos_5.jpg"></div>
 
 ## 约束条件
 ### 1、正确性

@@ -43,6 +43,8 @@
 
 
 ### 2.5 分布式
+> [Distribution](articles/distribution.md)
+
 > [Zookeeper](articles/Zookeeper.md)
 
 > [Kafka](articles/Kafka.md)

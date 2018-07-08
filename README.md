@@ -41,6 +41,7 @@
 
 > [Effective Java](articles/java/effectivejava.md)  
 
+> [Apache Lucene](articles/lucene.md)
 
 ### 2.5 分布式
 > [Distribution](articles/distribution.md)
@@ -52,8 +53,6 @@
 > [Hbase](articles/Hbase.md)
 
 > [Storm](articles/Storm.md)
-
-> [HDFS](articles/HDFS.md)
 
 > [Kubernetes](articles/Kubernetes.md)
 

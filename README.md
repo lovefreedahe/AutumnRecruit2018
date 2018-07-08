@@ -12,7 +12,7 @@
     * [2.6 工具](#2.6)
         * [2.6.1 git](#2.6.1)
         * [2.6.2 docker](#2.6.2)  
-        * [2.6.3 linux shell](#2.6.3)
+        * [2.6.3 linux](#2.6.3)
     * [2.7 深度学习](#2.7)
     * [2.8 区块链](#2.8)
     * [2.9 数据结构](#2.9)
@@ -25,11 +25,14 @@
 
 ## 2 内容
 ### 2.1 算法
-> [剑指offer题解(java版)](articles/剑指offer.md)
+> [剑指offer题解(java版)](articles/altorighm/剑指offer.md)
 
 > 企业笔试题目
 
-> 
+> [算法面试经验](articles/algorithm/interview.md)
+
+### 2.3 计算机网络
+> [计算机网络面经汇总](articles/network/interview.md)
 
 ### 2.4 Java
 > Java基础
@@ -61,7 +64,7 @@
 
 > docker 
 
-> [linux shell](articles/linux_shell.md)
+> [linux](articles/linux/linux.md)
 
 
 

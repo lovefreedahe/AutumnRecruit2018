@@ -78,6 +78,17 @@
 2. 阿里巴巴 内推  截止日期：7月27日 
 [招聘信息地址](https://www.jianshu.com/p/50ec6fd13e9c?utm_campaign=hugo&utm_medium=reader_share&utm_content=note&utm_source=weixin-timeline&from=timeline&isappinstalled=0)
 
+3. 京东 提前批 截止日期：8月30日
+    Java 开发工程师
+    1. 2019 年毕业，计算机软件、数学、物理等相关专业本科及以上学历
+    2. 具有非常强的责任心，能够承担压力做事细心，参与独立系统的设计、开发、维护工作
+    3. 了解 web 前端开发的基础知识，会面向对象程序设计（OOP）与基本的设计模式，了解linux 及基本的操作命令
+    4. 具有良好的算法基础及系统分析能力
+    5. 认真细致，踏实勤奋，具有较好的团队协作精神和沟通能力
+
+    简历投递地址：liuyumeng3@jd.com
+
+
 ### 2017年互联网公司秋季招聘时间参考
 
 1. 阿里巴巴 内推时间：7月18日*8月18日 网申时间：7月18日*9月6日

@@ -18,7 +18,7 @@ URG  ACK  PSH  RST  SYN  FIN，共6个，每一个标志位表示一个控制功
     紧急指针标志，为1时表示紧急指针有效，为0则忽略紧急指针。
     * ACK  
     确认序号标志，为1时表示确认号有效，为0表示报文中不含确认信息，忽略确认号字段。
-    * PCH  
+    * PSH  
     push标志，为1表示是带有push标志的数据，指示接收方在接收到该报文段以后，应尽快将这个报文段交给应用程序，而不是在缓冲区排队。
     * RST  
     重置连接标志，用于重置由于主机崩溃或其他原因而出现错误的连接。或者用于拒绝非法的报文段和拒绝连接请求。
@@ -279,11 +279,31 @@ UDP报文的字节长度（包括首部和数据）
         * 第二次握手
         client发送一个包给server，可能由于网络原因server很久才收到这个包，收到包之后立即返回ACK确认包给client，但是client由于超时将该包丢弃了，此时，server会一直等待client发送包，但是client因为超时而没有继续发包，会浪费server资源。
         * 第三次握手
-        client收到server的确认包后，在给server发送一个确认包，server验证数据正确后则确定连接成功。如果server超时没收到包，则发送RTS报文段，进入CLOSED状态。这样做的目的是为了防止SYN洪泛攻击
+        client收到server的确认包后，在给server发送一个确认包，server验证数据正确后则确定连接成功。如果server超时没收到包，则发送RST报文段，进入CLOSED状态。这样做的目的是为了防止SYN洪泛攻击
+    * SYN攻击
+        在三次握手过程中，服务器发送SYN-ACK之后，收到客户端的ACK之前的TCP连接称为半连接(half-open connect).此时服务器处于Syn_RECV状态.当收到ACK后，服务器转入ESTABLISHED状态.Syn攻击就是 攻击客户端 在短时间内伪造大量不存在的IP地址，向服务器不断地发送syn包，服务器回复确认包，并等待客户的确认，由于源地址是不存在的，服务器需要不断的重发直 至超时，这些伪造的SYN包将长时间占用未连接队列，正常的SYN请求被丢弃，目标系统运行缓慢，严重者引起网络堵塞甚至系统瘫痪。Syn攻击是一个典型的DDOS攻击。检测SYN攻击非常的方便，当你在服务器上看到大量的半连接状态时，特别是源IP地址是随机的，基本上可以断定这是一次SYN攻击.在Linux下可以如下命令检测是否被Syn攻击
+        ```shell
+        netstat -n -p TCP | grep SYN_RECV一般较新的TCP/IP协议栈都对
+        ```
+        这一过程进行修正来防范Syn攻击，修改tcp协议实现。但是不能完全防范syn攻击。主要方法有:
+        * SynAttackProtect保护机制
+        * SYN cookies技术
+        * 增加最大半连接
+        * 缩短超时时间等
+        
+
 * 四次挥手
-<div align="center"><img src="../../resources/images/network/tcp_bye.gif" width="400"></div>
+    <div align="center"><img src="../../resources/images/network/tcp_bye.gif" width="400"></div>
+    <div align="center"><img src="../../resources/images/network/time_wait.gif" width="400"></div>
+
+    time_wait，它是主动关闭的一方在回复完对方的挥手后进入的一个长期状态，这个状态标准的持续时间是4分钟，4分钟后才会进入到closed状态，释放套接字资源。不过在具体实现上这个时间是可以调整的。
+
+    * 为什么是四次挥手
+    当client向server发送FIN报文后仅仅表示client不发送包了，但是还可以接受包，server这边发送给client的包可能还没发送完或者发送完了，有一部分还在路上，所以server发送完后，在主动发送FIN报文，告诉client我已经发送完了，连接可以断开了，client在接收到FIN之后验证,表示我也收完了，可以关闭连接了，然后返回给server ACK确认包。
+
 
 9. 打开网页到页面显示之间的过程（涵盖了各个方面，DNS解析过程，Nginx请求转发、连接建立和保持过程、浏览器内容渲染过程，考虑的越详细越好）。
+
 10. http和https区别，https在请求时额外的过程，https是如何保证数据安全的
 11. IP地址子网划分
 12. POST和GET区别
@@ -296,4 +316,6 @@ UDP报文的字节长度（包括首部和数据）
 
 # 参考文章
 1. [撩下Cookie和Session](https://juejin.im/post/5add981bf265da0b722abb72)
-2. 
+2. [跟着动画来学习TCP三次握手和四次挥手](https://juejin.im/post/5b29d2c4e51d4558b80b1d8c)
+3. [TCP的三次握手四次挥手](https://juejin.im/post/5a0444d45188255ea95b66bc)
+4. [可靠的TCP连接为何是三次握手](https://juejin.im/post/5b1e9c65f265da6e26099bf3)

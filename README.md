@@ -75,6 +75,8 @@
 
 1. 拼多多 学霸批(内推)  简历投递时间：7月2日-8月3日  
 [招聘信息地址](https://mp.weixin.qq.com/s?__biz=MzI3MzQzMDEwNw==&mid=2247484279&idx=1&sn=ea88bdbcc4c2a7d063c6f13e2be2041f&chksm=eb222043dc55a955e42b1bbe07a1b7ef1fde0421f3873bd3fae1cfa872c505b6a4afbb59efcc&mpshare=1&scene=23&srcid=0702ucJuM0Mv4pxz5v56dNYL#rd)
+<div align="center"><img src="resources/images/pinduoduo.jpg" width="300"></div>
+
 2. 阿里巴巴 内推  截止日期：7月27日 
 [招聘信息地址](https://www.jianshu.com/p/50ec6fd13e9c?utm_campaign=hugo&utm_medium=reader_share&utm_content=note&utm_source=weixin-timeline&from=timeline&isappinstalled=0)
 

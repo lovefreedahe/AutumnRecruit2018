@@ -1,4 +1,4 @@
-# 计算机网络
+# 计算机网络面经（网上整理）
 ## 基础部分
 
 1. TCP报头格式
@@ -290,7 +290,6 @@ UDP报文的字节长度（包括首部和数据）
         * SYN cookies技术
         * 增加最大半连接
         * 缩短超时时间等
-        
 
 * 四次挥手
     <div align="center"><img src="../../resources/images/network/tcp_bye.gif" width="400"></div>
@@ -301,8 +300,17 @@ UDP报文的字节长度（包括首部和数据）
     * 为什么是四次挥手
     当client向server发送FIN报文后仅仅表示client不发送包了，但是还可以接受包，server这边发送给client的包可能还没发送完或者发送完了，有一部分还在路上，所以server发送完后，在主动发送FIN报文，告诉client我已经发送完了，连接可以断开了，client在接收到FIN之后验证,表示我也收完了，可以关闭连接了，然后返回给server ACK确认包。
 
-
 9. 打开网页到页面显示之间的过程（涵盖了各个方面，DNS解析过程，Nginx请求转发、连接建立和保持过程、浏览器内容渲染过程，考虑的越详细越好）。
+    * 具体过程  
+        1. 浏览器的地址栏输入URL并按下回车。
+        2. 浏览器查找当前URL是否存在缓存，并比较缓存是否过期。
+        3. DNS解析URL对应的IP。
+        4. 根据IP建立TCP连接（三次握手）。
+        5. HTTP发起请求。
+        6. 服务器处理请求，浏览器接收HTTP响应。
+        7. 渲染页面，构建DOM树。
+        8. 关闭TCP连接（四次挥手）。
+    
 
 10. http和https区别，https在请求时额外的过程，https是如何保证数据安全的
 11. IP地址子网划分
@@ -319,3 +327,4 @@ UDP报文的字节长度（包括首部和数据）
 2. [跟着动画来学习TCP三次握手和四次挥手](https://juejin.im/post/5b29d2c4e51d4558b80b1d8c)
 3. [TCP的三次握手四次挥手](https://juejin.im/post/5a0444d45188255ea95b66bc)
 4. [可靠的TCP连接为何是三次握手](https://juejin.im/post/5b1e9c65f265da6e26099bf3)
+5. [从输入域名到最后呈现经历的过程](https://juejin.im/post/5abdc4a86fb9a028bf056b5d)

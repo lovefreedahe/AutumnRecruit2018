@@ -74,22 +74,14 @@
 
 ### 目前已经公布的公司招聘计划
 
-1. 拼多多 学霸批(内推)  简历投递时间：7月2日-8月3日  
-[招聘信息地址](https://mp.weixin.qq.com/s?__biz=MzI3MzQzMDEwNw==&mid=2247484279&idx=1&sn=ea88bdbcc4c2a7d063c6f13e2be2041f&chksm=eb222043dc55a955e42b1bbe07a1b7ef1fde0421f3873bd3fae1cfa872c505b6a4afbb59efcc&mpshare=1&scene=23&srcid=0702ucJuM0Mv4pxz5v56dNYL#rd)
-<div align="center"><img src="resources/images/pinduoduo.jpg" width="300"></div>
-
-2. 阿里巴巴 内推  截止日期：7月27日 
-[招聘信息地址](https://www.jianshu.com/p/50ec6fd13e9c?utm_campaign=hugo&utm_medium=reader_share&utm_content=note&utm_source=weixin-timeline&from=timeline&isappinstalled=0)
-
-3. 京东 提前批 截止日期：8月30日
-    Java 开发工程师
-    1. 2019 年毕业，计算机软件、数学、物理等相关专业本科及以上学历
-    2. 具有非常强的责任心，能够承担压力做事细心，参与独立系统的设计、开发、维护工作
-    3. 了解 web 前端开发的基础知识，会面向对象程序设计（OOP）与基本的设计模式，了解linux 及基本的操作命令
-    4. 具有良好的算法基础及系统分析能力
-    5. 认真细致，踏实勤奋，具有较好的团队协作精神和沟通能力
-
-    简历投递地址：liuyumeng3@jd.com
+公司 | 招聘类别 | 截止日期 | 投递链接 | 其他 
+-- | -- | -- | -- | --
+拼多多 | 学霸批 |  8.3 | [拼多多](https://mp.weixin.qq.com/s?__biz=MzI3MzQzMDEwNw==&mid=2247484279&idx=1&sn=ea88bdbcc4c2a7d063c6f13e2be2041f&chksm=eb222043dc55a955e42b1bbe07a1b7ef1fde0421f3873bd3fae1cfa872c505b6a4afbb59efcc&mpshare=1&scene=23&srcid=0702ucJuM0Mv4pxz5v56dNYL#rd) | <div align="center"><img src="resources/images/pinduoduo.jpg" width="300"></div>
+阿里巴巴 | 内推 | 7.27 | [阿里巴巴](https://www.jianshu.com/p/50ec6fd13e9c?utm_campaign=hugo&utm_medium=reader_share&utm_content=note&utm_source=weixin-timeline&from=timeline&isappinstalled=0) | -- |
+京东 | 提前批 | 8.30 |  | 简历投递地址：liuyumeng3@jd.com | 
+好未来 | 2019校招 |  | [好未来java工程师](http://job.100tal.com/jobxq?jobId=510212779) | |
+Oppo | 2019校招 | | [Oppp职位](http://oppotqp.zhaopin.com/) | 宣讲会：7月12日 华中科技大学 光学与电子信息学院613|
+深信服 | 2019校招 | |[大数据工程师](http://hr.sangfor.com/graduate/graduate_position.html) | |
 
 
 ### 2017年互联网公司秋季招聘时间参考
@@ -123,6 +115,4 @@
 * 算法
 * 基础知识
 * Linux
-
-## 面经
 

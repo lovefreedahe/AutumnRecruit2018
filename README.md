@@ -26,7 +26,7 @@
 
 ## 2 内容
 ### 2.1 算法
-> [剑指offer题解(java版)](articles/altorighm/剑指offer.md)
+> [剑指offer题解(java版)](articles/algorithm/剑指offer.md)
 
 > 企业笔试题目
 
@@ -57,8 +57,6 @@
 > [Hbase](articles/Hbase.md)
 
 > [Storm](articles/Storm.md)
-
-> [Kubernetes](articles/Kubernetes.md)
 
 ### 2.6 工具
 > [git](tools/git.md)

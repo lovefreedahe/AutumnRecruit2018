@@ -2,15 +2,6 @@ package com.wangrupeng.jianzhioffer.question5;
 
 import java.util.ArrayList;
 
- class ListNode {
-         int val;
-         ListNode next = null;
-
-         ListNode(int val) {
-             this.val = val;
-         }
-     }
-
 public class Solution {
     public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
         ArrayList<Integer> list = null;

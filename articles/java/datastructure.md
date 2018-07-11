@@ -1,5 +1,7 @@
-# Hash
-## HashTable,HashMap,ConcurrentHashMap,LinkedhashMap和TreeMap
+# 数据结构
+
+## Hash
+### HashTable,HashMap,ConcurrentHashMap,LinkedhashMap和TreeMap
 > HashTable是线程安全的，如果不需要线程安全，则推荐使用HashMap，如果线程高度并发，则推荐使用ConcurrentHashMap。  
 
 <div align="center"><img src="../../resources/images/java/hash.jpg"></div></br>  
@@ -26,7 +28,7 @@ HashMap | 否 | 数组、链表和红黑树(JDK1.8加入) | AbstractMap | Map
 ConcurrentHashMap | 是 | | AbstractMap | ConcurrentMap
 TreeMap | 否 | 红黑树 | AbstractMap | NavigableMap
 
-## HashMapc存储结构
+### HashMapc存储结构
 HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的,如下图：  
 <div align="center"><img src="../../resources/images/java/hashmap.jpg"></div></br>  
 
@@ -87,7 +89,7 @@ HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的,�
     如果哈希桶数组很大，即使较差的Hash算法也会比较分散，如果哈希桶数组数组很小，即使好的Hash算法也会出现较多碰撞，所以就需要在**空间成本和时间成本**之间权衡，其实就是在根据实际情况确定哈希桶数组的大小，并在此基础上设计好的hash算法减少Hash碰撞。那么通过什么方式来控制map使得Hash碰撞的概率又小，哈希桶数组（Node[] table）占用空间又少呢？答案就是好的Hash算法和扩容机制。
 
 
-## HashMap的功能方法
+### HashMap的功能方法
 * hash()  
     Hash算法本质上就三步：取key的hashCode值、高位运算、取模运算。
     ```java
@@ -114,11 +116,11 @@ HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的,�
 * resize()
 
 
-## hash表查找为什么快?
-### 背景知识
+### hash表查找为什么快?
+#### 背景知识
 * 数组是一个简单的线性序列，这使得元素访问非常快速。
 
-## 解决Hash冲突
+### 解决Hash冲突
 * [链表法](https://www.cs.usfca.edu/~galles/visualization/OpenHash.html)  
 将所有hash地址为i的元素构成一个称为同义词链的单链表，并将单链表的头指针存在hash表的第i个元素中。因为查找、插入和删除主要在同义词链中进行，所以链表法比较适合经常进行插入和删除的情况。
 * [开放地址法(再散列法)](https://www.cs.usfca.edu/~galles/visualization/ClosedHash.html)  
@@ -147,7 +149,7 @@ HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的,�
     当哈希地址Hi=RH1（key）发生冲突时，再计算Hi=RH2（key），……，直到冲突不再产生。这种方法不易产生聚集，但增加了计算时间。
 
 
-## **比较**
+### **比较**
 * 开放散列（open hashing）/ 拉链法（针对桶链结构）
     * 优点
         * 对于记录总数频繁可变的情况，处理的比较好（也就是避免了动态调整的开销）  
@@ -168,7 +170,25 @@ HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的,�
         * 由于记录是存放在桶数组中的，而桶数组必然存在空槽，所以当记录本身尺寸（size）很大并且记录总数规模很大时，空槽占用的空间会导致明显的内存浪费  
         * 删除记录时，比较麻烦。比如需要删除记录a，记录b是在a之后插入桶数组的，但是和记录a有冲突，是通过探测序列再次跳转找到的地址，所以如果直接删除a，a的位置变为空槽，而空槽是查询记录失败的终止条件，这样会导致记录b在a的位置重新插入数据前不可见，所以不能直接删除a，而是设置删除标记。这就需要额外的空间和操作。
 
+## 树
 
+### 二叉树遍历
+<div align="center"><img src="../../resources/images/java/datastructure/binarytree.png"></div>  
+
+* 前序遍历：ABDECF
+    1. 访问根节点
+    2. 前序遍历左子树
+    3. 前序遍历右子树
+
+* 中序遍历：DBEAFC
+    1. 中序遍历左子树
+    2. 访问根节点
+    3. 中序遍历右子树
+
+* 后序遍历：DEBFCA
+    1. 后序遍历左子树
+    2. 后序遍历右子树
+    3. 访问根节点
 
 
 

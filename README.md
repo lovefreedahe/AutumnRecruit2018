@@ -40,7 +40,7 @@
 
 * [基础](articles/java/basic.md)
 * [数据结构](articles/java/datastructure.md)
-* 
+* [java虚拟机](articles/java/jvm.md)
 
 
 > [Effective Java](articles/java/effectivejava.md)  

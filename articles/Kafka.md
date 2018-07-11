@@ -19,7 +19,5 @@
 
 
 
-
-
 ## 参考
 1. [Kafka学习笔记（一） ：为什么需要Kafka？](https://juejin.im/post/5ab6fcd66fb9a028bc2db39d)

@@ -20,3 +20,12 @@
 这样的Hash Code有一个特点，就是Hamming Distance相近的两个向量，其冲突的概率越大，即结果相等的可能性越大。
 <div align="center"><img src="../resources/images/lucene/LSH_1.jpg"></div>
 与各种其它的数据结构相比，基于lsh的索引结构的query时间复杂度，可以做到与向量维度无关，有效地克服了维度灾难的问题，因此更适合高维向量的索引。 
+
+## 倒排索引
+一般的索引，是文档到单词的映射；而倒排索引，是单词到文档的映射
+
+
+
+
+# 参考
+1. [倒排索引原理和实现](https://blog.csdn.net/u011239443/article/details/60604017)

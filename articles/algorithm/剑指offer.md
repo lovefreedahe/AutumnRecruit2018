@@ -286,44 +286,170 @@ public class Solution {
 ```
 
 
-## 
+## 两个栈实现一个队列
 > 题目描述
 
-
+用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。
 > 解决办法
 
 ```java
+public class Solution {
+    Stack<Integer> stack1 = new Stack<Integer>();
+    Stack<Integer> stack2 = new Stack<Integer>();
+
+    public void push(int node) {
+        while(stack2.size() > 0) {
+            int tmp = stack2.pop();
+            stack1.push(tmp);
+        }
+        stack1.push(node);
+    }
+
+    public int pop() {
+        if (stack1.size() == 0 && stack2.size() != 0) {
+            return stack2.pop();
+        }
+        while(stack1.size() > 1) {
+            int tmp = stack1.pop();
+            stack2.push(tmp);
+        }
+        return stack1.pop();
+    }
+}
+```
+
+## 旋转数组的最小数字
+> 题目描述
+
+把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。 输入一个非减排序的数组的一个旋转，输出旋转数组的最小元素。 例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。
+> 解决办法
+
+```java
+import java.util.ArrayList;
+public class Solution {
+    public int minNumberInRotateArray(int [] array) {
+        if(array.length == 0) {
+            return 0;
+        }
+        int indexFirst = 0;
+        int indexLast = array.length - 1;
+        int indexMid = indexFirst;
+        while(array[indexFirst] >= array[indexLast] && indexFirst < indexLast){
+            if (indexLast - indexFirst == 1) {
+                indexMid = indexLast;
+                break;
+            }
+            indexMid = (indexLast + indexFirst)/2 ;
+            if(array[indexMid] >= array[indexFirst]) {
+                indexFirst = indexMid;
+            } else{
+                indexLast = indexMid;
+            }
+        }
+        
+        return array[indexMid];
+    }
+}
+```
+
+## 斐波那契数列
+> 题目描述
+
+大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项。
+n<=39
+> 解决办法
+
+```java
+public class Solution {
+    //1 1 2 3 5 8
+    public int Fibonacci(int n) {
+        if(n == 0) {
+            return 0;
+        }
+        if(n == 1) {
+            return 1;
+        }
+        return Fibonacci(n - 1) + Fibonacci(n - 2);
+    }
+
+    public int FibonacciEffective(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return 1;
+        }
+
+        int tmp1 = 0;
+        int tmp2 = 1;
+        for (int i = 2;i < n;i++) {
+            int tmp3 = tmp2;
+            tmp2 = tmp1 + tmp2;
+            tmp1 = tmp3;
+        }
+        return tmp1 + tmp2;
+    }
+
+    public int FibonacciArray(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return 1;
+        }
+        int[] array = new int[n + 1];
+        array[0] = 0;
+        array[1] = 1;
+        for (int i = 2; i<= n;i++) {
+            array[i] = array[i - 1] + array[i - 2];
+        }
+        return array[n];
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.Fibonacci(6));
+        System.out.println(solution.FibonacciEffective(6));
+        System.out.println(solution.FibonacciArray(6));
+    }
+}
 
 ```
 
-## 
+## 青蛙跳台阶
 > 题目描述
 
-
+一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法（先后次序不同算不同的结果）。
 > 解决办法
 
 ```java
+public class Solution {
+    public int JumpFloor(int target) {
+        /*if(target == 0) {
+            return 1;
+        }
+        if(target == 1) {
+            return 1;
+        }
+        return JumpFloor(target - 1) + JumpFloor(target -2);
+        */
+         if (target == 0) {
+            return 1;
+        }
+        if (target == 1) {
+            return 1;
+        }
 
-```
-
-## 
-> 题目描述
-
-
-> 解决办法
-
-```java
-
-```
-
-## 
-> 题目描述
-
-
-> 解决办法
-
-```java
-
+        int tmp1 = 1;
+        int tmp2 = 1;
+        for (int i = 2; i < target; i++) {
+            int tmp3 = tmp1 + tmp2;
+            tmp1 = tmp2;
+            tmp2 = tmp3;
+        }
+        return tmp1 + tmp2;
+    }
+}
 ```
 
 ## 

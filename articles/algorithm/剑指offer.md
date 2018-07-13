@@ -282,7 +282,24 @@ public class Solution {
 > 解决办法
 
 ```java
+public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+        return reConstructBinaryTree(pre, 0, pre.length - 1, in, 0, in.length - 1);
+    }
 
+    public TreeNode reConstructBinaryTree(int[] pre, int preStart, int preEnd, int[] in, int inStart, int inEnd) {
+        if (preStart > preEnd || inStart > inEnd) {
+            return null;
+        }
+        TreeNode root = new TreeNode(pre[preStart]);
+        for (int i = inStart;i <= inEnd ;i++) {
+            if (in[i] == pre[preStart]) {
+                root.left = reConstructBinaryTree(pre, preStart + 1, preStart + i - inStart, in, inStart, i - 1);
+                root.right = reConstructBinaryTree(pre, preStart + i - inStart + 1, preEnd, in, i + 1, inEnd);
+                break;
+            }
+        }
+        return root;
+    }
 ```
 
 
@@ -452,14 +469,39 @@ public class Solution {
 }
 ```
 
-## 
+## 青蛙跳台阶变态版
 > 题目描述
-
+一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
 
 > 解决办法
 
 ```java
+public class FogUpgrade {
+    public int JumpFloorII(int target) {
+        if (target == 0 || target == 1) {
+            return 1;
+        }
+        return 2 * JumpFloorII(target - 1);
+    }
 
+    public int JumpFloorIII(int target) {
+        if (target == 0 || target == 1) {
+            return 1;
+        }
+        int tmp1 = 1;
+        int tmp2 = 1;
+        int result = 2;
+        for (int i = 2; i < target;i++) {
+            result += result;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        FogUpgrade fogUpgrade = new FogUpgrade();
+        System.out.println(fogUpgrade.JumpFloorIII(4));
+    }
+}
 ```
 
 ## 

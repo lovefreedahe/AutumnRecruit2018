@@ -28,7 +28,7 @@ HashMap | 否 | 数组、链表和红黑树(JDK1.8加入) | AbstractMap | Map
 ConcurrentHashMap | 是 | | AbstractMap | ConcurrentMap
 TreeMap | 否 | 红黑树 | AbstractMap | NavigableMap
 
-### HashMapc存储结构
+### HashMap存储结构
 HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的,如下图：  
 <div align="center"><img src="../../resources/images/java/hashmap.jpg"></div></br>  
 
@@ -170,7 +170,25 @@ HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的,�
         * 由于记录是存放在桶数组中的，而桶数组必然存在空槽，所以当记录本身尺寸（size）很大并且记录总数规模很大时，空槽占用的空间会导致明显的内存浪费  
         * 删除记录时，比较麻烦。比如需要删除记录a，记录b是在a之后插入桶数组的，但是和记录a有冲突，是通过探测序列再次跳转找到的地址，所以如果直接删除a，a的位置变为空槽，而空槽是查询记录失败的终止条件，这样会导致记录b在a的位置重新插入数据前不可见，所以不能直接删除a，而是设置删除标记。这就需要额外的空间和操作。
 
+### ConcurrentHashMap
+JDK1.8的实现已经摒弃了Segment的概念，而是直接用Node数组+链表+红黑树的数据结构来实现，并发控制使用 __Synchronized__ 和 __CAS__ ([Compare and swap](https://blog.csdn.net/u010412719/article/details/52053390))来操作，整个看起来就像是优化过且线程安全的HashMap，虽然在JDK1.8中还能看到Segment的数据结构，但是已经简化了属性，只是为了兼容旧版本。
+__CAS__ 有3个操作数，分别为内存值V、旧的期望值A和新值B。当且仅当期望值A和内存值V相同时，处理器用新值B更新V的值，否则什么都不做。
+
+<div align="center"><img src="../../resources/images/java/datastructure/concurrenthashmap.png"></div>  
+
+1. JDK1.8的实现降低锁的粒度，JDK1.7版本锁的粒度是基于Segment的，包含多个HashEntry，而JDK1.8锁的粒度就是HashEntry（首节点）
+2. JDK1.8版本的数据结构变得更加简单，使得操作也更加清晰流畅，因为已经使用synchronized来进行同步，所以不需要分段锁的概念，也就不需要Segment这种数据结构了，由于粒度的降低，实现的复杂度也增加了
+3. JDK1.8使用红黑树来优化链表，基于长度很长的链表的遍历是一个很漫长的过程，而红黑树的遍历效率是很快的，代替一定阈值的链表，这样形成一个最佳拍档
+4. JDK1.8为什么使用内置锁synchronized来代替重入锁ReentrantLock，我觉得有以下几点：
+    * 因为粒度降低了，在相对而言的低粒度加锁方式，synchronized并不比ReentrantLock差，在粗粒度加锁中ReentrantLock可能通过Condition来控制各个低粒度的边界，更加的灵活，而在低粒度中，Condition的优势就没有了
+    * JVM的开发团队从来都没有放弃synchronized，而且基于JVM的synchronized优化空间更大，使用内嵌的关键字比使用API更加自然
+    * 在大量的数据操作下，对于JVM的内存压力，基于API的ReentrantLock会开销更多的内存，虽然不是瓶颈，但是也是一个选择依据
+
+
 ## 树
+
+## B树 B+树 红黑树
+
 
 ### 二叉树遍历
 <div align="center"><img src="../../resources/images/java/datastructure/binarytree.png"></div>  
@@ -195,3 +213,4 @@ HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的,�
 # 参考
 * 《Java编程思想》(第四版)
 * [Java 8系列之重新认识HashMap](https://tech.meituan.com/java-hashmap.html)
+* [集合类HashMap，HashTable，ConcurrentHashMap区别？](https://juejin.im/post/5add97a46fb9a07aa212f4c0)

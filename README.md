@@ -113,4 +113,5 @@ Oppo | 2019校招 | | [Oppp职位](http://oppotqp.zhaopin.com/) | 宣讲会：7�
 * 算法
 * 基础知识
 * Linux
+* [面试准备](articles/prepare.md)
 

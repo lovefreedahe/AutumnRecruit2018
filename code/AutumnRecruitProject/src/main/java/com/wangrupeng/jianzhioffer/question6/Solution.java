@@ -10,10 +10,16 @@ public class Solution {
             }
         }
         int mark = 0;
-        TreeNode leftTree = childTree(pre, mark + 1, in, 0, i - 1);
-        TreeNode rightTree = childTree(pre, i + 1, in, i + 1, in.length - 1);
-        root.left = leftTree;
-        root.right = rightTree;
+        if (i == 0) {
+            root.left = null;
+        } else {
+            root.left = childTree(pre, mark + 1, in, 0, i - 1);
+        }
+        if (i == pre.length - 1) {
+            root.right = null;
+        } else {
+            root.right= childTree(pre, i - 0 + 1, in, i + 1, in.length - 1);
+        }
         return root;
     }
 
@@ -37,7 +43,7 @@ public class Solution {
         if (position == inEnd) {
             root.right = null;
         } else {
-            root.right = childTree(pre, position + 1, in, position + 1, inEnd);
+            root.right = childTree(pre, position - inStart + mark + 1, in, position + 1, inEnd);
         }
         return root;
     }
@@ -45,8 +51,10 @@ public class Solution {
     public static void main(String[] args) {
         int[] pre = {1,2,4,7,3,5,6,8};
         int[] in = {4,7,2,1,5,3,8,6};
+        int[] pre1 = {1, 2, 3, 4};
+        int[] in1 = {4, 3, 2 ,1};
         Solution solution = new Solution();
-        TreeNode root = solution.reConstructBinaryTree(pre,in);
+        TreeNode root = solution.reConstructBinaryTree(pre1,in1);
         System.out.println();
     }
 }

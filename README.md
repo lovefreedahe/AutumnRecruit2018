@@ -19,6 +19,7 @@
     * [2.10 设计模式](#2.10)
 * [3 信息](#3)
 * [4 面经](articles/interview.md)
+* [5 技能测评](articles/test.md)
 
 ## 1 准备计划
 ### 1.1 目标
@@ -43,7 +44,7 @@
 * [基础](articles/java/basic.md)
 * [数据结构](articles/java/datastructure.md)
 * [java虚拟机](articles/java/jvm.md)
-
+* [java并发编程](articles/java/concurrency.md)
 
 > [Effective Java](articles/java/effectivejava.md)  
 
@@ -116,4 +117,10 @@ Oppo | 2019校招 | | [Oppp职位](http://oppotqp.zhaopin.com/) | 宣讲会：7�
 * 基础知识
 * Linux
 * [面试准备](articles/prepare.md)
+
+2018.7.14
+* HBase
+* Zookeeper
+* 数据结构
+* java并发
 

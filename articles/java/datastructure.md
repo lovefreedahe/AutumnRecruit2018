@@ -187,7 +187,9 @@ __CAS__ 有3个操作数，分别为内存值V、旧的期望值A和新值B。�
 
 ## 树
 
-## B树 B+树 红黑树
+### B树 B+树 红黑树
+
+
 
 
 ### 二叉树遍历
@@ -208,9 +210,37 @@ __CAS__ 有3个操作数，分别为内存值V、旧的期望值A和新值B。�
     2. 后序遍历右子树
     3. 访问根节点
 
+## 链表List
+
+> “简单不先于复杂，而是在复杂之后.” —— Alan Perlis
+
+### ArrayList和LinkedList比较
+ArrayList和LinkedList都是实现了List接口的类，他们都是元素的容器，用于存放对象的引用；
+
+他们都可以对存放的元素进行增删改查的操作，还可以进行排序。
+
+但是，他们还是有区别的。
+
+除了实现对List接口的实现，他们还实现了其他的接口，由此造就了他们之间的差异；
+
+* ArrayList
+内部使用数组的形式实现了存储，实现了RandomAccess接口，利用数组的下面进行元素的访问，因此对元素的随机访问速度非常快。
+因为是数组，所以ArrayList在初始化的时候，有初始大小10，插入新元素的时候，会判断是否需要扩容，扩容的步长是0.5倍原容量，扩容方式是利用数组的复制，因此有一定的开销；
+另外，ArrayList在进行元素插入的时候，需要移动插入位置之后的所有元素，位置越靠前，需要位移的元素越多，开销越大，相反，插入位置越靠后的话，开销就越小了，如果在最后面进行插入，那就不需要进行位移；
+
+* LinkedList
+内部使用双向链表的结构实现存储，LinkedList有一个内部类作为存放元素的单元，里面有三个属性，用来存放元素本身以及前后2个单元的引用，另外LinkedList内部还有一个header属性，用来标识起始位置，LinkedList的第一个单元和最后一个单元都会指向header，因此形成了一个双向的链表结构。
+LinkedList是采用双向链表实现的。所以它也具有链表的特点，每一个元素（结点）的地址不连续，通过引用找到当前结点的上一个结点和下一个结点，即插入和删除效率较高，只需要常数时间，而get和set则较为低效。
+LinkedList的方法和使用和ArrayList大致相同，由于LinkedList是链表实现的，所以额外提供了在头部和尾部添加/删除元素的方法，也没有ArrayList扩容的问题了。另外，ArrayList和LinkedList都可以实现栈、队列等数据结构，但LinkedList本身实现了队列的接口，所以更推荐用LinkedList来实现队列和栈。
 
 
+#### 总结
+名称 | 优点 | 缺点 | 
+-- | -- | -- | 
+ArrayList | 基于数组，查找快 | 插入和删除越靠前的元素越耗费资源，插入数据超过大小需要resize | 
+LinkedList | 插入和删除很快，没有resize的问题 | 基于双向链表结构，元素物理存储不是有序的，所以查找慢(get和set)。 |
 # 参考
 * 《Java编程思想》(第四版)
 * [Java 8系列之重新认识HashMap](https://tech.meituan.com/java-hashmap.html)
 * [集合类HashMap，HashTable，ConcurrentHashMap区别？](https://juejin.im/post/5add97a46fb9a07aa212f4c0)
+* [Java基础 ArrayList与LinkedList区别](https://www.jianshu.com/p/30a8195f0b81)

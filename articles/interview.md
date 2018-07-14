@@ -44,6 +44,15 @@
 这一次面试开始有点紧张，感觉并没有达到比较好的状态，在介绍项目上总体比较顺畅，但是后面的算法和linux知识，开始没有思路有点慌，结果感觉给面试官留了不好印象。
 
 
+## OPPO java后台
+1、自我介绍
+2、项目（zk、HBase的key设计）
+3、设计模式
+4、并发?
+5、ArrayList LinkedList
+6、HashMap实现、ConcurrentHashMap
+7、自学数量掌握某一个工具的经历
+
 ## 蚂蚁金服
 作者：牛客6507054号
 链接：https://www.nowcoder.com/discuss/28229?type=2&order=3&pos=37&page=1

@@ -39,18 +39,20 @@
 > [http](articles/network/http.md)
 
 ### 2.4 Java
-> Java基础
+#### Java基础
 
 * [基础](articles/java/basic.md)
 * [数据结构](articles/java/datastructure.md)
 * [java虚拟机](articles/java/jvm.md)
 * [java并发编程](articles/java/concurrency.md)
+* [Effective Java](articles/java/effectivejava.md)  
 
-> [Effective Java](articles/java/effectivejava.md)  
+#### 设计模式
+[java中的23种设计模式](articles/java/JavaDesignPattern.md)
 
-> [Apache Lucene](articles/lucene.md)
+### 2.5 项目
+#### 分布式
 
-### 2.5 分布式
 > [Distribution](articles/distribution.md)
 
 > [Zookeeper](articles/Zookeeper.md)
@@ -61,16 +63,21 @@
 
 > [Storm](articles/Storm.md)
 
+#### 其他
+> [Apache Lucene](articles/lucene.md)
+
 ### 2.6 工具
-> [git](tools/git.md)
+#### [git](tools/git.md)
 
-> docker 
+#### docker 
 
-> [linux](articles/linux/linux.md)
+#### [linux](articles/linux/linux.md)
+
+### 2.7 深度学习
+
+### 2.8 区块链
 
 
-
-> 
 ## 3 信息
 
 ### 目前已经公布的公司招聘计划

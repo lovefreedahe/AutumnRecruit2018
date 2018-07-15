@@ -48,7 +48,7 @@
 1、自我介绍
 2、项目（zk、HBase的key设计）
 3、设计模式
-4、并发?
+4、并发?J.U.C有没有用过
 5、ArrayList LinkedList
 6、HashMap实现、ConcurrentHashMap
 7、自学数量掌握某一个工具的经历

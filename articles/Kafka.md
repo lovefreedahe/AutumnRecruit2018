@@ -1,4 +1,24 @@
 # Kafka
+<!-- TOC -->
+
+- [基本概念](#基本概念)
+- [核心接口](#核心接口)
+- [Topics](#topics)
+    - [顺序](#顺序)
+- [Distribution](#distribution)
+- [Geo-Replication](#geo-replication)
+- [Producers](#producers)
+- [Consumers](#consumers)
+- [Guarantees](#guarantees)
+- [Kafka as a Messaging System](#kafka-as-a-messaging-system)
+    - [消息队列](#消息队列)
+    - [发布/订阅](#发布订阅)
+- [Kafka as a Storage System](#kafka-as-a-storage-system)
+- [Kafka for Stream Processing](#kafka-for-stream-processing)
+- [总结](#总结)
+- [参考](#参考)
+
+<!-- /TOC -->
 
 ## 基本概念
 * Kafka是运行在一个集群上，所以它可以拥有一个或多个服务节点；

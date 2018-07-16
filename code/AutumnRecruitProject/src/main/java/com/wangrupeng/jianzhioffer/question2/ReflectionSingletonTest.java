@@ -4,13 +4,13 @@ import java.lang.reflect.Constructor;
 
 public class ReflectionSingletonTest {
     public static void main(String[] args) {
-        com.wangrupeng.jianzhioffer.question_2.BillPughSingleton instanceOne = com.wangrupeng.jianzhioffer.question_2.BillPughSingleton.getInstance();
-        com.wangrupeng.jianzhioffer.question_2.BillPughSingleton instanceTwo = null;
+        EagerInitializationSingleton instanceOne = EagerInitializationSingleton.getInstance();
+        EagerInitializationSingleton instanceTwo = null;
         try {
-            Constructor[] constructors = com.wangrupeng.jianzhioffer.question_2.BillPughSingleton.class.getDeclaredConstructors();
+            Constructor[] constructors = EagerInitializationSingleton.class.getDeclaredConstructors();
             for (Constructor constructor : constructors) {
                 constructor.setAccessible(true);
-                instanceTwo = (com.wangrupeng.jianzhioffer.question_2.BillPughSingleton)constructor.newInstance();
+                instanceTwo = (EagerInitializationSingleton)constructor.newInstance();
                 break;
             }
         } catch (Exception e) {

@@ -1,0 +1,55 @@
+package com.wangrupeng.IteratorTest;
+
+public class LinkedList<T> implements List<T> {
+    private int size; //存放的元素个数,会默认初始化为0
+    private Node<T> first; //首节点，默认初始化为null
+
+
+    @Override
+    public Iterator<T> iterator() {
+        return new MyIterator();
+    }
+
+    @Override
+    public boolean add(T t) {
+        if (size == 0) {
+            first = new Node<T>(t, null);
+            size++;
+            return true;
+        }
+        Node<T> node = first;
+        while (node.next != null) {
+            node = node.next;
+        }
+        node.next = new Node<T>(t, null);
+        size++;
+        return true;
+    }
+
+    private static class Node<T> {
+        T data;
+        Node<T> next;
+        Node(T data, Node<T> next) {
+            this.data = data;
+            this.next = next;
+        }
+    }
+
+    private class MyIterator implements Iterator<T> {
+        private Node<T> next;
+        MyIterator() {
+            next = first;
+        }
+        @Override
+        public boolean hasNext() {
+            return next != null;
+        }
+
+        @Override
+        public T next() {
+            T data = next.data;
+            next = next.next;
+            return data;
+        }
+    }
+}

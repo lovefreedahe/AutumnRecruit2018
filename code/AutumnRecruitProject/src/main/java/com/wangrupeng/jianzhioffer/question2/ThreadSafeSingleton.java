@@ -1,4 +1,4 @@
-package com.wangrupeng.jianzhioffer.question_2;
+package com.wangrupeng.jianzhioffer.question2;
 
 public class ThreadSafeSingleton {
     private static ThreadSafeSingleton instance;

@@ -1,4 +1,4 @@
-package com.wangrupeng.jianzhioffer.question_2;
+package com.wangrupeng.jianzhioffer.question2;
 
 public class EagerInitializationSingleton {
     private static final EagerInitializationSingleton instance = new EagerInitializationSingleton();
@@ -14,4 +14,5 @@ public class EagerInitializationSingleton {
     public static EagerInitializationSingleton getInstance() {
         return instance;
     }
+
 }

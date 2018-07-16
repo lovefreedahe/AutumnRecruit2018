@@ -2792,34 +2792,369 @@ class FlyweightFactory {
     }
 }
 ```
+上例中，具体的享元我们一共创建了4个，而我们输出的创建的对象个数是2个，这就是享元模式。可以减少对象创建的个数。
+
+刚刚的例子，因为具体享元对象仅以一个String作为成员，实现很方便。下面我们再讲一个实际的例子：我们要检查许多天气的数据，主要有天气情况和温度组成，但是天气和温度的组合实际上是很容易相同的，为了减少创建的对象数量，我们使用享元模式：
+
+首先是抽象的天气接口：
+```java
+public interface IWeather {
+    void printWeather();
+}
+```
+其次是天气的实现。注意！这里我们使用HashMap来持有享元的引用，以为天气由具体天气情况和温度共同确定他们是否相同，我们需要使用两个值做key，但key只能是一个对象，所以最终我们选择这个对象来当key。HashMap的Key是有限制的，必须正确提供hashCode()方法（HashMap以这个值为基础存取数据的）和equals()方法（HashMap通过key取值时判断Key是否相等会调用Key的这个方法）。下面的实现中就实现了这两个方法：
+```java
+public class Weather implements IWeather {
+    private String weather;
+    private Integer temperature;
+    public Weather(String weather, int temperature) {
+        this.temperature = temperature;
+        this.weather = weather;
+    }
+
+    @Override
+    public void printWeather() {
+        System.out.println("Weather:" + weather);
+        System.out.println("Temperature:" + temperature);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Weather weatherTmp = (Weather)obj;
+        return weatherTmp.weather.equals(this.weather) && weatherTmp.temperature == this.temperature;
+    }
+
+    @Override
+    public int hashCode() {
+        return (weather.hashCode() + temperature.hashCode())/2;
+    }
+}
+```
+```java
+public class WeatherFactory {
+    private HashMap<IWeather, IWeather> weathers;
+    public WeatherFactory() {
+        weathers = new HashMap<IWeather, IWeather>();
+    }
+    public IWeather getFlyWeight(String weather, int templature) {
+        Weather objectWeather = new Weather(weather, templature);
+        IWeather flyweight = weathers.get(objectWeather);
+        if (flyweight == null) {
+            flyweight = objectWeather;
+            weathers.put(objectWeather, flyweight);
+        }else {
+            objectWeather = null; // to gc
+        }
+        return flyweight;
+    }
+    public int getFlyweightSize() {
+        return weathers.size();
+    }
+}
+```
+```java
+public class TestUse {
+    public static void main(String[] args) {
+        WeatherFactory factory = new WeatherFactory();
+        IWeather weather1, weather2, weather3, weather4;
+        weather1 = factory.getFlyWeight("Cloudy", 28);
+        weather2 = factory.getFlyWeight("Rainy", 25);
+        weather3 = factory.getFlyWeight("Cloudy", 27);
+        weather4 = factory.getFlyWeight("Cloudy", 28);
+        weather1.printWeather();
+        weather2.printWeather();
+        weather3.printWeather();
+        weather4.printWeather();
+        System.out.println("Number of objects is " + factory.getFlyweightSize()); // 3
+    }
+}
+```
 ### 5. 外观模式
 #### 介绍
-
+为系统中的一组接口提供一个一致的界面，Facade模式定义了一个高层接口，这个接口使得这一子系统更加容易使用。
 #### 何时使用
 
 #### 优点
+外观模式是一种很简单的模式，我们有意无意都在使用这种模式。
 
+我们提供给用户的某个功能，可能是包含很多个步骤的，但我们可以把这些步骤封装到一个统一的接口中，让用户感觉仅仅就是一个单一的操作，使用起来也就更加简单。
+
+比如说，我们往回一些年，那时候的相机不是每个人都会用的，按下快门前还需要调焦等操作，然而现在呢，我们拍照只需要按下快门就行了，中间的一系列操作都被自动执行了。外观模式也就是提供这样一种机制。
+
+我们在使用一个有代码的例子：用户要购买一件商品，系统首先会判断库存，然后要计算费用（商品价格，邮费和优惠等），最后才会生成一个订单。这其中就包含几个子系统，库存管理子系统和计费子系统，而计费子系统又分更小的子系统（此处两处使用到外观模式）。
 #### 实现
-
+计算最终价格的子系统，同时他也是一个外观，因为它含有以上三个子系统的引用
+```java
+//获得商品原价子系统
+public class ProductPrice {
+    int getPrice(String product) {
+        return Math.abs(product.hashCode()); //模拟获取商品价格
+    }
+}
+//计算邮费子系统
+public class Postage {
+    int getPostage(String address) {
+        return Math.abs(address.hashCode())%20 + 6; //模拟邮费计算
+    }
+}
+//计算优惠子系统
+public class Discount {
+    int getDiscount(String discountCode) {
+        return Math.abs(discountCode.hashCode()) % 3;
+    }
+}
+```
+```java
+//库存子系统
+public enum ProductSalesman {
+    INSTANCE;
+    Stock stock = new Stock();
+    FinalPrice finalPrice = new FinalPrice();
+    Object buySomething(String product, String address, String discountCode) {
+        if(!stock.hasStock(product)) {
+            return "No stock";
+        }
+        int price = finalPrice.getFinalPrice(product, address, discountCode);
+        return "订单信息:" + product + "-" + address + "-" + discountCode + "-" + price;
+    }
+}
+```
+```java
+public class TestUse {
+    public static void main(String[] args) {
+        Object info = ProductSalesman.INSTANCE.buySomething("书", "华科", "K123456");
+        System.out.println(info);
+    }
+}
+```
 ### 6. 桥接模式(Bridge Pattern)
 #### 介绍
-
+将抽象部分与它的实现部分分离，使它们都可以独立的变化。
 #### 何时使用
-
+* 不想让抽象和某些重要的实现代码是固定的绑定关系，这部分实现可运行时动态决定。
+* 抽象和实现者都可以继承当方式独立地扩充而互不影响，程序在运行期间可能需要动态的将一个抽象的子类的实例与一个实现者的子类的实例进行组合。
+* 希望对实现者层次代码的修改对抽象层不产生影响，即抽象层的代码不需要重新编译，反之亦然。
 #### 优点
+* 桥接模式分离实现与抽象，使抽象可实现可以独立的扩展。当修改实现的代码时，不影响抽象的代码，反之也一样。
+* 满足开闭-原则，抽象和实现者处于同层次，使系统可独立的扩展这两个层次。增加新的具体实现者，不需要修改细化抽象，反之增加新的细化抽象也不需要修改具体实现。
 
+桥接模式是一种结构型模式，它主要应对的是：由于实际的需要，某个类具有两个或两个以上的维度变化，如果只是用继承将无法实现这种需要，或者使得设计变得相当臃肿。
+
+桥接模式的做法是把变化部分抽象出来，使变化部分与主类分离开来，从而将多个维度的变化彻底分离。最后，提供一个管理类来组合不同维度上的变化，通过这种组合来满足业务的需要。
+
+#### 角色
+* 抽象
+* 细化抽象
+* 实现者
+* 具体实现者
 #### 实现
+```java
+public class SimpleBridge {
+    public static void main(String[] args) {
+        new LenoveComputer(new Amd()).discribe();
+        new HaseeComputer(new Intel()).discribe();
+    }
+}
 
+interface Cpu {
+    String discribe();
+}
+
+class Amd implements Cpu {
+    @Override
+    public String discribe() {
+        return "just so so...";
+    }
+}
+
+class Intel implements Cpu {
+    @Override
+    public String discribe() {
+        return "great !";
+    }
+}
+
+abstract class AbstractComputer {
+    Cpu cpu;
+    public AbstractComputer(Cpu cpu) {
+        this.cpu = cpu;
+    }
+    public abstract void discribe();
+}
+
+class LenoveComputer extends AbstractComputer {
+    public LenoveComputer(Cpu cpu) {
+        super(cpu);
+    }
+
+    @Override
+    public void discribe() {
+        System.out.println("联想笔记本cpu:" + super.cpu.discribe());
+    }
+}
+
+class HaseeComputer extends AbstractComputer {
+    public HaseeComputer(Cpu cpu) {
+        super(cpu);
+    }
+
+    @Override
+    public void discribe() {
+        System.out.println("神舟笔记本cpu:" + super.cpu.discribe());
+    }
+}
+```
+```java
+public interface ISaveData {
+    void save(Object data);
+}
+```
+```java
+public class SaveToDB implements ISaveData {
+    @Override
+    public void save(Object data) {
+        System.out.println(data + "Save to DB");
+    }
+}
+```
+```java
+public class SaveToFile implements ISaveData {
+
+    @Override
+    public void save(Object data) {
+        System.out.println(data + "Save to file");
+    }
+}
+```
+```java
+public class SaveToFile implements ISaveData {
+
+    @Override
+    public void save(Object data) {
+        System.out.println(data + "Save to file");
+    }
+}
+```
+```java
+public class NetSave extends AbstractSave {
+
+    public NetSave(ISaveData saveData) {
+        super(saveData);
+    }
+    @Override
+    public void save(Object data) {
+        System.out.println("Save to net:");
+        saveData.save(data);
+    }
+}
+```
+```java
+public abstract class AbstractSave {
+    ISaveData saveData;
+    public AbstractSave(ISaveData saveData) {
+        this.saveData = saveData;
+    }
+    public abstract void save(Object data);
+}
+```
+```java
+public class TestUse {
+    public static void main(String[] args) {
+        Object data = "数据";
+        ISaveData saveDataDB = new SaveToDB();
+        ISaveData saveDataFile = new SaveToFile();
+        AbstractSave save;
+        save = new NetSave(saveDataDB);
+        save.save(data);
+        save = new NetSave(saveDataFile);
+        save.save(data);
+        save = new LocalSave(saveDataDB);
+        save.save(data);
+        save = new LocalSave(saveDataFile);
+        save.save(data);
+    }
+}
+```
 ### 7. 装饰模式(Decorator Pattern)
 #### 介绍
-
+动态的给对象添加额外的职责。就功能来说，装饰模式比生产子类更为灵活。
 #### 何时使用
-
+* 程序希望动态的增强类的某对对象的功能，而不影响其他对象时
+* 采用继承来增强对象功能不利于系统的扩展和维护时
 #### 优点
+* 被装饰者和装饰者是松耦合关系。
+* 满足开-闭原则
+* 可以使用多个具体装饰器装饰具体组件的实例
 
+装饰模式使用被装饰类的一个子类的实例，把客户端的调用委派到被装饰类，装饰模式的关键在于这种扩展是完全透明的。装饰者与被装饰者拥有共同的超类，继承的目的是继承类型，而不是行为。
 #### 实现
+ 例如，我们有一个工具，用于持久化数据的，最开始设计的功能时是将数据持久化到本地文件，但现在部分数据需要同时持久化到数据库，再后来，又有数据需要同时持久化到网络上的位置，而我们是不能改之前的实现的，因为后面这些需求，只是针对部分数据的，所以我们理所当然就可以使用装饰器模式了。
 
+数据持久化接口（抽象组件）如下：
+```java
+public interface IPersistanceUtil {
+    void persistentMsg(String msg);
+}
+```
+其最初的实现（具体组件）如下：
+```java
+public class PersistantUtil implements IPersistanceUtil {
+    @Override
+    public void persistentMsg(String msg) {
+        System.out.println(msg + " save to file");
+    }
+}
+```
+首先需要抽象一个装饰器，我们不能直接使用它(即使使用匿名内部类使用了它，也跟最初的实现效果一样，没有意义)，因为他是一个抽象类（装饰）：
+```java
+public abstract class PersistantDecorator  implements IPersistanceUtil{
+    IPersistanceUtil iPersistanceUtil;
+    public PersistantDecorator(IPersistanceUtil iPersistanceUtil) {
+        this.iPersistanceUtil = iPersistanceUtil;
+    }
+    @Override
+    public void persistentMsg(String msg) {
+        iPersistanceUtil.persistentMsg(msg);
+    }
+}
+```
+然后，我们添加一个装饰器，可以同时实现数据持久化到数据库（具体装饰）：
+```java
+public class PersistantDBDecorator extends PersistantDecorator {
+    public PersistantDBDecorator(IPersistanceUtil iPersistanceUtil) {
+        super(iPersistanceUtil);
+    }
 
+    @Override
+    public void persistentMsg(String msg) {
+        iPersistanceUtil.persistentMsg(msg);
+        persitantToDB(msg);
+    }
+
+    private void persitantToDB(String msg) {
+        System.out.println(msg + " save to DB");
+    }
+}
+```
+在后来，我们添加一个可以同时在网络存储上持久化数据的装饰器（具体装饰）：
+```java
+public class PersistantNetDecorator extends PersistantDecorator {
+    public PersistantNetDecorator(IPersistanceUtil iPersistanceUtil) {
+        super(iPersistanceUtil);
+    }
+
+    @Override
+    public void persistentMsg(String msg) {
+        iPersistanceUtil.persistentMsg(msg);
+        persistantToNet(msg);
+    }
+
+    private void persistantToNet(String msg) {
+        System.out.println(msg + " save to net");
+    }
+}
+```
+在Java.io包中，很多类的设计，都用到了装饰器模式（如Reader相当于抽象的被装饰者，FileReader相当于具体的被装饰者，BufferedReader相当于装饰），有兴趣的同学可以去看看源码。
 
 
 ## 参考

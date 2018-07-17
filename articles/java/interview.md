@@ -9,6 +9,7 @@
     - [什么情况下会产生Full GC?](#什么情况下会产生full-gc)
 - [Java基础](#java基础)
     - [接口和抽象类的区别](#接口和抽象类的区别)
+    - [sychronized方法和代码块](#sychronized方法和代码块)
 - [操作系统](#操作系统)
     - [进程和线程的却别](#进程和线程的却别)
 
@@ -68,6 +69,12 @@ Eden区满时
 * 接口中的方法都是public，抽象类的方法可以是private, protected或者public
 * 接口中方法都是abstract, 抽象类的可以为abstract也可以不是
 * 抽象类可以在不提供方法实现的情况下实现接口
+
+### sychronized方法和代码块
+* 同步方法
+    通过this找到当前对象,将当前对象上锁
+* 同步代码块
+     synchronized（object）{代码内容}。可以指定任意一个对象,更加细粒度。
 
 
 ## 操作系统

@@ -88,9 +88,9 @@
 阿里巴巴 | 内推 | 7.27 | [阿里巴巴](https://www.jianshu.com/p/50ec6fd13e9c?utm_campaign=hugo&utm_medium=reader_share&utm_content=note&utm_source=weixin-timeline&from=timeline&isappinstalled=0) | -- |
 京东 | 提前批 | 8.30 |  | 简历投递地址：liuyumeng3@jd.com | 
 好未来 | 2019校招 |  | [好未来java工程师](http://job.100tal.com/jobxq?jobId=510212779) | |
-Oppo | 2019校招 | | [Oppp职位](http://oppotqp.zhaopin.com/) | 宣讲会：7月12日 华中科技大学 光学与电子信息学院613|
+~~Oppo~~ | 2019校招 | | [Oppp职位](http://oppotqp.zhaopin.com/) | 宣讲会：7月12日 华中科技大学 光学与电子信息学院613|
 深信服 | 2019校招 | |[大数据工程师](http://hr.sangfor.com/graduate/graduate_position.html) | |
-唯品会 | 2019秋招 | [hadoop平台开发工程师(上海)] | [招聘地址](http://campus.vip.com/rec_1.html) | |
+唯品会 | 2019秋招 | hadoop平台开发工程师(上海) | [招聘地址](http://campus.vip.com/rec_1.html) | |
 Google | 2019校招 | 笔试时间:UTC D轮: 7月29号 E轮: 8月26号 下午1点-4点| [详细介绍地址](https://mp.weixin.qq.com/s/4jKL7p-cnWmu80esBzIzyg)|  |
 
 

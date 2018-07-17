@@ -10,12 +10,14 @@
 - [Java基础](#java基础)
     - [接口和抽象类的区别](#接口和抽象类的区别)
     - [sychronized方法和代码块](#sychronized方法和代码块)
+    - [Iterator和ListIterator的区别是什么？](#iterator和listiterator的区别是什么)
+    - [快速失败(fast-failed)和快速安全(fast-safe)](#快速失败fast-failed和快速安全fast-safe)
+    - [HashMap和HashTable却别](#hashmap和hashtable却别)
 - [操作系统](#操作系统)
     - [进程和线程的却别](#进程和线程的却别)
     - [死锁](#死锁)
     - [如何确保N个线程可以访问N个资源同时又不导致死锁？](#如何确保n个线程可以访问n个资源同时又不导致死锁)
     - [java.util.Collection](#javautilcollection)
-    - [Iterator和ListIterator的区别是什么？](#iterator和listiterator的区别是什么)
 
 <!-- /TOC -->
 
@@ -80,7 +82,36 @@ Eden区满时
 * 同步代码块
      synchronized（object）{代码内容}。可以指定任意一个对象,更加细粒度。
 
+### Iterator和ListIterator的区别是什么？
+* Iterator可用来遍历Set和List集合，但是ListIterator只能用来遍历List。
+* Iterator对集合只能是前向遍历，ListIterator既可以前向也可以后向。
+* ListIterator实现了Iterator接口，并包含其他的功能，比如：增加元素，替换元素，获取前一个和后一个元素的索引，等等。 
 
+### 快速失败(fast-failed)和快速安全(fast-safe)
+* fail-fast
+    * 表现
+    再用迭代器遍历集合中的对象时，如果遍历过程中对集合中对象的结构进行了修改(增加、删除)，则会跑出ConcurrentModifyExecption。
+    * 原因
+    迭代器在遍历的时候，会使用modCount的变量，当遍历过程中对象结构发生变化就会改变modCount的值，当迭代器使用hasNext()/next()遍历下一个对象的时候，会比较expectedModCount与modCount的值，如果不匹配，就会跑出异常。
+    * 注意
+    这里异常的抛出条件是检测到 modCount！=expectedmodCount 这个条件。如果集合发生变化时修改modCount值刚好又设置为了expectedmodCount值，则异常不会抛出。因此，不能依赖于这个异常是否抛出而进行并发操作的编程，这个异常只建议用于检测并发修改的bug。
+    * 场景
+    java.util包下的集合类都是快速失败的，不能在多线程下发生并发修改（迭代过程中被修改）。
+* fail-safe
+    * 表现
+    采用安全失败机制的集合容器，在遍历时不是直接在集合元素上访问的，而是先生成集合对象的拷贝,在拷贝的集合上遍历。
+    * 原理
+    由于在遍历时对原集合进行了拷贝，所以修改原集合的值并不会检测到,所以不会触发ConcurrentModifyExecption。
+    * 缺点
+    基于拷贝内容的优点是避免了Concurrent Modification Exception，但同样地，迭代器并不能访问到修改后的内容，即：迭代器遍历的是开始遍历那一刻拿到的集合拷贝，在遍历期间原集合发生的修改迭代器是不知道的。
+    所以ConcurrentHashMap是弱一致性的。
+    * 场景 
+    java.util.concurrent包下的容器都是安全失败，可以在多线程下并发使用，并发修改。
+
+### HashMap和HashTable却别
+* HashMap允许key或值为null，HashTable不行
+* HashTable线程安全
+* HashTable实现了对键的列举(Enumeration)
 ## 操作系统
 ### 进程和线程的却别
 * 地址空间和其他资源：
@@ -110,7 +141,3 @@ Eden区满时
 
 <div align="center"><img src="../../resources/images/java/datastructure/map.png"></div></br> 
 
-### Iterator和ListIterator的区别是什么？
-* Iterator可用来遍历Set和List集合，但是ListIterator只能用来遍历List。
-* Iterator对集合只能是前向遍历，ListIterator既可以前向也可以后向。
-* ListIterator实现了Iterator接口，并包含其他的功能，比如：增加元素，替换元素，获取前一个和后一个元素的索引，等等。

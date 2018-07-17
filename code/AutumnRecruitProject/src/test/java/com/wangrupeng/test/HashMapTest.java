@@ -15,6 +15,7 @@ public class HashMapTest {
         System.out.println(str.hashCode() >>> 16);
         int h = hash(str);
         System.out.println(hash(str));
+        ArrayList<Integer> test = new ArrayList<>();
     }
 
     static final int hash(Object key) {

@@ -1,16 +1,26 @@
+
+<!-- TOC -->
+
+- [关键字](#关键字)
+    - [线程相关](#线程相关)
+        - [__在此解释一下Java的内存机制__：](#__在此解释一下java的内存机制__)
+    - [final](#final)
+        - [类](#类)
+        - [方法](#方法)
+        - [变量](#变量)
+    - [static](#static)
+        - [方法](#方法-1)
+        - [变量](#变量-1)
+        - [代码块](#代码块)
+    - [transient](#transient)
+
+<!-- /TOC -->
+
 # 关键字
 
 ## 线程相关
 * synchronized
     
-* transient  
-类型修饰符，只能用来修饰字段。被transient标记的变量不会被序列化。
-```java
-class Test {  
-    transient int a; // 不会被持久化  
-    int b; // 持久化  
-}
-```
 * volatile  
 变量修饰符，只能用来修饰变量。volatile修饰的成员变量在每次被线程访问时，都强迫从共享内存中重读该成员变量的值。而且，当成员变量发生变化时，强迫线程将变化值回写到共享内存。这样在任何时刻，两个不同的线程总是看到某个成员变量的同一个值。
 
@@ -101,5 +111,14 @@ class Person{
     boolean isBornBoomer() {
         return birthDate.compareTo(startDate)>=0 && birthDate.compareTo(endDate) < 0;
     }
+}
+```
+
+## transient  
+类型修饰符，只能用来修饰字段。被transient标记的变量不会被序列化。
+```java
+class Test {  
+    transient int a; // 不会被持久化  
+    int b; // 持久化  
 }
 ```

@@ -1,11 +1,16 @@
-* Topologies(拓扑)
-* Streams(流)
-* Spout
-* Bolts
-* Stream groupings(流分组)
-* Reliability(可靠性)
-* Tasks
-* Workers
+
+<!-- TOC -->
+
+- [Topologies(拓扑)](#topologies拓扑)
+- [Streams(流)](#streams流)
+- [Spouts](#spouts)
+- [Bolts](#bolts)
+- [Stream Grouping](#stream-grouping)
+- [Reliability(可靠性)](#reliability可靠性)
+- [Tasks](#tasks)
+- [Workers](#workers)
+
+<!-- /TOC -->
 
 # Topologies(拓扑)
 实时应用程序的逻辑被封装在 Storm topology（拓扑）中. Storm topology（拓扑）类似于 MapReduce 作业. 两者之间关键的区别是 MapReduce 作业最终会完成, 而 topology（拓扑）任务会永远运行（除非 kill 掉它）. 一个拓扑是 Spout 和 Bolt 通过 stream groupings 连接起来的有向无环图.这些概念会在下面的段落中具体描述.

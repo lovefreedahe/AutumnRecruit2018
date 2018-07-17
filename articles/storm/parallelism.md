@@ -1,4 +1,17 @@
-# 理解 Storm Topology 的 Parallelism（并行度）
+
+<!-- TOC -->
+
+- [理解 Storm Topology 的 Parallelism（并行度）](#理解-storm-topology-的-parallelism并行度)
+- [配置 topology 的 parallelism（并行度）](#配置-topology-的-parallelism并行度)
+    - [worker 进程的数量](#worker-进程的数量)
+    - [executors （线程）的数量](#executors-线程的数量)
+    - [tasks（任务）的数量](#tasks任务的数量)
+- [运行 topology 的示例](#运行-topology-的示例)
+- [如何改变正在运行中的 topology 的并行度](#如何改变正在运行中的-topology-的并行度)
+
+<!-- /TOC -->
+
+## 理解 Storm Topology 的 Parallelism（并行度）
 Storm 区分以下 3 个主要的实体, 它们在 Storm 集群中用于实际的运行 topology（拓扑）:
 
 * Worker 进程

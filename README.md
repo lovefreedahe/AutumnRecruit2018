@@ -61,7 +61,7 @@
 
 > [Hbase](articles/Hbase.md)
 
-> [Storm](articles/Storm.md)
+> [Storm](articles/storm/Storm.md)
 
 #### 其他
 > [Apache Lucene](articles/lucene.md)

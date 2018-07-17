@@ -1,4 +1,15 @@
-# 序列化
+
+<!-- TOC -->
+
+- [序列化](#序列化)
+- [Dynamic typing(动态类型)](#dynamic-typing动态类型)
+- [Custom serialization(自定义序列化)](#custom-serialization自定义序列化)
+- [Java serialization(java 序列化)](#java-serializationjava-序列化)
+- [Component-specific serialization registrations(特定组件的序列化注册)](#component-specific-serialization-registrations特定组件的序列化注册)
+
+<!-- /TOC -->
+
+## 序列化
 序列化 本文阐述了 Storm 0.6.0 以上版本的序列化机制。在低于 0.6.0 版本的 Storm 中使用了另一种序列化系统，详细信息可以参考 Serialization (prior to 0.6.0) 一文
 
 Storm 中的 tuple 可以包含任何类型的对象。由于 Storm 是一个分布式系统，所以在不同的任务之间传递消息时 Storm 必须知道怎样序列化、反序列化消息对象。

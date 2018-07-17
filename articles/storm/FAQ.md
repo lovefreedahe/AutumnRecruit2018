@@ -1,4 +1,20 @@
-# FAQ
+
+<!-- TOC -->
+
+- [最佳实践](#最佳实践)
+    - [针对配置 Storm+Trident, 您可以给我哪些经验呢?](#针对配置-stormtrident-您可以给我哪些经验呢)
+    - [如何避免 worker 总是出现莫名其妙的故障的问题](#如何避免-worker-总是出现莫名其妙的故障的问题)
+    - [Help! 我不能看到:](#help-我不能看到)
+    - [我应该使用多少个 Workers?](#我应该使用多少个-workers)
+- [Topology（拓扑）](#topology拓扑)
+    - [一个 Trident topology 可以有多个 Streams 吗?](#一个-trident-topology-可以有多个-streams-吗)
+    - [当我启动 topology 时, 为什么获得一个 NotSerializableException/IllegalStateException 异常?](#当我启动-topology-时-为什么获得一个-notserializableexceptionillegalstateexception-异常)
+- [Spouts](#spouts)
+    - [coordinator 是什么, 为什么有几个?](#coordinator-是什么-为什么有几个)
+    - [What can I store into the spout's metadata record?](#what-can-i-store-into-the-spouts-metadata-record)
+    - ['emitPartitionBatchNew' 函数多久被调用一次?](#emitpartitionbatchnew-函数多久被调用一次)
+
+<!-- /TOC -->
 ## 最佳实践
 ### 针对配置 Storm+Trident, 您可以给我哪些经验呢?
 * worker 的数量是机器数量的倍数; 并行度是 worker 数量的倍数; kafka partitions 的数量是 spout 并行度的倍数

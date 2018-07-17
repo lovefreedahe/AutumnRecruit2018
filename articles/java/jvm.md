@@ -307,6 +307,7 @@ GC最基础的算法有三种：标记 -清除算法、复制算法、标记-压
 
 * Serial Old 收集器
     <div align="center"><img src="../../resources/images/java/jvm/serial_old.jpg" ></div></br>
+    
     是 Serial 收集器的老年代版本，也是给 Client 模式下的虚拟机使用。如果用在 Server 模式下，它有两大用途：
     * 在 JDK 1.5 以及之前版本（Parallel Old 诞生以前）中与 Parallel Scavenge 收集器搭配使用。
     * 作为 CMS 收集器的后备预案，在并发收集发生 Concurrent Mode Failure 时使用。

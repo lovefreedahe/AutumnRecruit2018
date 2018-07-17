@@ -1,3 +1,22 @@
+<!-- TOC -->
+
+- [HTTP,HTTP2.0,SPDY,HTTPS你应该知道的一些事](#httphttp20spdyhttps你应该知道的一些事)
+    - [web始祖HTTP](#web始祖http)
+    - [HTTP与现代化浏览器](#http与现代化浏览器)
+    - [HTTP的基本优化](#http的基本优化)
+    - [HTTP1.0和HTTP1.1的一些区别](#http10和http11的一些区别)
+    - [HTTP1.0和1.1现存的一些问题](#http10和11现存的一些问题)
+    - [HTTPS应声而出](#https应声而出)
+    - [HTTPS与HTTP的一些区别](#https与http的一些区别)
+    - [HTTPS改造](#https改造)
+    - [使用SPDY加快你的网站速度](#使用spdy加快你的网站速度)
+    - [HTTP2.0的前世今生](#http20的前世今生)
+    - [HTTP2.0的新特性](#http20的新特性)
+    - [HTTP2.0的升级改造](#http20的升级改造)
+- [参考](#参考)
+
+<!-- /TOC -->
+
 # HTTP,HTTP2.0,SPDY,HTTPS你应该知道的一些事
 > 转载自[http://www.alloyteam.com/2016/07/httphttp2-0spdyhttps-reading-this-is-enough/](http://www.alloyteam.com/2016/07/httphttp2-0spdyhttps-reading-this-is-enough/)
 ## web始祖HTTP

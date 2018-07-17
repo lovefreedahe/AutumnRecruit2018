@@ -1,3 +1,17 @@
+
+<!-- TOC -->
+
+- [Distributed RPC](#distributed-rpc)
+    - [High level 概述](#high-level-概述)
+    - [LinearDRPCTopologyBuilder](#lineardrpctopologybuilder)
+    - [DRPC 本地模式](#drpc-本地模式)
+    - [DRPC远程模式](#drpc远程模式)
+    - [一个更复杂的例子](#一个更复杂的例子)
+    - [Non-linear DRPC topologies（拓扑）](#non-linear-drpc-topologies拓扑)
+    - [LinearDRPCTopologyBuilder 是如何运行的。](#lineardrpctopologybuilder-是如何运行的)
+    - [Advanced](#advanced)
+
+<!-- /TOC -->
 # Distributed RPC
 distributed RPC（分布式RPC） (DRPC) 的设计目的是充分利用Storm的计算能力实现高密度的并行实时计算。Storm topology（拓扑）接受若干个函数参数作为输入，然后输出这些函数调用的结果。
 

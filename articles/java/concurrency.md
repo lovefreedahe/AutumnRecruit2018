@@ -3,6 +3,7 @@
 - [一、线程状态转换](#一线程状态转换)
     - [新建(New)](#新建new)
     - [可运行(Runnable)](#可运行runnable)
+    - [运行中(Running)](#运行中running)
     - [阻塞(Blocking)](#阻塞blocking)
     - [无限期等待(Waiting)](#无限期等待waiting)
     - [限期等待(Timed Waiting)](#限期等待timed-waiting)
@@ -74,7 +75,7 @@
         - [3.无同步方案](#3无同步方案)
             - [(一)可重入代码(eReentrant Code)](#一可重入代码ereentrant-code)
             - [(二)栈封闭](#二栈封闭)
-            - [（三）线程本地存储（Thread Local Storage）](#三线程本地存储thread-local-storage)
+            - [(三)线程本地存储（Thread Local Storage）](#三线程本地存储thread-local-storage)
 - [十二、锁优化](#十二锁优化)
     - [自旋锁](#自旋锁)
     - [锁消除](#锁消除)
@@ -93,8 +94,9 @@
 ## 可运行(Runnable)
 可能正在运行，也可能正在等待CPU时间片。
 包含了操作系统线程状态中的Running和Ready。
+## 运行中(Running)
 ## 阻塞(Blocking)
-等待获取一个排它锁，如果其他线程释放了该锁就结束此状态。
+等待获取一个排它锁，如果其他线程释放了该锁就结束此状态。Sychronized。
 ## 无限期等待(Waiting)
 等待其他线程显式的唤醒，否则不会被分配CPU时间片。
 进入方法 | 退出方法
@@ -102,7 +104,6 @@
 没有设置Timeout参数的Object.wait() | Object.notify() / Object.notifyAll()
 没有设置Timeout参数的Thread.join() | 被调用的线程执行完毕
 LockSupport.park()方法| 
-
 
 ## 限期等待(Timed Waiting)
 无需等待其它线程显式地唤醒，在一定时间之后会被系统自动唤醒。

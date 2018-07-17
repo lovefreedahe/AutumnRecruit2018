@@ -12,6 +12,10 @@
     - [sychronized方法和代码块](#sychronized方法和代码块)
 - [操作系统](#操作系统)
     - [进程和线程的却别](#进程和线程的却别)
+    - [死锁](#死锁)
+    - [如何确保N个线程可以访问N个资源同时又不导致死锁？](#如何确保n个线程可以访问n个资源同时又不导致死锁)
+    - [java.util.Collection](#javautilcollection)
+    - [Iterator和ListIterator的区别是什么？](#iterator和listiterator的区别是什么)
 
 <!-- /TOC -->
 
@@ -86,3 +90,27 @@ Eden区满时
 * 调度和切换
     线程的上下文切换比进程快得多
 * 多线程OS中，进程是不可执行的实体。
+
+### 死锁
+死锁是指多个进程因竞争资源而造成的一种僵局（互相等待），若无外力作用，这些进程都将无法向前推进。
+* 互斥条件
+    一段时间内一个资源只能被一个进程所占有，如果有其他进程请求就只能等待。
+* 不可剥夺：
+    一个进程获得的资源在为释放之前，不能被其他进程强行占有。
+* 请求和保持条件
+    进程已经持有了一个资源，此时还请求另外一个被其他进程占有的资源，就会进入阻塞状态，已有的资源也不会以释放。
+* 循环等待
+    存在一种进程资源的循环等待链，链中每一个进程已获得的资源同时被 链中下一个进程所请求。
+
+### 如何确保N个线程可以访问N个资源同时又不导致死锁？
+使用多线程的时候，一种非常简单的避免死锁的方式就是：指定获取锁的顺序，并强制线程按照指定的顺序获取锁。因此，如果所有的线程都是以同样的顺序加锁和释放锁，就不会出现死锁了。
+
+### java.util.Collection
+<div align="center"><img src="../../resources/images/java/datastructure/collection.png"></div></br> 
+
+<div align="center"><img src="../../resources/images/java/datastructure/map.png"></div></br> 
+
+### Iterator和ListIterator的区别是什么？
+* Iterator可用来遍历Set和List集合，但是ListIterator只能用来遍历List。
+* Iterator对集合只能是前向遍历，ListIterator既可以前向也可以后向。
+* ListIterator实现了Iterator接口，并包含其他的功能，比如：增加元素，替换元素，获取前一个和后一个元素的索引，等等。

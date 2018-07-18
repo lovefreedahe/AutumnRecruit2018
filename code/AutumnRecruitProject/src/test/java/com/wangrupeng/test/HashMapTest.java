@@ -2,6 +2,7 @@ package com.wangrupeng.test;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class HashMapTest {
     public static void main(String[] args) {

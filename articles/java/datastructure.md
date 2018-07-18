@@ -17,6 +17,10 @@
     - [二叉树遍历](#二叉树遍历)
 - [链表List](#链表list)
     - [ArrayList和LinkedList比较](#arraylist和linkedlist比较)
+- [队列(Queue)](#队列queue)
+    - [PriorityQueue](#priorityqueue)
+- [堆Set](#堆set)
+    - [HashSet和TreeSet](#hashset和treeset)
         - [总结](#总结)
 - [参考](#参考)
 
@@ -255,6 +259,69 @@ ArrayList和LinkedList都是实现了List接口的类，他们都是元素的容
 LinkedList是采用双向链表实现的。所以它也具有链表的特点，每一个元素（结点）的地址不连续，通过引用找到当前结点的上一个结点和下一个结点，即插入和删除效率较高，只需要常数时间，而get和set则较为低效。
 LinkedList的方法和使用和ArrayList大致相同，由于LinkedList是链表实现的，所以额外提供了在头部和尾部添加/删除元素的方法，也没有ArrayList扩容的问题了。另外，ArrayList和LinkedList都可以实现栈、队列等数据结构，但LinkedList本身实现了队列的接口，所以更推荐用LinkedList来实现队列和栈。
 
+
+## 队列(Queue)
+先进先出
+### PriorityQueue
+* 不支持null和non-comparable的对象，要求使用Comparable或Comparator排序
+* 非线程安全，PriorityBlockingQueue
+
+```java
+public class PriorityQueueExample {
+    public static void main(String[] args) {
+        PriorityQueue<Customer> customers = new PriorityQueue<>(10);
+        Random random = new Random();
+        for (int i = 0;i < 10;i++) {
+            customers.add(new Customer(new Integer(random.nextInt(100)), "customer-" + i));
+        }
+        for (int i = 0;i < 10;i++) {
+            Customer customer = customers.poll();
+            System.out.println(customer.getName() + " " +  customer.getId());
+        }
+        PriorityQueue<Customer> customers1 = new PriorityQueue<>(10, idComparator);
+        for (int i = 0;i < 10;i++) {
+            customers1.add(new Customer(new Integer(random.nextInt(100)), "customer-" + i));
+        }
+        for (int i = 0;i < 10;i++) {
+            Customer customer = customers1.poll();
+            System.out.println(customer.getName() + " " +  customer.getId());
+        }
+    }
+    public static Comparator<Customer> idComparator = new Comparator<Customer>() {
+        @Override
+        public int compare(Customer o1, Customer o2) {
+            return o2.getId() - o1.getId();
+        }
+    };
+}
+public class Customer implements Comparable{
+    private int id;
+    private String name;
+    public Customer(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    public int getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    @Override
+    public int compareTo(Object object) {
+        Customer customer = (Customer)object;
+        return this.id - customer.getId();
+    }
+}
+```
+
+
+## 堆Set
+### HashSet和TreeSet
+名称 | 顺序 | 底层 | 时间复杂度 | 线程安全 | null值
+-- | -- | -- | -- | -- | -- | 
+HashSet | 无序 | HashMap | O(1) | 不安全 | 允许 | 
+TreeSet | 有序 | TreeMap | O(log n) | 不安全 | 不允许 |
 
 #### 总结
 名称 | 优点 | 缺点 | 

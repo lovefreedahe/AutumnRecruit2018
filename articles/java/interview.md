@@ -7,11 +7,16 @@
     - [能不能自己写个类叫java.lang.System？](#能不能自己写个类叫javalangsystem)
     - [什么情况下会产生Minor GC?](#什么情况下会产生minor-gc)
     - [什么情况下会产生Full GC?](#什么情况下会产生full-gc)
+    - [JDK1.8 用的什么GC,有什么改进？](#jdk18-用的什么gc有什么改进)
+    - [finalize() 什么时候被调用？作用是什么？](#finalize-什么时候被调用作用是什么)
+    - [讲对象置为null，该对象是不是会立即被回收？](#讲对象置为null该对象是不是会立即被回收)
 - [Java基础](#java基础)
     - [接口和抽象类的区别](#接口和抽象类的区别)
     - [sychronized方法和代码块](#sychronized方法和代码块)
     - [Iterator和ListIterator的区别是什么？](#iterator和listiterator的区别是什么)
+    - [Enumeration和Iterator](#enumeration和iterator)
     - [快速失败(fast-failed)和快速安全(fast-safe)](#快速失败fast-failed和快速安全fast-safe)
+    - [Comparable和Comparator](#comparable和comparator)
     - [HashMap和HashTable却别](#hashmap和hashtable却别)
 - [操作系统](#操作系统)
     - [进程和线程的却别](#进程和线程的却别)
@@ -34,11 +39,11 @@
 ### 什么情况下会产生Minor GC?
 Eden区满时
 ### 什么情况下会产生Full GC?
-详细请看[Java虚拟机]()中JVM内存结构的java堆
+详细请看[Java虚拟机](jvm.md)中JVM内存结构的java堆
 <div align="center"><img src="../../resources/images/java/jvm/ppt_img.gif"></div></br> 
 
 * System.gc() 
-    建议JVM Full GC，但是不一定，能不用尽量不用。
+    建议JVM Full GC，但是不一定，具体什么时候gc是由JVM决定的，能不用尽量不用。
 * 老年代空间不足
     * 原因
         老年代空间只有在新生代对象转入及创建为大对象、大数组时才会出现不足的现象，当执行Full GC后空间仍然不足，则抛出如下错误：
@@ -47,7 +52,7 @@ Eden区满时
         ```
     * 措施
         为避免以上两种状况引起的Full GC，调优时应尽量做到让对象在Minor GC阶段被回收、让对象在新生代多存活一段时间及不要创建过大的对象及数组。
-* 永久区空间不足
+* ~~永久区空间不足~~
     * 原因
         Permanet Generation中存放的为一些class的信息、常量、静态变量等数据，当系统中要加载的类、反射的类和调用的方法较多时，Permanet Generation可能会被占满，在未配置为采用CMS GC的情况下也会执行Full GC。如果经过Full GC仍然回收不了，那么JVM会抛出如下错误信息：
         ```shell
@@ -59,14 +64,24 @@ Eden区满时
     * 介绍
         对于采用CMS进行老年代GC的程序而言，尤其要注意GC日志中是否有promotion failed和concurrent mode failure两种状况，当这两种状况出现时可能会触发Full GC。
     * 原因
-        promotion failed是在进行Minor GC时，survivor space放不下、对象只能放入老年代，而此时老年代也放不下造成的；concurrent mode failure是在
-
-        执行CMS GC的过程中同时有对象要放入老年代，而此时老年代空间不足造成的（有时候“空间不足”是CMS GC时当前的浮动垃圾过多导致暂时性的空间不足触发Full GC）。
+        promotion failed是在进行Minor GC时，survivor space放不下、对象只能放入老年代，而此时老年代也放不下造成的；
+        concurrent mode failure是在执行CMS GC的过程中同时有对象要放入老年代，而此时老年代空间不足造成的（有时候“空间不足”是CMS GC时当前的浮动垃圾过多导致暂时性的空间不足触发Full GC）。
     * 措施
         增大survivor space、老年代空间或调低触发并发GC的比率
     
-* 由Eden区、From Survivor 区复制时，对象大小大于To Survivor可用内存，则把该对象转存到老年代，且老年代的可用内存小于该对象大小
-        
+* 统计得到的Minor GC晋升到旧生代的平均大小大于旧生代的剩余空间
+    这是一个较为复杂的触发情况，Hotspot为了避免由于新生代对象晋升到旧生代导致旧生代空间不足的现象，在进行Minor GC时，做了一个判断，如果之前统计所得到的Minor GC晋升到旧生代的平均大小大于旧生代的剩余空间，那么就直接触发Full GC。
+
+### JDK1.8 用的什么GC,有什么改进？
+有经验的同学会发现，对永久代的调优过程非常困难，永久代的大小很难确定，其中涉及到太多因素，如类的总数、常量池大小和方法数量等，而且永久代的数据可能会随着每一次Full GC而发生移动。
+而在JDK8中，类的元数据保存在本地内存中，元空间的最大可分配空间就是系统可用内存空间，可以避免永久代的内存溢出问题，不过需要监控内存的消耗情况，一旦发生内存泄漏，会占用大量的本地内存。
+
+### finalize() 什么时候被调用？作用是什么？
+垃圾回收器(garbage collector)决定回收某对象时，就会运行该对象的finalize()方法 但是在Java中很不幸，如果内存总是充足的，那么垃圾回收可能永远不会进行，也就是说filalize()可能永远不被执行，显然指望它做收尾工作是靠不住的。 那么finalize()究竟是做什么的呢？它最主要的用途是回收特殊渠道申请的内存。Java程序有垃圾回收器，所以一般情况下内存问题不用程序员操心。但有一种JNI(Java Native Interface)调用non-Java程序（C或C++），finalize()的工作就是回收这部分的内存。
+
+### 讲对象置为null，该对象是不是会立即被回收？
+不会，在下一个垃圾回收周期中，这个对象将是可被回收的。
+
 ## Java基础
 ### 接口和抽象类的区别
 * 接口不能实例化，抽象类可以
@@ -80,12 +95,15 @@ Eden区满时
 * 同步方法
     通过this找到当前对象,将当前对象上锁
 * 同步代码块
-     synchronized（object）{代码内容}。可以指定任意一个对象,更加细粒度。
+    synchronized（object）{代码内容}。可以指定任意一个对象,更加细粒度。
 
 ### Iterator和ListIterator的区别是什么？
 * Iterator可用来遍历Set和List集合，但是ListIterator只能用来遍历List。
 * Iterator对集合只能是前向遍历，ListIterator既可以前向也可以后向。
 * ListIterator实现了Iterator接口，并包含其他的功能，比如：增加元素，替换元素，获取前一个和后一个元素的索引，等等。 
+
+### Enumeration和Iterator
+    Enumeration速度是Iterator的2倍，占用内存更小，但是Iterator比Enumeration更安全，别的线程无法修改Iterator遍历的对象，同时Iterator允许遍历对象修改底层内部的数据，Enumeration不行。
 
 ### 快速失败(fast-failed)和快速安全(fast-safe)
 * fail-fast
@@ -107,6 +125,15 @@ Eden区满时
     所以ConcurrentHashMap是弱一致性的。
     * 场景 
     java.util.concurrent包下的容器都是安全失败，可以在多线程下并发使用，并发修改。
+
+### Comparable和Comparator
+参数 | Comparable | Comparator
+-- | -- | --
+排序逻辑 | 排序逻辑必须在待排序对象的类中，故称之为自然排序 | 排序逻辑在另一个实现
+实现 | 实现Comparable接口 | 实现Comparator接口
+排序方法 | int compareTo(Object o1) | 	int compare(Object o1,Object o2)
+触发排序 | Collection.sort(List) | Collection.sort(List, Comparator)
+接口所在包 | java.util.Comparable | java.util.Comparator
 
 ### HashMap和HashTable却别
 * HashMap允许key或值为null，HashTable不行

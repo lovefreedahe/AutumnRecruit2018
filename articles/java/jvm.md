@@ -108,19 +108,23 @@ new出对象程序中使用
 ### jvm内存结构
 <div align="center"><img src="../../resources/images/java/jvm/structure.png"></div></br> 
 
+
+<div align="center"><img src="../../resources/images/java/jvm/structure_jdk1.8.jpg"></div></br> 
+1.8同1.7比，最大的差别就是：元数据区取代了永久代。元空间的本质和永久代类似，都是对JVM规范中方法区的实现。不过元空间与永久代之间最大的区别在于：元数据空间并不在虚拟机中，而是使用本地内存。
+
 > 方法区和堆是所有线程共享的内存区域；而java栈、本地方法栈和程序计数器是运行是线程私有的内存区域。
 
 * Java堆（Heap）
     是Java虚拟机所管理的内存中最大的一块。Java堆是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例，__几乎所有的对象实例都在这里分配内存__。
-    垃圾收集的主要区域（"GC 堆"）。现代的垃圾收集器基本都是采用分代收集算法，主要思想是针对不同的对象采取不同的垃圾回收算法。虚拟机把 Java 堆分成以下三块：
+    垃圾收集的主要区域（"GC 堆"）。现代的垃圾收集器基本都是采用分代收集算法，主要思想是针对不同的对象采取不同的垃圾回收算法。虚拟机1.7以前把 Java 堆分成以下三块：
     * 新生代（Young Generation）
+        当一个对象被创建时，它首先进入新生代，之后有可能被转移到老年代中。
+        新生代存放着大量的生命很短的对象，因此新生代在三个区域中垃圾回收的频率最高。有Eden、Survivor(S0,S1)三个区域，默认内存比例为8:1:1,Minor GC的时候会把还存活的对象从Eden放到S0区域，清空Eden区域后，下一次Minor GC会把存活在Eden和S0的对象移动到S1，存活对象在S0，S1移动，当GC年龄超过15后移动到老年代,-XX:MaxTenuringThreshold年龄阈值设置
     * 老年代（Old Generation）
     * 永久代（Permanent Generation）
-    当一个对象被创建时，它首先进入新生代，之后有可能被转移到老年代中。
-    新生代存放着大量的生命很短的对象，因此新生代在三个区域中垃圾回收的频率最高。为了更高效地进行垃圾回收，把新生代继续划分成以下三个空间：
-    * Eden（伊甸园）
-    * From Survivor（幸存者）
-    * To Survivor
+        在JDK8之前的HotSpot实现中，类的元数据如方法数据、方法信息（字节码，栈和变量大小）、运行时常量池、已确定的符号引用和虚方法表等被保存在永久代中，32位默认永久代的大小为64M，64位默认为85M，可以通过参数-XX:MaxPermSize进行设置，一旦类的元数据超过了永久代大小，就会抛出OOM异常。
+        虚拟机团队在JDK8的HotSpot中，把永久代从Java堆中移除了，并把类的元数据直接保存在本地内存区域（堆外内存），称之为元空间。
+    
     <div align="center"><img src="../../resources/images/java/jvm/ppt_img.gif"></div></br> 
     Java 堆不需要连续内存，并且可以动态增加其内存，增加失败会抛出 OutOfMemoryError 异常。  
 
@@ -128,10 +132,20 @@ new出对象程序中使用
     ```shell
     java -Xms=1M -Xmx=2M HackTheJava
     ```
+
+    * JDK1.8 堆
+    <div align="center"><img src="../../resources/images/java/jvm/heap_1.8.jpg"></div></br>
+    堆是JVM内存占用最大，管理最复杂的一个区域。其唯一的用途就是存放对象实例：所有的对象实例及数组都在对上进行分配。1.7后，字符串常量池从永久代中剥离出来，存放在堆中。堆有自己进一步的内存分块划分，按照GC分代收集角度的划分请参见上图。
+
 * 方法区（Method Area）,方法区（Method Area）与Java堆一样，是各个线程共享的内存区域，它用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。
 和 Java 堆一样不需要连续的内存，并且可以动态扩展，动态扩展失败一样会抛出 OutOfMemoryError 异常。
 对这块区域进行垃圾回收的主要目标是对常量池的回收和对类的卸载，但是一般比较难实现。
 JDK 1.7 之前，HotSpot 虚拟机把它当成永久代来进行垃圾回收，JDK 1.8 之后，取消了永久代，用 metaspace（元数据）区替代。
+
+    移除永久代的工作从JDK1.7就开始了。JDK1.7中，存储在永久代的部分数据就已经转移到了Java Heap或者是 Native Heap。但永久代仍存在于JDK1.7中，并没完全移除，譬如符号引用(Symbols)转移到了native heap；字面量(interned strings)转移到了java heap；类的静态变量(class statics)转移到了java heap。
+
+    **元空间**的本质和永久代类似，都是对JVM规范中方法区的实现。不过元空间与永久代之间最大的区别在于：元空间并不在虚拟机中，而是使用本地内存。
+
 * 程序计数器（Program Counter Register）,程序计数器（Program Counter Register）是一块较小的内存空间，它的作用可以看做是当前线程所执行的字节码的行号指示器。
 * 虚拟机栈（JVM Stacks）,与程序计数器一样，Java虚拟机栈（Java Virtual   Machine Stacks）也是线程私有的，它的生命周期与线程相同。虚拟机栈描述的是Java方法执行的内存模型：每个方法被执行的时候都会同时创建一个栈帧（Stack Frame）用于存储局部变量表、操作栈、动态链接、方法出口等信息。每一个方法被调用直至执行完成的过程，就对应着一个栈帧在虚拟机栈中从入栈到出栈的过程。
     <div align="center"><img src="../../resources/images/java/jvm/jvm_stack.png"></div></br>
@@ -405,3 +419,4 @@ Sun JDK监控和故障处理命令有jps jstat jmap jhat jstack jinfo
 * 《深入理解Java虚拟机》
 * [jvm系列(八):jvm知识点总览](http://www.ityouknow.com/java/2017/03/01/jvm-overview.html)
 * [java类的加载机制](http://www.cnblogs.com/ityouknow/p/5603287.html)
+* [JDK1.8 JVM内存模型](https://blog.csdn.net/bruce128/article/details/79357870)

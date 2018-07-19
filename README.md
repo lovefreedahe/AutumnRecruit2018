@@ -9,6 +9,7 @@
     - [2.4 Java](#24-java)
         - [Java基础](#java基础)
         - [设计模式](#设计模式)
+        - [面试](#面试)
     - [2.5 项目](#25-项目)
         - [分布式](#分布式)
         - [其他](#其他)
@@ -54,6 +55,9 @@
 
 #### 设计模式
 [java中的23种设计模式](articles/java/JavaDesignPattern.md)
+
+#### 面试
+[interview](articles/java/interview.md)
 
 ### 2.5 项目
 #### 分布式

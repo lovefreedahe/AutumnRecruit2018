@@ -16,6 +16,7 @@
     - [GC算法 垃圾回收](#gc算法-垃圾回收)
         - [对象存活判断](#对象存活判断)
         - [GC算法](#gc算法)
+        - [Minor GC、Major GC和Full GC](#minor-gcmajor-gc和full-gc)
         - [垃圾回收器](#垃圾回收器)
         - [GC分析 命令调优](#gc分析-命令调优)
             - [GC日志分析](#gc日志分析)
@@ -123,7 +124,7 @@ new出对象程序中使用
     * 老年代（Old Generation）
     * 永久代（Permanent Generation）
         在JDK8之前的HotSpot实现中，类的元数据如方法数据、方法信息（字节码，栈和变量大小）、运行时常量池、已确定的符号引用和虚方法表等被保存在永久代中，32位默认永久代的大小为64M，64位默认为85M，可以通过参数-XX:MaxPermSize进行设置，一旦类的元数据超过了永久代大小，就会抛出OOM异常。
-        虚拟机团队在JDK8的HotSpot中，把永久代从Java堆中移除了，并把类的元数据直接保存在本地内存区域（堆外内存），称之为元空间。
+        虚拟机团队在JDK8的HotSpot中，把永久代从Java堆中移除了，并把类的元数据直接保存在本地内存区域（堆外内存），称之为元空间,静态变量和常量池保存在堆中。
     
     <div align="center"><img src="../../resources/images/java/jvm/ppt_img.gif"></div></br> 
     Java 堆不需要连续内存，并且可以动态增加其内存，增加失败会抛出 OutOfMemoryError 异常。  
@@ -292,6 +293,13 @@ GC最基础的算法有三种：标记 -清除算法、复制算法、标记-压
     一般将 Java 堆分为新生代和老年代。
     * 新生代使用：复制算法
     * 老年代使用：标记 - 清理 或者 标记 - 整理 算法
+
+### Minor GC、Major GC和Full GC
+* 清理Eden区和 Survivor区叫Minor GC。
+
+* 清理Old区叫Major GC。
+
+* 清理整个堆空间—包括年轻代和老年代叫Full GC。
 
 ### 垃圾回收器
 * Serial收集器

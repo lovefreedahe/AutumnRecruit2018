@@ -9,6 +9,7 @@
     - [2.4 Java](#24-java)
         - [Java基础](#java基础)
         - [设计模式](#设计模式)
+        - [面试](#面试)
     - [2.5 项目](#25-项目)
         - [分布式](#分布式)
         - [其他](#其他)
@@ -55,6 +56,9 @@
 #### 设计模式
 [java中的23种设计模式](articles/java/JavaDesignPattern.md)
 
+#### 面试
+[interview](articles/java/interview.md)
+
 ### 2.5 项目
 #### 分布式
 
@@ -91,7 +95,7 @@
 -- | -- | -- | -- | --
 拼多多 | 学霸批 |  8.3 | [拼多多](https://mp.weixin.qq.com/s?__biz=MzI3MzQzMDEwNw==&mid=2247484279&idx=1&sn=ea88bdbcc4c2a7d063c6f13e2be2041f&chksm=eb222043dc55a955e42b1bbe07a1b7ef1fde0421f3873bd3fae1cfa872c505b6a4afbb59efcc&mpshare=1&scene=23&srcid=0702ucJuM0Mv4pxz5v56dNYL#rd) | <div align="center"><img src="resources/images/pinduoduo.jpg" width="300"></div>
 阿里巴巴 | 内推 | 7.27 | [阿里巴巴](https://www.jianshu.com/p/50ec6fd13e9c?utm_campaign=hugo&utm_medium=reader_share&utm_content=note&utm_source=weixin-timeline&from=timeline&isappinstalled=0) | -- |
-京东 | 提前批 | 8.30 |  | 简历投递地址：liuyumeng3@jd.com | 
+京东 | 提前批 | 随时交简历，如通过筛选会在8月30日前随时发起面试。7月中旬正常校招网申也记得申请哦（campus.jd.com），提前批失败不影响正常校招。 |  | 简历投递地址：liuyumeng3@jd.com | 
 好未来 | 2019校招 |  | [好未来java工程师](http://job.100tal.com/jobxq?jobId=510212779) | |
 ~~Oppo~~ | 2019校招 | | [Oppp职位](http://oppotqp.zhaopin.com/) | 宣讲会：7月12日 华中科技大学 光学与电子信息学院613|
 深信服 | 2019校招 | |[大数据工程师](http://hr.sangfor.com/graduate/graduate_position.html) | |
@@ -144,3 +148,8 @@ Google | 2019校招 | 笔试时间:UTC D轮: 7月29号 E轮: 8月26号 下午1�
 * java并发
 * 设计模式
 
+2018.7.19
+* priority queue
+* 排序算法
+* b树 b+树
+* 计算机网络

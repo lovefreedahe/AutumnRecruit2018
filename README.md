@@ -91,7 +91,7 @@
 -- | -- | -- | -- | --
 拼多多 | 学霸批 |  8.3 | [拼多多](https://mp.weixin.qq.com/s?__biz=MzI3MzQzMDEwNw==&mid=2247484279&idx=1&sn=ea88bdbcc4c2a7d063c6f13e2be2041f&chksm=eb222043dc55a955e42b1bbe07a1b7ef1fde0421f3873bd3fae1cfa872c505b6a4afbb59efcc&mpshare=1&scene=23&srcid=0702ucJuM0Mv4pxz5v56dNYL#rd) | <div align="center"><img src="resources/images/pinduoduo.jpg" width="300"></div>
 阿里巴巴 | 内推 | 7.27 | [阿里巴巴](https://www.jianshu.com/p/50ec6fd13e9c?utm_campaign=hugo&utm_medium=reader_share&utm_content=note&utm_source=weixin-timeline&from=timeline&isappinstalled=0) | -- |
-京东 | 提前批 | 8.30 |  | 简历投递地址：liuyumeng3@jd.com | 
+京东 | 提前批 | 随时交简历，如通过筛选会在8月30日前随时发起面试。7月中旬正常校招网申也记得申请哦（campus.jd.com），提前批失败不影响正常校招。 |  | 简历投递地址：liuyumeng3@jd.com | 
 好未来 | 2019校招 |  | [好未来java工程师](http://job.100tal.com/jobxq?jobId=510212779) | |
 ~~Oppo~~ | 2019校招 | | [Oppp职位](http://oppotqp.zhaopin.com/) | 宣讲会：7月12日 华中科技大学 光学与电子信息学院613|
 深信服 | 2019校招 | |[大数据工程师](http://hr.sangfor.com/graduate/graduate_position.html) | |

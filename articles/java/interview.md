@@ -18,6 +18,13 @@
     - [快速失败(fast-failed)和快速安全(fast-safe)](#快速失败fast-failed和快速安全fast-safe)
     - [Comparable和Comparator](#comparable和comparator)
     - [HashMap和HashTable却别](#hashmap和hashtable却别)
+    - [java两种异常](#java两种异常)
+        - [unchecked && checked](#unchecked--checked)
+        - [Exception && Error](#exception--error)
+        - [throw &&throws](#throw-throws)
+        - [处理完异常后Exception对象会怎样？](#处理完异常后exception对象会怎样)
+        - [finally finalize()区别](#finally-finalize区别)
+        - [try-catch-finally-return执行顺序](#try-catch-finally-return执行顺序)
 - [操作系统](#操作系统)
     - [进程和线程的却别](#进程和线程的却别)
     - [死锁](#死锁)
@@ -76,6 +83,11 @@ Eden区满时
 有经验的同学会发现，对永久代的调优过程非常困难，永久代的大小很难确定，其中涉及到太多因素，如类的总数、常量池大小和方法数量等，而且永久代的数据可能会随着每一次Full GC而发生移动。
 而在JDK8中，类的元数据保存在本地内存中，元空间的最大可分配空间就是系统可用内存空间，可以避免永久代的内存溢出问题，不过需要监控内存的消耗情况，一旦发生内存泄漏，会占用大量的本地内存。
 
+* 优势
+    permSize：原来的jar包及你自己项目的class存放的内存空间，这部分空间是固定的，启动参数里面-permSize确定，如果你的jar包很多，经常会遇到permSize溢出，且每个项目都会占用自己的permGen空间改成metaSpaces，各个项目会共享同样的class内存空间，比如两个项目都用了fast-json开源包，在mentaSpaces里面只存一份class，提高内存利用率，且更利于垃圾回收
+<div align="center"><img src="../../resources/images/java/jvm/metaspace.png"></div></br> 
+<div align="center"><img src="../../resources/images/java/jvm/java_heap.png"></div></br> 
+
 ### finalize() 什么时候被调用？作用是什么？
 垃圾回收器(garbage collector)决定回收某对象时，就会运行该对象的finalize()方法 但是在Java中很不幸，如果内存总是充足的，那么垃圾回收可能永远不会进行，也就是说filalize()可能永远不被执行，显然指望它做收尾工作是靠不住的。 那么finalize()究竟是做什么的呢？它最主要的用途是回收特殊渠道申请的内存。Java程序有垃圾回收器，所以一般情况下内存问题不用程序员操心。但有一种JNI(Java Native Interface)调用non-Java程序（C或C++），finalize()的工作就是回收这部分的内存。
 
@@ -103,7 +115,7 @@ Eden区满时
 * ListIterator实现了Iterator接口，并包含其他的功能，比如：增加元素，替换元素，获取前一个和后一个元素的索引，等等。 
 
 ### Enumeration和Iterator
-    Enumeration速度是Iterator的2倍，占用内存更小，但是Iterator比Enumeration更安全，别的线程无法修改Iterator遍历的对象，同时Iterator允许遍历对象修改底层内部的数据，Enumeration不行。
+Enumeration速度是Iterator的2倍，占用内存更小，但是Iterator比Enumeration更安全，别的线程无法修改Iterator遍历的对象，同时Iterator允许遍历对象修改底层内部的数据，Enumeration不行。
 
 ### 快速失败(fast-failed)和快速安全(fast-safe)
 * fail-fast
@@ -139,6 +151,84 @@ Eden区满时
 * HashMap允许key或值为null，HashTable不行
 * HashTable线程安全
 * HashTable实现了对键的列举(Enumeration)
+
+### java两种异常
+#### unchecked && checked
+* 未检查异常(Runtime Exception && )
+运行异常的特点是Java编译器不去检查它，也就是说，当程序中可能出现这类异常时，即使没有用try...catch语句捕获它，也没有用throws字句声明抛出它，还是会编译通过。
+* 受检查异常(Checked Exception)
+除了RuntimeException和Error外，其他异常都属于受检查异常，这种异常的特点是要么用try...catch捕获处理，要么用throws语句声明抛出，否则编译不会通过。
+
+#### Exception && Error
+* 相同点
+    都是继承自Throwable, RuntimeException继承自Exception
+* Exception
+    * Runtime Exception
+    其特点是Java编译器不去检查它，也就是说，当程序中可能出现这类异常时，即使没有用try……catch捕获，也没有用throws抛出，还是会编译通过，如除数为零的ArithmeticException、错误的类型转换、数组越界访问和试图访问空指针等。处理RuntimeException的原则是：如果出现RuntimeException，那么一定是程序员的错误。
+    * Checked Exception
+    Exception类表示程序可以处理的异常，可以捕获且可能恢复。遇到这类异常，应该尽可能处理异常，使程序恢复运行，而不应该随意终止异常。
+* Error
+    __Error类一般是指与虚拟机相关的问题__，如系统崩溃，虚拟机错误，内存空间不足，方法调用栈溢出等。如java.lang.StackOverFlowError和Java.lang.OutOfMemoryError。对于这类错误，Java编译器不去检查他们。对于这类错误的导致的应用程序中断，仅靠程序本身无法恢复和预防，遇到这样的错误，建议让程序终止。
+
+#### throw &&throws
+* throw 是用来抛出任意异常的，你可以抛出任意 Throwable，包括自定义的异常类对象；
+* throws总是出现在一个函数头中，用来标明该成员函数可能抛出的各种异常。如果方法抛出了异常，那么调用这个方法的时候就需要处理这个异常。
+
+#### 处理完异常后Exception对象会怎样？
+在下一次GC的时候被回收掉
+
+#### finally finalize()区别
+* finally和try catch一起，不管是否抛出异常finally都会执行
+* finnalize()
+垃圾回收器(garbage collector)决定回收某对象时，就会运行该对象的finalize()方法 但是在Java中很不幸，如果内存总是充足的，那么垃圾回收可能永远不会进行，也就是说filalize()可能永远不被执行，显然指望它做收尾工作是靠不住的。 那么finalize()究竟是做什么的呢？它最主要的用途是回收特殊渠道申请的内存。Java程序有垃圾回收器，所以一般情况下内存问题不用程序员操心。但有一种JNI(Java Native Interface)调用non-Java程序（C或C++），finalize()的工作就是回收这部分的内存。
+
+#### try-catch-finally-return执行顺序
+1. 不管是否有异常产生，finally块中代码都会执行；
+2. 当try和catch中有return语句时，finally块仍然会执行；
+3. finally是在return后面的表达式运算后执行的，所以函数返回值是在finally执行前确定的。无论finally中的代码怎么样，返回的值都不会改变，仍然是之前return语句中保存的值；
+4. finally中最好不要包含return，否则程序会提前退出，返回值不是try或catch中保存的返回值。
+
+* 情况1：
+    try{} catch(){}finally{} return; 
+    按正常顺序执行。
+
+* 情况2：
+    try{ return; }catch(){} finally{} return; 
+    程序执行try块中return之前（包括return语句中的表达式运算）代码； 
+    再执行finally块，最后执行try中return; 
+    finally块后面的return语句不再执行。
+
+* 情况3：
+    try{ } catch(){return;} finally{} return; 
+    程序先执行try，如果遇到异常执行catch块， 
+    有异常： 
+    则执行catch中return之前（包括return语句中的表达式运算）代码，再执行finally语句中全部代码， 
+    最后执行catch块中return. finally块后面的return语句不再执行。 
+    无异常： 
+    执行完try再finally再执行最后的return语句.
+
+* 情况4：
+    try{ return; }catch(){} finally{return;} 
+    程序执行try块中return之前（包括return语句中的表达式运算）代码； 
+    再执行finally块，因为finally块中有return所以提前退出。
+
+* 情况5：
+    try{} catch(){return;}finally{return;} 
+    程序执行catch块中return之前（包括return语句中的表达式运算）代码； 
+    再执行finally块，因为finally块中有return所以提前退出。
+
+* 情况6：
+    try{ return;}catch(){return;} finally{return;} 
+    程序执行try块中return之前（包括return语句中的表达式运算）代码； 
+    有异常：执行catch块中return之前（包括return语句中的表达式运算）代码； 
+    则再执行finally块，因为finally块中有return所以提前退出。 
+    无异常：则再执行finally块，因为finally块中有return所以提前退出。
+
+* 分析
+    在try语句中，在执行return语句时，要返回的结果已经准备好了，就在此时，程序转到finally执行了。
+    在转去之前，try中先把要返回的结果存放到不同于x的局部变量中去，执行完finally之后，在从中取出返回结果，
+    因此，即使finally中对变量x进行了改变，但是不会影响返回结果。
+    它应该使用栈保存返回值。
 ## 操作系统
 ### 进程和线程的却别
 * 地址空间和其他资源：

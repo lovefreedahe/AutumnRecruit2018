@@ -44,6 +44,8 @@
 
 > [http](articles/network/http.md)
 
+> [基础知识](articles/network/network.md)
+
 ### 2.4 Java
 #### Java基础
 
@@ -152,4 +154,5 @@ Google | 2019校招 | 笔试时间:UTC D轮: 7月29号 E轮: 8月26号 下午1�
 * priority queue
 * 排序算法
 * b树 b+树
-* 计算机网络
+* 计算机网络和面试题目内容
+* 请求网页发生了什么

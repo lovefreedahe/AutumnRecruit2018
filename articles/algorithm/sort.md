@@ -1,4 +1,20 @@
 
+<!-- TOC -->
+
+- [基于比较的排序算法](#基于比较的排序算法)
+    - [选择排序](#选择排序)
+    - [插入排序](#插入排序)
+    - [希尔排序](#希尔排序)
+    - [冒泡排序](#冒泡排序)
+    - [快速排序](#快速排序)
+    - [归并排序](#归并排序)
+    - [堆排序](#堆排序)
+    - [比较](#比较)
+- [基于计算的排序算法(时间复杂度O(n))](#基于计算的排序算法时间复杂度on)
+- [参考](#参考)
+
+<!-- /TOC -->
+
 # 基于比较的排序算法
 ## 选择排序
 * 简介
@@ -28,10 +44,6 @@ i                 j
 0 1 2 3 4 5 6 7| 8 9  选择第九小的数与8位交换
 0 1 2 3 4 5 6 7 8| 9  待排只剩一个数，排序结束
 
-作者：chad_it
-链接：https://www.jianshu.com/p/4dac9c141bd5
-來源：简书
-简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。
 ```
 * 代码
 ```java
@@ -304,6 +316,75 @@ it.
 
 ```
 * 代码
+```java
+public void mergeSort(int[] array) {
+        mergeSort(array, 0, array.length - 1);
+    }
+
+    private void mergeSort(int[] array, int start, int end) {
+        if (start < end) {
+            int middle = (end + start)/2;
+            mergeSort(array, start, middle);
+            mergeSort(array, middle + 1, end);
+            merge(array, start, middle, end);
+        }
+    }
+
+    private void merge(int[] array, int start, int middle, int end) {
+        int length = end - start + 1;
+        int[] temp = new int[length];
+        int i = start;
+        int j = middle + 1;
+        int k = 0;
+
+        while (i <= middle && j <=end) {
+            if (array[i] < array[j]) {
+                temp[k++] = array[i++];
+            } else {
+                temp[k++] = array[j++];
+            }
+        }
+
+        while (i <= middle) {
+            temp[k++] = array[i++];
+        }
+
+        while (j <= end) {
+            temp[k++] = array[j++];
+        }
+
+        for (int x = 0;x < length; ++x) {
+            array[x + start] = temp[x];
+        }
+    }
+```
+## 堆排序
+* 简介
+堆排序与归并排序相似，不同的是堆排序的时间复杂度为O(nlogn)。又与插入排序相似，不同的是堆排序是不稳定的排序算法且具有空间原地址：任何时候都需要常熟个额外的元素空间存储临时数据。因此，堆排序是集合了归并排序和插入排序优点的一种排序算法。
+* 原理
+
+* 时间复杂度
+
+* 过程演示
+
+* 代码
+```java
+```
+
+
+## 比较
+
+名称 | 稳定性 | 比较次数  | 空间复杂度 | 适用场景
+-- | -- | -- | -- | -- | 
+选择排序 | 不稳定 |  n(n-1)/2 | O(1) |
+插入排序 | 稳定 | 最好(n-1), 最差n(n-1)/2 | O(1) | 初始序列大量有序 |
+希尔排序 | 不稳定 | O(n(lgn)2)~O(n2) | 
+冒泡排序 | 稳定 |n(n-1)/2 | O(1) |
+快速排序 | 不稳定 | nlog(n)，最差为n(n-1)/2 | log(n) |
+归并排序 | 稳定 |nlog2(n)/2~nlog2(n)-n+1 |O(n) | 大量数据，外排序 |
+堆排序 | 不稳定 |nlog(n)，和初始顺序关系不大 |O(1) |
+
+<div align="center"><img src="../../resources/images/algorithm/sort.jpg"></div>  
 
 # 基于计算的排序算法(时间复杂度O(n))
 

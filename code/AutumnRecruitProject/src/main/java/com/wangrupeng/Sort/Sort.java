@@ -136,13 +136,52 @@ public class Sort {
         return i + 1;
     }
 
+    public void mergeSort(int[] array) {
+        mergeSort(array, 0, array.length - 1);
+    }
 
+    private void mergeSort(int[] array, int start, int end) {
+        if (start < end) {
+            int middle = (end + start)/2;
+            mergeSort(array, start, middle);
+            mergeSort(array, middle + 1, end);
+            merge(array, start, middle, end);
+        }
+    }
+
+    private void merge(int[] array, int start, int middle, int end) {
+        int length = end - start + 1;
+        int[] temp = new int[length];
+        int i = start;
+        int j = middle + 1;
+        int k = 0;
+
+        while (i <= middle && j <=end) {
+            if (array[i] < array[j]) {
+                temp[k++] = array[i++];
+            } else {
+                temp[k++] = array[j++];
+            }
+        }
+
+        while (i <= middle) {
+            temp[k++] = array[i++];
+        }
+
+        while (j <= end) {
+            temp[k++] = array[j++];
+        }
+
+        for (int x = 0;x < length; ++x) {
+            array[x + start] = temp[x];
+        }
+    }
 
     public static void main(String[] args) {
         Sort sort = new Sort();
         int[] array = {1, 3, 5, 7, 9, 2, 4, 6, 8, 0 };
         //int[] array = {10, 80, 30, 90, 40, 50, 70};
-        sort.quickSort(array);
+        sort.mergeSort(array);
         for (int i : array) {
             System.out.print(i);
             System.out.print(" ");

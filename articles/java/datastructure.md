@@ -17,7 +17,7 @@
     - [B树 B+树](#b树-b树)
     - [二叉树遍历](#二叉树遍历)
 - [链表List](#链表list)
-    - [ArrayList和LinkedList比较](#arraylist和linkedlist比较)
+    - [vector, ArrayList和LinkedList比较](#vector-arraylist和linkedlist比较)
 - [队列(Queue)](#队列queue)
     - [PriorityQueue](#priorityqueue)
 - [堆Set](#堆set)
@@ -223,10 +223,37 @@ __CAS__ 有3个操作数，分别为内存值V、旧的期望值A和新值B。�
     5. 任意一个节点到每个叶节点过程中经过的黑色节点数目都是相同的
 
 ### B树 B+树 
+* B树
+    * B树是为了磁盘或其他存储设备而设计的多叉平衡查找树、与红黑树很相似，但在降低磁盘I/0操作方面要更好一些。许多数据库系统都一般使用B树或者B树的各种变形结构，如下文即将要介绍的B+树，B*树来存储信息。
+    * B树与红黑树最大的不同在于，B树的结点可以有许多子女，从几个到几千个。那为什么又说B树与红黑树很相似呢?因为与红黑树一样，一棵含n个结点的B树的高度也为O（lgn），但可能比一棵红黑树的高度小许多，应为它的分支因子比较大。所以，B树可以在O（logn）时间内，实现各种如插入（insert），删除（delete）等动态集合操作。
+    <div align="center"><img src="../../resources/images/java/datastructure/B-tree.jpg"></div>  
 
+    * 定义
+     B 树又叫平衡多路查找树。一棵m阶的B 树 (注：切勿简单的认为一棵m阶的B树是m叉树，虽然存在四叉树，八叉树，KD树，及vp/R树/R*树/R+树/X树/M树/线段树/希尔伯特R树/优先R树等空间划分树，但与B树完全不等同)的特性如下：
+    <div align="center"><img src="../../resources/images/java/datastructure/b-tree-define.gif"></div>  
 
+    <div align="center"><img src="../../resources/images/java/datastructure/b-tree-node.jpg"></div>  
 
+    * 文件越多，B树比平衡二叉树所用的磁盘IO操作次数将越少，效率也越高
 
+* B+树
+    * 一棵m阶的B+树和m阶的B树的异同点在于：
+      1. 有n棵子树的结点中含有n-1 个关键字；
+      
+      2. 所有的叶子结点中包含了全部关键字的信息，及指向含有这些关键字记录的指针，且叶子结点本身依关键字的大小自小而大的顺序链接。 (而B 树的叶子节点并没有包括全部需要查找的信息)
+
+      3. 所有的非终端结点可以看成是索引部分，结点中仅含有其子树根结点中最大（或最小）关键字。 (而B 树的非终节点也包含需要查找的有效信息)
+        <div align="center"><img src="../../resources/images/java/datastructure/b+tree.jpg"></div>  
+    
+    * 为什么说B+-tree比B 树更适合实际应用中操作系统的文件索引和数据库索引？
+        * B+-tree的磁盘读写代价更低
+            B+-tree的内部结点并没有指向关键字具体信息的指针。因此其内部结点相对B 树更小。如果把所有同一内部结点的关键字存放在同一盘块中，那么盘块所能容纳的关键字数量也越多。一次性读入内存中的需要查找的关键字也就越多。相对来说IO读写次数也就降低了。
+            举个例子，假设磁盘中的一个盘块容纳16bytes，而一个关键字2bytes，一个关键字具体信息指针2bytes。一棵9阶B-tree(一个结点最多8个关键字)的内部结点需要2个盘快。而B+ 树内部结点只需要1个盘快。当需要把内部结点读入内存中的时候，B 树就比B+ 树多一次盘块查找时间(在磁盘中就是盘片旋转的时间)。
+
+        2) B+-tree的查询效率更加稳定
+
+            由于非终结点并不是最终指向文件内容的结点，而只是叶子结点中关键字的索引。所以任何关键字的查找必须走一条从根结点到叶子结点的路。所有关键字查询的路径长度相同，导致每一个数据的查询效率相当。
+* 走进搜索引擎的作者梁斌老师针对B树、B+树给出了他的意见（为了真实性，特引用其原话，未作任何改动）： “B+树还有一个最大的好处，方便扫库，B树必须用中序遍历的方法按序扫库，而B+树直接从叶子结点挨个扫一遍就完了，B+树支持range-query非常方便，而B树不支持。这是数据库选用B+树的最主要原因。
 ### 二叉树遍历
 <div align="center"><img src="../../resources/images/java/datastructure/binarytree.png"></div>  
 
@@ -249,7 +276,7 @@ __CAS__ 有3个操作数，分别为内存值V、旧的期望值A和新值B。�
 
 > “简单不先于复杂，而是在复杂之后.” —— Alan Perlis
 
-### ArrayList和LinkedList比较
+### vector, ArrayList和LinkedList比较
 ArrayList和LinkedList都是实现了List接口的类，他们都是元素的容器，用于存放对象的引用；
 
 他们都可以对存放的元素进行增删改查的操作，还可以进行排序。
@@ -268,6 +295,8 @@ ArrayList和LinkedList都是实现了List接口的类，他们都是元素的容
 LinkedList是采用双向链表实现的。所以它也具有链表的特点，每一个元素（结点）的地址不连续，通过引用找到当前结点的上一个结点和下一个结点，即插入和删除效率较高，只需要常数时间，而get和set则较为低效。
 LinkedList的方法和使用和ArrayList大致相同，由于LinkedList是链表实现的，所以额外提供了在头部和尾部添加/删除元素的方法，也没有ArrayList扩容的问题了。另外，ArrayList和LinkedList都可以实现栈、队列等数据结构，但LinkedList本身实现了队列的接口，所以更推荐用LinkedList来实现队列和栈。
 
+* Vector
+和ArrayList差不多，不过是线程安全的，所以性能差一些。
 
 ## 队列(Queue)
 先进先出

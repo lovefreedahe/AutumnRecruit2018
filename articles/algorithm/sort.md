@@ -195,27 +195,114 @@ O(n^2)。
 0 1 2 3 4 5 6 7 8 9|
 ```
 * 代码
-
+```java
+public void bubbleSort(int[] array) {
+        for (int i = 0;i < array.length; ++i) {
+            for (int j = array.length - 1; j > 0 ;--j) {
+                if (array[j] < array[j - 1]){
+                    swap(array, j, j - 1);
+                }
+            }
+        }
+    }
+```
 ## 快速排序
 * 简介
+在平均状态下，排序n个项目要O(nlogn)次比较。在最坏状况下则需要O(n^2)次比较，但这种状况并不常见。事实上，快速排序通常要明显比其它O(nlogn)算法更快，因为它的内部循环（inner loop）可以在大部分的架构上很有效率的被实现出来，且在大部分真实世界的数据，可以决定设计的选择，减少所需时间的二次方项之可能性。是不稳定的排序算法。
 
 * 原理
 
 * 时间复杂度
-
+O(nlogn)~O(n^2)。
 * 过程演示
+```shell
+arr[] = {10, 80, 30, 90, 40, 50, 70}
+Indexes:  0   1   2   3   4   5   6 
 
+low = 0, high =  6, pivot = arr[h] = 70
+Initialize index of smaller element, i = -1
+
+Traverse elements from j = low to high-1
+j = 0 : Since arr[j] <= pivot, do i++ and swap(arr[i], arr[j])
+i = 0 
+arr[] = {10, 80, 30, 90, 40, 50, 70} // No change as i and j 
+                                     // are same
+
+j = 1 : Since arr[j] > pivot, do nothing
+// No change in i and arr[]
+
+j = 2 : Since arr[j] <= pivot, do i++ and swap(arr[i], arr[j])
+i = 1
+arr[] = {10, 30, 80, 90, 40, 50, 70} // We swap 80 and 30 
+
+j = 3 : Since arr[j] > pivot, do nothing
+// No change in i and arr[]
+
+j = 4 : Since arr[j] <= pivot, do i++ and swap(arr[i], arr[j])
+i = 2
+arr[] = {10, 30, 40, 90, 80, 50, 70} // 80 and 40 Swapped
+j = 5 : Since arr[j] <= pivot, do i++ and swap arr[i] with arr[j] 
+i = 3 
+arr[] = {10, 30, 40, 50, 80, 90, 70} // 90 and 50 Swapped 
+
+We come out of loop because j is now equal to high-1.
+Finally we place pivot at correct position by swapping
+arr[i+1] and arr[high] (or pivot) 
+arr[] = {10, 30, 40, 50, 70, 90, 80} // 80 and 70 Swapped 
+
+Now 70 is at its correct place. All elements smaller than
+70 are before it and all elements greater than 70 are after
+it.
+```
 * 代码
+```java
+    private void quickSort(int[] array, int start, int end) {
+        if (end < start) {
+            return;
+        }
+        int position = partition2(array, start, end);
 
+        quickSort(array, start, position - 1);
+        quickSort(array, position + 1, end);
+    }
+
+    private int partition2(int[] array, int start, int end) {
+        int mark = array[end];
+        int i = start - 1;
+        for (int j = start;j < end;++j) {
+            if (array[j] <= mark) {
+                if (++i == j) {
+                    continue;
+                } else {
+                    swap(array, i, j);
+                }
+            }
+        }
+        swap(array, i + 1, end);
+        return i + 1;
+    }
+```
 ## 归并排序
 * 简介
-
+归并排序是建立在归并操作上的一种有效的排序算法。该算法是采用分治法的一个非常典型的应用。是稳定的排序算法。
 * 原理
+先申请一个空间用于存储排序后的序列，大小为两个已经排序的序列大小之和。在这两个已经排序的序列头部分分别放置指针，比较指针所指元素的大小，较小的（或较大的）复制到刚刚申请的新序列空间，该指针后移，重复比较、复制到新序列尾部、后移指针，直到遍历完其中一个序列，则另一个序列的剩余元素全部原序复制到新序列尾部。
 
 * 时间复杂度
-
+时间复杂度为O(nlogn)，需要O(n)额外空间
 * 过程演示
+```shell
+                        {1 3 5 7 9 2 4 6 8 0}
+第一层递归         {1 3 5 7 9}    |     {2 4 6 8 0}
+第二层递归       {1 3 5} | {7 9}  |   {2 4 6} | {8 0}
+第三层递归     {1 3} |{5}|{7}|{9} |  {2 4}|{6}|{8}|{0}
+第四层递归    {1}|{3}|{5}|{7}|{9} |{2}|{4}|{6}|{8}|{0}
+第一层归并     {1 3} |{5}| {7 9}  |  {2 4}|{6}| {0 8}
+第二层归并       {1 3 5} | {7 9}  |   {2 4 6} | {0 8}
+第三层归并         {1 3 5 7 9}    |     {0 2 4 6 8}
+第四层归并              {0 1 2 3 4 5 6 7 8 9}
 
+```
 * 代码
 
 # 基于计算的排序算法(时间复杂度O(n))

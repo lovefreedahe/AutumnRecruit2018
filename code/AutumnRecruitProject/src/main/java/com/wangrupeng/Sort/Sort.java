@@ -82,19 +82,58 @@ public class Sort {
         if (end < start) {
             return;
         }
-        int mark = array[start];
-        int i = start + 1;
-        int j = end;
-        while (i <= j) {
-            if (array[i] > mark) {
-                ++i;
-            }
-            if (array[j] < mark) {
-                --j;
+        int position = partition2(array, start, end);
+
+        quickSort(array, start, position - 1);
+        quickSort(array, position + 1, end);
+
+
+    }
+
+    int partition(int arr[], int low, int high)
+    {
+        int pivot = arr[high];
+        int i = (low-1); // index of smaller element
+        for (int j=low; j<high; j++) {
+            // If current element is smaller than or
+            // equal to pivot
+            if (arr[j] <= pivot) {
+                //i++;
+                if (++i == j) {
+                    continue;
+                } else {
+                    // swap arr[i] and arr[j]
+                    //swap(arr, i, j);
+                    int temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
             }
         }
 
+        // swap arr[i+1] and arr[high] (or pivot)
+        int temp = arr[i+1];
+        arr[i+1] = arr[high];
+        arr[high] = temp;
 
+        return i+1;
+    }
+
+
+    private int partition2(int[] array, int start, int end) {
+        int mark = array[end];
+        int i = start - 1;
+        for (int j = start;j < end;++j) {
+            if (array[j] <= mark) {
+                if (++i == j) {
+                    continue;
+                } else {
+                    swap(array, i, j);
+                }
+            }
+        }
+        swap(array, i + 1, end);
+        return i + 1;
     }
 
 
@@ -102,7 +141,8 @@ public class Sort {
     public static void main(String[] args) {
         Sort sort = new Sort();
         int[] array = {1, 3, 5, 7, 9, 2, 4, 6, 8, 0 };
-        sort.shellSort(array);
+        //int[] array = {10, 80, 30, 90, 40, 50, 70};
+        sort.quickSort(array);
         for (int i : array) {
             System.out.print(i);
             System.out.print(" ");

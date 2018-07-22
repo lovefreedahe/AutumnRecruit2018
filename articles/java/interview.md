@@ -245,11 +245,6 @@ public class Main {
 ```
 代码1效率比代码2要高，因为代码1会在编译过程中优化为str1 += "lovajava",代码2不会。
 
-
-
-
-
-
 ### Iterator和ListIterator的区别是什么？
 * Iterator可用来遍历Set和List集合，但是ListIterator只能用来遍历List。
 * Iterator对集合只能是前向遍历，ListIterator既可以前向也可以后向。

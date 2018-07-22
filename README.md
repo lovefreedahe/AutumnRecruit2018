@@ -167,4 +167,43 @@ Google | 2019校招 | 笔试时间:UTC D轮: 7月29号 E轮: 8月26号 下午1�
 * ~~Huffman~~
 
 
+```java
+public class Sort {
+
+    public void quickSort(int[] array) {
+        quickSort(array, 0, array.length - 1);
+    }
+
+    public void quickSort(int[] array, int start, int end) {
+        if(end < start) {
+            return;
+        }
+        int position = partition(array, start, end);
+
+        quickSort(array, start, position - 1);
+        quickSort(array, position + 1, end);
+    }
+
+    private int partition(int[] array, int start, int end) {
+        int mark = array[end];
+        int i = start - 1;
+        for(int j = start;j < end;++j) {
+            if(array[j] <= mark) {
+                if(++i == j) {
+                    continue;
+                } else {
+                    int temp = array[j];
+                    array[j] = array[i];
+                    array[i] = temp;
+                }
+            }
+        }
+        
+        array[end] = array[i++];
+        array[i] = mark;
+        return i;
+    }
+}
+```
+
 

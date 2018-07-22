@@ -104,7 +104,8 @@
 唯品会 | 2019秋招 | hadoop平台开发工程师(上海) | [招聘地址](http://campus.vip.com/rec_1.html) | |
 Google | 2019校招 | 笔试时间:UTC D轮: 7月29号 E轮: 8月26号 下午1点-4点| [详细介绍地址](https://mp.weixin.qq.com/s/4jKL7p-cnWmu80esBzIzyg)|  |
 华为 | 2019校招tiqianpi | 截止时间8.10 | [官方地址](http://career.huawei.com/reccampportal/campus4_index.html#campus4/pages/joblist/jobDetail.html?jobId=53176&d=1531799732689&type=2&jobFamClsCode=JFC1) | |
-网易 | 2019校招 | 内推：7.16-8.8 | [官方地址](https://campus.163.com/app/index) | |
+网易 | 2019校招 | 内推：7.16-8.8 | [官方地址](https://campus.163.com/app/index) | 内推码:V3Q1127 | 
+顺丰科技 | 2019校招 | 内推截止时间没说 | [申请地址]() | 内推码(任填一个)：376493,372448,374647|
 
 
 ### 2017年互联网公司秋季招聘时间参考

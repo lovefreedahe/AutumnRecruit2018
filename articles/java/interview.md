@@ -13,6 +13,11 @@
 - [Java基础](#java基础)
     - [接口和抽象类的区别](#接口和抽象类的区别)
     - [sychronized方法和代码块](#sychronized方法和代码块)
+    - [String, StringBuffer, StringBuilder](#string-stringbuffer-stringbuilder)
+        - [String](#string)
+        - [StringBuilder](#stringbuilder)
+        - [StringBuffer](#stringbuffer)
+        - [常见面试题](#常见面试题)
     - [Iterator和ListIterator的区别是什么？](#iterator和listiterator的区别是什么)
     - [Enumeration和Iterator](#enumeration和iterator)
     - [快速失败(fast-failed)和快速安全(fast-safe)](#快速失败fast-failed和快速安全fast-safe)
@@ -120,6 +125,130 @@ Eden区满时
     通过this找到当前对象,将当前对象上锁
 * 同步代码块
     synchronized（object）{代码内容}。可以指定任意一个对象,更加细粒度。
+
+### String, StringBuffer, StringBuilder
+#### String 
+* String类是final类
+* 对String对象的任何改变都不影响到原对象，相关的任何change
+操作都会生成新的对象
+
+#### StringBuilder
+```java
+public class Main {
+         
+    public static void main(String[] args) {
+        String string = "";
+        for(int i=0;i<10000;i++){
+            string += "hello";
+        }
+    }
+}
+```
+对于String += "hello",会将原有的string变量指向的对象内容取出与"hello"作字符串相加操作再存进另一个新的String对象当中，再让string变量指向新生成的对象。
+
+上述代码会生成10000个对象，造成内存浪费。所以JVM会将上述代码优化为以下,只生成一个对象：
+```java
+public class Main {
+         
+    public static void main(String[] args) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=0;i<10000;i++){
+            stringBuilder.append("hello");
+        }
+    }
+}
+```
+#### StringBuffer
+相比较于StringBuilder，加了synchronize 线程安全。
+
+
+#### 常见面试题
+1. 下面这段代码的输出结果是什么？
+    ```java
+    String a = "hello2"; 　　
+    String b = "hello" + 2; 
+    System.out.println((a == b));
+    ```
+    输出结果为：true。原因很简单，"hello"+2在编译期间就已经被优化成"hello2"，因此在运行期间，变量a和变量b指向的是同一个对象。
+
+2. 下面这段代码的输出结果是什么？
+    ```java
+    String a = "hello2"; 　  
+    String b = "hello";       
+    String c = b + 2;       
+    System.out.println((a == c));
+    ```
+    输出结果为:false。由于有符号引用的存在，所以  String c = b + 2;不会在编译期间被优化，不会把b+2当做字面常量来处理的，因此这种方式生成的对象事实上是保存在堆上的。因此a和c指向的并不是同一个对象。
+
+3. 下面这段代码的输出结果是什么？
+    ```java
+    String a = "hello2";   　 
+    final String b = "hello";       
+    String c = b + 2;       
+    System.out.println((a == c));
+    ```
+    输出结果为：true。对于被final修饰的变量，会在class文件常量池中保存一个副本，也就是说不会通过连接而进行访问，对final变量的访问在编译期间都会直接被替代为真实的值。那么String c = b + 2;在编译期间就会被优化成：String c = "hello" + 2
+4. 下面代码运行结果：
+```java
+public class Main {
+    public static void main(String[] args) {
+        String a = "hello2";
+        final String b = getHello();
+        String c = b + 2;
+        System.out.println((a == c));
+    }
+     
+    public static String getHello() {
+        return "hello";
+    }
+}
+```
+输出结果为false。这里面虽然将b用final修饰了，但是由于其赋值是通过方法调用返回的，那么它的值只能在运行期间确定，因此a和c指向的不是同一个对象。
+
+5. 下面代码运行结果
+```java
+public class Main {
+    public static void main(String[] args) {
+        String a = "hello";
+        String b =  new String("hello");
+        String c =  new String("hello");
+        String d = b.intern();
+         
+        System.out.println(a==b);
+        System.out.println(b==c);
+        System.out.println(b==d);
+        System.out.println(a==d);
+    }
+}
+```
+```shell
+false
+false
+false
+true
+```
+这里面涉及到的是String.intern方法的使用。在String类中，intern方法是一个本地方法，在JAVA SE6之前，intern方法会在运行时常量池中查找是否存在内容相同的字符串，如果存在则返回指向该字符串的引用，如果不存在，则会将该字符串入池，并返回一个指向该字符串的引用。因此，a和d指向的是同一个对象。
+
+6. String str = new String("abc")创建了多少个对象？
+有争议，涉及到两个对象"abc"常量和str对象。
+
+7. 下面这段代码1）和2）的区别是什么？
+```java
+public class Main {
+    public static void main(String[] args) {
+        String str1 = "I";
+        //str1 += "love"+"java";        1
+        str1 = str1+"love"+"java";      //2
+         
+    }
+}
+```
+代码1效率比代码2要高，因为代码1会在编译过程中优化为str1 += "lovajava",代码2不会。
+
+
+
+
+
 
 ### Iterator和ListIterator的区别是什么？
 * Iterator可用来遍历Set和List集合，但是ListIterator只能用来遍历List。

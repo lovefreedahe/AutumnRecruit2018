@@ -11,6 +11,7 @@
     - [finalize() 什么时候被调用？作用是什么？](#finalize-什么时候被调用作用是什么)
     - [讲对象置为null，该对象是不是会立即被回收？](#讲对象置为null该对象是不是会立即被回收)
 - [Java基础](#java基础)
+    - [Object protected method 有哪些](#object-protected-method-有哪些)
     - [接口和抽象类的区别](#接口和抽象类的区别)
     - [sychronized方法和代码块](#sychronized方法和代码块)
     - [String, StringBuffer, StringBuilder](#string-stringbuffer-stringbuilder)
@@ -112,6 +113,12 @@ Eden区满时
 不会，在下一个垃圾回收周期中，这个对象将是可被回收的。
 
 ## Java基础
+
+### Object protected method 有哪些
+
+clone()和finalized()
+详情见[java数据结构-Object](datastructure.md#object)
+
 ### 接口和抽象类的区别
 * 接口不能实例化，抽象类可以
 * 一个类可以继承(implements)多个接口，但只能继承(extends)一个类

@@ -86,6 +86,18 @@
 
 ### 2.7 深度学习
 
+1. 卷积特征图大小计算方式
+    * 公式
+    ( input_size + 2*padding - kernel_size ) / stride = output_size
+
+    * 题目
+    输入图片大小为200×200，依次经过一层卷积（kernel size 5×5，padding 1，stride 2），pooling（kernel size 3×3，padding 0，stride 1），又一层卷积（kernel size 3×3，padding 1，stride 1）之后，输出特征图大小为：
+    卷积向下取整，池化向上取整。
+    (200 - 5 + 2 * 1) / 2 + 1 = 99.5~99
+    (99 - 3 + 2 * 0) / 1 + 1 = 97
+    (97 - 3 + 2 * 1) / 1 + 1 = 97
+
+
 ### 2.8 区块链
 
 
@@ -95,7 +107,7 @@
 
 公司 | 招聘类别 | 截止日期 | 投递链接 | 其他 
 -- | -- | -- | -- | --
-拼多多 | 学霸批 |  8.3 | [拼多多](https://mp.weixin.qq.com/s?__biz=MzI3MzQzMDEwNw==&mid=2247484279&idx=1&sn=ea88bdbcc4c2a7d063c6f13e2be2041f&chksm=eb222043dc55a955e42b1bbe07a1b7ef1fde0421f3873bd3fae1cfa872c505b6a4afbb59efcc&mpshare=1&scene=23&srcid=0702ucJuM0Mv4pxz5v56dNYL#rd) | <div align="center"><img src="resources/images/pinduoduo.jpg" width="300"></div>
+拼多多 | 学霸批 |  8.3 | [拼多多](https://mp.weixin.qq.com/s?__biz=MzI3MzQzMDEwNw==&mid=2247484279&idx=1&sn=ea88bdbcc4c2a7d063c6f13e2be2041f&chksm=eb222043dc55a955e42b1bbe07a1b7ef1fde0421f3873bd3fae1cfa872c505b6a4afbb59efcc&mpshare=1&scene=23&srcid=0702ucJuM0Mv4pxz5v56dNYL#rd) | 
 阿里巴巴 | 内推 | 7.27 | [阿里巴巴](https://www.jianshu.com/p/50ec6fd13e9c?utm_campaign=hugo&utm_medium=reader_share&utm_content=note&utm_source=weixin-timeline&from=timeline&isappinstalled=0) | -- |
 京东 | 提前批 | 随时交简历，如通过筛选会在8月30日前随时发起面试。7月中旬正常校招网申也记得申请哦（campus.jd.com），提前批失败不影响正常校招。 |  | 简历投递地址：liuyumeng3@jd.com | 
 好未来 | 2019校招 |  | [好未来java工程师](http://job.100tal.com/jobxq?jobId=510212779) | |

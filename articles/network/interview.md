@@ -335,6 +335,7 @@ UDP报文的字节长度（包括首部和数据）
     * 服务器推送
 * 后来出现了http2.0 ，其和SPDY差不多，不过多了二进制传输的功能。
 11. IP地址子网划分
+
 12. POST和GET区别
 * get参数在url中，post在request body中
 * get参数有长度限制，post没有

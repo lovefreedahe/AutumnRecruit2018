@@ -11,8 +11,14 @@
     - [finalize() 什么时候被调用？作用是什么？](#finalize-什么时候被调用作用是什么)
     - [讲对象置为null，该对象是不是会立即被回收？](#讲对象置为null该对象是不是会立即被回收)
 - [Java基础](#java基础)
+    - [Object protected method 有哪些](#object-protected-method-有哪些)
     - [接口和抽象类的区别](#接口和抽象类的区别)
     - [sychronized方法和代码块](#sychronized方法和代码块)
+    - [String, StringBuffer, StringBuilder](#string-stringbuffer-stringbuilder)
+        - [String](#string)
+        - [StringBuilder](#stringbuilder)
+        - [StringBuffer](#stringbuffer)
+        - [常见面试题](#常见面试题)
     - [Iterator和ListIterator的区别是什么？](#iterator和listiterator的区别是什么)
     - [Enumeration和Iterator](#enumeration和iterator)
     - [快速失败(fast-failed)和快速安全(fast-safe)](#快速失败fast-failed和快速安全fast-safe)
@@ -38,12 +44,24 @@
 ### 能不能自己写个类叫java.lang.System？
 
 * 答案：
-    通常不可以，但可以采取另类方法达到这个需求。 
+    ~~通常不可以，但可以采取另类方法达到这个需求。~~ 
 * 解释：
-    为了不让我们写System类，类加载采用委托机制，这样可以保证爸爸们优先，爸爸们能找到的类，儿子就没有机会加载。而System类是 __Bootstrap__ 加载器加载的，就算自己重写，也总是使用Java系统提供的System，自己写的System类根本没有机会得到加载。
+    ~~为了不让我们写System类，类加载采用委托机制，这样可以保证爸爸们优先，爸爸们能找到的类，儿子就没有机会加载。而System类是 __Bootstrap__ 加载器加载的，就算自己重写，也总是使用Java系统提供的System，自己写的System类根本没有机会得到加载。~~
 * 方法
-    我们可以自己定义一个类加载器来达到这个目的，为了避免双亲委托机制，这个类加载器也必须是特殊的。由于系统自带的三个类加载器都加载特定目录下的类，如果我们自己的类加载器放在一个特殊的目录，那么系统的加载器就无法加载，也就是最终还是由我们自己的加载器加载。
+    ~~我们可以自己定义一个类加载器来达到这个目的，为了避免双亲委托机制，这个类加载器也必须是特殊的。由于系统自带的三个类加载器都加载特定目录下的类，如果我们自己的类加载器放在一个特殊的目录，那么系统的加载器就无法加载，也就是最终还是由我们自己的加载器加载。~~
+
+* 答案：不可以,不能自己写以"java."开头的类，其要么不能加载进内存，要么即使你用自定义的类加载器去强行加载，也会收到一个SecurityException。
+* 解释：
+    类加载器是有层次的，一般是：
+    自定义类加载器 >> 应用程序类加载器(System ClassLoader) >> 扩展类加载器(Extention ClassLoader) >> 启动类加载器(Bootstrap ClassLoader)
+
+    详细介绍请看[JVM](jvm.md#类加载器)
+
+    **双亲委托机制**：如果一个类加载器收到了类加载的请求，它首先不会自己尝试去加载这个类，而是把这个请求委派给父类加载器，每一个层次的类加载器都是加此，因此所有的加载请求最终到达顶层的启动类加载器，只有当父类加载器反馈自己无法完成加载请求时（指它的搜索范围没有找到所需的类），子类加载器才会尝试自己去加载。
     
+
+
+
 ### 什么情况下会产生Minor GC?
 Eden区满时
 ### 什么情况下会产生Full GC?
@@ -96,6 +114,12 @@ Eden区满时
 不会，在下一个垃圾回收周期中，这个对象将是可被回收的。
 
 ## Java基础
+
+### Object protected method 有哪些
+
+clone()和finalized()
+详情见[java数据结构-Object](datastructure.md#object)
+
 ### 接口和抽象类的区别
 * 接口不能实例化，抽象类可以
 * 一个类可以继承(implements)多个接口，但只能继承(extends)一个类
@@ -109,6 +133,125 @@ Eden区满时
     通过this找到当前对象,将当前对象上锁
 * 同步代码块
     synchronized（object）{代码内容}。可以指定任意一个对象,更加细粒度。
+
+### String, StringBuffer, StringBuilder
+#### String 
+* String类是final类
+* 对String对象的任何改变都不影响到原对象，相关的任何change
+操作都会生成新的对象
+
+#### StringBuilder
+```java
+public class Main {
+         
+    public static void main(String[] args) {
+        String string = "";
+        for(int i=0;i<10000;i++){
+            string += "hello";
+        }
+    }
+}
+```
+对于String += "hello",会将原有的string变量指向的对象内容取出与"hello"作字符串相加操作再存进另一个新的String对象当中，再让string变量指向新生成的对象。
+
+上述代码会生成10000个对象，造成内存浪费。所以JVM会将上述代码优化为以下,只生成一个对象：
+```java
+public class Main {
+         
+    public static void main(String[] args) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i=0;i<10000;i++){
+            stringBuilder.append("hello");
+        }
+    }
+}
+```
+#### StringBuffer
+相比较于StringBuilder，加了synchronize 线程安全。
+
+
+#### 常见面试题
+1. 下面这段代码的输出结果是什么？
+    ```java
+    String a = "hello2"; 　　
+    String b = "hello" + 2; 
+    System.out.println((a == b));
+    ```
+    输出结果为：true。原因很简单，"hello"+2在编译期间就已经被优化成"hello2"，因此在运行期间，变量a和变量b指向的是同一个对象。
+
+2. 下面这段代码的输出结果是什么？
+    ```java
+    String a = "hello2"; 　  
+    String b = "hello";       
+    String c = b + 2;       
+    System.out.println((a == c));
+    ```
+    输出结果为:false。由于有符号引用的存在，所以  String c = b + 2;不会在编译期间被优化，不会把b+2当做字面常量来处理的，因此这种方式生成的对象事实上是保存在堆上的。因此a和c指向的并不是同一个对象。
+
+3. 下面这段代码的输出结果是什么？
+    ```java
+    String a = "hello2";   　 
+    final String b = "hello";       
+    String c = b + 2;       
+    System.out.println((a == c));
+    ```
+    输出结果为：true。对于被final修饰的变量，会在class文件常量池中保存一个副本，也就是说不会通过连接而进行访问，对final变量的访问在编译期间都会直接被替代为真实的值。那么String c = b + 2;在编译期间就会被优化成：String c = "hello" + 2
+4. 下面代码运行结果：
+```java
+public class Main {
+    public static void main(String[] args) {
+        String a = "hello2";
+        final String b = getHello();
+        String c = b + 2;
+        System.out.println((a == c));
+    }
+     
+    public static String getHello() {
+        return "hello";
+    }
+}
+```
+输出结果为false。这里面虽然将b用final修饰了，但是由于其赋值是通过方法调用返回的，那么它的值只能在运行期间确定，因此a和c指向的不是同一个对象。
+
+5. 下面代码运行结果
+```java
+public class Main {
+    public static void main(String[] args) {
+        String a = "hello";
+        String b =  new String("hello");
+        String c =  new String("hello");
+        String d = b.intern();
+         
+        System.out.println(a==b);
+        System.out.println(b==c);
+        System.out.println(b==d);
+        System.out.println(a==d);
+    }
+}
+```
+```shell
+false
+false
+false
+true
+```
+这里面涉及到的是String.intern方法的使用。在String类中，intern方法是一个本地方法，在JAVA SE6之前，intern方法会在运行时常量池中查找是否存在内容相同的字符串，如果存在则返回指向该字符串的引用，如果不存在，则会将该字符串入池，并返回一个指向该字符串的引用。因此，a和d指向的是同一个对象。
+
+6. String str = new String("abc")创建了多少个对象？
+有争议，涉及到两个对象"abc"常量和str对象。
+
+7. 下面这段代码1）和2）的区别是什么？
+```java
+public class Main {
+    public static void main(String[] args) {
+        String str1 = "I";
+        //str1 += "love"+"java";        1
+        str1 = str1+"love"+"java";      //2
+         
+    }
+}
+```
+代码1效率比代码2要高，因为代码1会在编译过程中优化为str1 += "lovajava",代码2不会。
 
 ### Iterator和ListIterator的区别是什么？
 * Iterator可用来遍历Set和List集合，但是ListIterator只能用来遍历List。

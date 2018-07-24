@@ -122,3 +122,23 @@
 
 ## 面经汇总
 [【史上最全面经】后台开发岗-java篇](https://www.nowcoder.com/discuss/84004)
+
+## 同学百度面试题目
+* 三次握手和四次挥手
+* storm，kafka，hdfs可靠性
+* hbase hive区别
+* hash map底层
+* 红黑树
+* final
+    * 修饰类
+    不能被继承，成员函数也会被指定为final
+    * 方法
+    不能被继承类修改含义，private默认为final
+    * 变量
+        * 基本类型 
+        不能修改
+        * 引用类型
+        不能改变引用
+* 重写和重载
+* java线程安全
+* linux进程查看

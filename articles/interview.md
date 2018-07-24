@@ -126,6 +126,7 @@
 ## 同学百度面试题目
 * 三次握手和四次挥手
 * storm，kafka，hdfs可靠性
+* rowkey怎么设计
 * hbase hive区别
 * hash map底层
 * 红黑树

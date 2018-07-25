@@ -197,12 +197,14 @@ Google | 2019校招 | 笔试时间:UTC D轮: 7月29号 E轮: 8月26号 下午1�
 2018.7.25
 项目知识点复习
 * 重点
+    * java
     * Storm
     * HBase
-    * Zookeeper
+    * Zookeeper 版本
     * Kafka
     * docker
     * Apache Lucene(倒排索引)
+    * linux
 * 了解
     * websocket
     * FFmpeg

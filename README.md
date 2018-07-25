@@ -65,15 +65,15 @@
 ### 2.5 项目
 #### 分布式
 
-> [Distribution](articles/distribution.md)
+> [Distribution](articles/distribution/distribution.md)
 
-> [Zookeeper](articles/Zookeeper.md)
+> [Zookeeper](articles/distribution/Zookeeper.md)
 
-> [Kafka](articles/Kafka.md)
+> [Kafka](articles/distribution/Kafka.md)
 
-> [Hbase](articles/Hbase.md)
+> [Hbase](articles/distribution/Hbase.md)
 
-> [Storm](articles/storm/Storm.md)
+> [Storm](articles/distribution/storm/Storm.md)
 
 #### 其他
 > [Apache Lucene](articles/lucene.md)

@@ -147,7 +147,7 @@ ZooKeeper采用ACL（Access Control Lists）策略来进行权限控制。ZooKee
 * DELETE: 删除子节点的权限。
 * ADMIN: 设置节点ACL的权限
 
-## ZAB协议
+## ZAB(ZooKeeper Atomic Broadcast)协议
 ### 概览
 ZooKeeper是Chubby的开源实现，而Chubby是Paxos的工程实现，所以很多人以为ZooKeeper也是Paxos算法的工程实现。事实上，ZooKeeper并没有完全采用Paxos算法，而是使用了一种称为ZooKeeper Atomic Broadcast（ZAB，ZooKeeper原子广播协议）的协议作为其数据一致性的核心算法。
 

@@ -70,15 +70,29 @@
 * 抽象类可以被实例化，接口不行
 * 抽象类成员函数可以是abstract也可以不是，接口都是
 * 一个类只能继承一个父类，但是可以继承多个接口
-* **抽象类可以不实现接口中的函数,一般的类不行**
-* **接口中变量为public，抽象类可以为public, protected或者private**
-* **接口变量默认为final，抽象类不是**
+* **抽象类可以不实现接口中的函数,一般的类不行(除了default修饰的函数)**
+* **接口中变量为public static final，抽象类可以为public, protected或者private**
+* jdk1.8之前抽象类方法默认权限为protected，1.8默认为default；
+
+说一下Java中的4中修饰符的访问权限
+访问权限 |  类 |  包 | 子类 | 其他包|
+-- | -- | -- | -- | -- | 
+public  |   ∨ |  ∨ |  ∨ |    ∨|
+protected  |  ∨ |  ∨  | ∨  |   ×|
+default  |  ∨ |  ∨  |  ×  |   ×|
+private  |  ∨ |  ×  |   ×  |   ×|
+
 ### **说说反射的用途及实现**
+* 功能
+    * 运行时确定对象的类
+    * 运行时构建类的对象
+    * 运行时获取类的成员函数
+    * 运行时调用类的函数(甚至是private)
 * 用途
     * 开发通用框架
     可以通过配置文件让框架加载指定的类,调用不同的方法
     * IDE自动补全和提示
-
+* 忽略权限检查，导致安全问题
 * 使用
     * 获得class对象
         * Class.forName("")
@@ -154,6 +168,9 @@
     * 还能有一个null
     * 对象不能重复
     * TreeSet,HashSet(基于HashMap),LinkedHashSet
+        * TreeSet
+        红黑树，元素有序(Comparable和Comparator)
+        
 * Map
     * 是一个接口
     * 保存的是键值对

@@ -194,4 +194,16 @@ Google | 2019校招 | 笔试时间:UTC D轮: 7月29号 E轮: 8月26号 下午1�
 
 * 算法刷题
 
-
+2018.7.25
+项目知识点复习
+* 重点
+    * Storm
+    * HBase
+    * Zookeeper
+    * Kafka
+    * docker
+    * Apache Lucene(倒排索引)
+* 了解
+    * websocket
+    * FFmpeg
+    * python,Clojure

@@ -126,7 +126,7 @@ clone()和finalized()
 * 接口中声明的变量默认为final，抽象类中的可以不是final
 * 接口中的方法都是public，抽象类的方法可以是private, protected或者public
 * 接口中方法都是abstract, 抽象类的可以为abstract也可以不是
-* 抽象类可以在不提供方法实现的情况下实现接口
+* 抽象类可以不实现接口中的方法,留给子类去实现
 
 ### sychronized方法和代码块
 * 同步方法
@@ -296,6 +296,11 @@ Enumeration速度是Iterator的2倍，占用内存更小，但是Iterator比Enum
 * HashTable线程安全
 * HashTable实现了对键的列举(Enumeration)
 
+### java.util.Collection
+<div align="center"><img src="../../resources/images/java/datastructure/collection.png"></div></br> 
+
+<div align="center"><img src="../../resources/images/java/datastructure/map.png"></div></br> 
+
 ### java两种异常
 #### unchecked && checked
 * 未检查异常(Runtime Exception && )
@@ -410,8 +415,5 @@ Enumeration速度是Iterator的2倍，占用内存更小，但是Iterator比Enum
 ### 如何确保N个线程可以访问N个资源同时又不导致死锁？
 使用多线程的时候，一种非常简单的避免死锁的方式就是：指定获取锁的顺序，并强制线程按照指定的顺序获取锁。因此，如果所有的线程都是以同样的顺序加锁和释放锁，就不会出现死锁了。
 
-### java.util.Collection
-<div align="center"><img src="../../resources/images/java/datastructure/collection.png"></div></br> 
 
-<div align="center"><img src="../../resources/images/java/datastructure/map.png"></div></br> 
 

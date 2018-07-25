@@ -12,11 +12,13 @@ public class HashMapTest {
         TreeMap<Integer, String> treeMap = new TreeMap<>();
         ConcurrentHashMap<Integer, String> concurrentHashMap = new ConcurrentHashMap<>();
         Hashtable<Integer, String> hashtable = new Hashtable<>();
+        hashtable.put(12, "");
         String str = "1231";
         System.out.println(str.hashCode() >>> 16);
         int h = hash(str);
         System.out.println(hash(str));
         ArrayList<Integer> test = new ArrayList<>();
+        HashSet<Integer> hashSet = new HashSet<>();
     }
 
     static final int hash(Object key) {

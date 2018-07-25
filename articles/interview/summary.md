@@ -1,3 +1,7 @@
+
+
+
+
 # 简历篇
 ## 请自我介绍
 ## 请介绍项目
@@ -5,30 +9,239 @@
 ## 基本功
 ### 面向对象的特征
 ### final, finally, finalize 的区别
+* final
+    * 修饰类
+    不能被继承，成员函数默认为final
+    * 修饰函数
+    不能被子类修改重写，private函数默认为final
+    * 变量
+    基本类型，值不能被修改；引用对象类型，引用不能改为别的对象的引用，但是值可以被修改。
+* finally
+    和try，catch一起，无论有没有抛出异常都会调用finally的代码块
+* finalize
+    jvm对对象进行回收的时候可以调用，如果在内存充足的情况下，一个对象可能很久都不会被回收，所以一般是为了回收调用非java代码占用的内存，如JNI
 ### int 和 Integer 有什么区别
+* int是基本类型，Integer是封装的对象
+* Integer需要实例化才能使用
+* Integer指向的是new的对象的引用，保存在堆中；int直接存储数据值，放在常量池中。
+* 示例代码
+    ```java
+    public class IntegerTest {
+        public static void main(String[] args) {
+            int a = 10;
+            Integer integer0 = 10;
+            System.out.println(a == integer0); //true
+
+
+            Integer integer1 = 10;
+            System.out.println(integer0 == integer1); //true
+
+            //非new生成的Integer0变量指向的是常量池中的对象，new生成的Integer2指向堆中的对象
+            Integer integer2 = new Integer(2);
+            System.out.println(integer0 == integer2); // false
+
+            //引用不同
+            Integer integer3 = new Integer(3);
+            System.out.println(integer2 == integer3); //false
+            System.out.println(integer2.intValue() == integer3.intValue()); //false
+
+            //自动拆箱会调用valueOf函数，Integer会将-128~127范围的int值进行缓存
+            Integer integer4 = 255;
+            Integer integer5 = 255;
+            System.out.println(integer4 == integer5);
+            integer4 = 124;
+            integer5 = 124;
+            System.out.println(integer4 == integer5);
+        }
+    }
+    ```
 ### 重载和重写的区别
+* 重写
+    子类与父类多态的表现，子类中与父类函数名、参数、返回值都相同的函数，表示对父类该函数的重写，如果需要父类的功能可以使用super调用该函数。
+    * 参数列表和返回值必须完全相同
+    * **访问权限必须大于等于父类的(public>protected>default>private)**
+    * 重写方法不能检查被重写方法更大范围的异常，如父类的成员函数检查IOException，子类重写的函数就不能检查Exception
+* 重载
+    * 类间多态的表现，函数名相同，参数类型或者数量不同，返回值也可以不
+    同。
+    * 权限修饰符可以不痛
+    * 检查异常没有范围限制
 ### 抽象类和接口有什么区别
-### 说说反射的用途及实现
+* 抽象类可以被实例化，接口不行
+* 抽象类成员函数可以是abstract也可以不是，接口都是
+* 一个类只能继承一个父类，但是可以继承多个接口
+* **抽象类可以不实现接口中的函数,一般的类不行**
+* **接口中变量为public，抽象类可以为public, protected或者private**
+* **接口变量默认为final，抽象类不是**
+### **说说反射的用途及实现**
+* 用途
+    * 开发通用框架
+    可以通过配置文件让框架加载指定的类,调用不同的方法
+    * IDE自动补全和提示
+
+* 使用
+    * 获得class对象
+        * Class.forName("")
+        JDBC加载数据库驱动
+        Class.forName(driver);
+        * 直接获取某个类的class
+        Class<?> c1 = int.class;
+        Class<?> c2 = Integer.class;
+        * 调用对象的getClass()方法
+        String str = "";
+        Class<?> strC = str.getClass();
+    * isInstance()
+        ```java
+        public native boolean isInstance(Object obj);
+        ```
+    * 创建对象
+        * 使用反射得到的类
+        ```java
+        Class<?> c  = String.calss;
+        Object str = c.getInstance();
+        ```
+        * 使用构造函数
+        ```java
+        //获取String所对应的Class对象
+        Class<?> c = String.class;
+        //获取String类带一个String参数的构造器
+        Constructor constructor = c.getConstructor(String.class);
+        //根据构造器创建实例
+        Object obj = constructor.newInstance("23333");
+        System.out.println(obj);
+        ```
 ### 说说自定义注解的场景及实现
+
 ### HTTP 请求的 GET 与 POST 方式的区别
+* GET有长度限制，POST没有
+* GET参数放在请求url中，post参数在request body中，所以GET不够安全
+* GET请求一次，header和data一起发送，返回200；post先发送header，收到100后在发送data
 ### session 与 cookie 区别
+* session保存在服务器端，cookie保存在客户端
+* session用来跟踪client的信息, cookie用来保存用户信息
+* 单个cookie一般大小为4kb,单个网站的数量也会有限制
+* cookie安全性一般，可以进行cookie欺骗，所以重要信息放在session中
+* session比较消耗服务器资源，适当使用cookie可以减轻服务器负担
+* session ID保存在cookie中，禁用cookie，session也会失效
+
 ### session 分布式处理
+
 ### JDBC 流程
 ### MVC 设计思想
 ### equals 与 == 的区别
-### 集合
-### List 和 Set 区别
-### List 和 Map 区别
-### Arraylist 与 LinkedList 区别
-### ArrayList 与 Vector 区别
-### HashMap 和 Hashtable 的区别
+* == 
+    * 基本类型，比较值；引用类型，比较引用地址。
+    * 指针操作，比较变量(栈)中保存的其在堆中的地址
+* equals
+    * 比较对象内容。
+    * 所有类继承自java.lang.Object，适用于所有对象
+    * 特性
+        * 自反性
+        * 传递性
+        * 非空性
+        * 一致性
+        * 对称性
+## 集合
+### List,Set 和Map区别
+* List和Set都继承自Collection接口
+* List
+    * 有序
+    * 多个值可以为null
+    * 允许对象重复
+    * ArrayList,LinkedList和Vector
+* Set
+    * 无序,TreeSet通过Comparable和Comparator接口保证元素有序
+    * 还能有一个null
+    * 对象不能重复
+    * TreeSet,HashSet(基于HashMap),LinkedHashSet
+* Map
+    * 是一个接口
+    * 保存的是键值对
+    * HashMap, ConcurrentHashMap,TreeMap
+
+### Arraylist , LinkedList 和Vector区别
+* ArrayList
+    * 数组
+    * 访问快，插入和删除慢
+* LinkedList
+    * 链表
+    * 访问慢，插入和删除快
+* Vector
+    * 线程安全的ArrayList
 ### HashSet 和 HashMap 区别
-### HashMap 和 ConcurrentHashMap 的区别
+* HashSet
+    * 实现Set接口
+    * 通过HashMap的key保存对象
+    * 不允许对象重复，重写hashCode和equals()判断对象是否重复
+    * 根据对象内容计算hashcode，hashcode可能相同
+* HashMap
+    * 实现Map接口
+    * 保存键值对
+    * 不允许key重复
+    * 根据key计算hashcode
+### HashMap , ConcurrentHashMap 和HashTable的区别
+* 三者都继承自Map接口,HashTable继承自Dictionary类
+* HashMap
+    * 数组，链表，红黑树
+    * key，value都可以为null
+    * key不能重复
+    * 线程不安全
+* ConcurrentHashMap
+    * 线程安全的HashMap
+    * 性能优于HashTable
+* HashTable
+    * key和value都不能为null
+    * 在函数体加synchronize，性能比ConcurrentHashMap差
 ### HashMap 的工作原理及代码实现
+
 ### ConcurrentHashMap 的工作原理及代码实现
+
 ## 线程
 ### 创建线程的方式及实现
-### sleep() 、join（）、yield（）有什么区别
+* Runnable接口
+    ```java
+    class ThreadTest implements Runnable {
+
+        @Override
+        public void run() {
+
+        }
+    }
+    Thread thread = new Thread(new ThreadTest);
+    thread.start();
+    ```
+* Callable接口
+    * 相比较于Runnable，run函数有返回值，可以用FutureTast封装
+    ```java
+    class ThreadTest implements Callable<Integer> {
+
+        @Override
+        public Integer call() {
+            return 123;
+        }
+    }
+    FutureTask<Integer> futureTask = new FutureTask<>(new ThreadTest());
+    Thread thread = new Thread(futureTask);
+    thread.start();
+    System.out.println(futureTask.get());
+    ```
+* Thread类
+    ```java
+    Thread thread = new Thread() {
+        @Override
+        public void run() {
+
+        }
+    };
+    thread.start();
+    ```
+### sleep() 、join()、yield()有什么区别
+* sleep()
+当前线程休眠一定的时间，单位毫秒。
+* join()
+在当前线程中执行其他线程的join()，在该线程结束前，当前线程会被挂起，知道该线程运行结束。
+* yield() 
+表示当前线程已经完成生命周期中的重要部分，可以切换到其他线程，是，该函数只是对线程调度器的一个建议，建议具有相同优先级的线程可以运行。
 ### 说说 CountDownLatch 原理
 ### 说说 CyclicBarrier 原理
 ### 说说 Semaphore 原理

@@ -12,7 +12,7 @@
 <!-- /TOC -->
 
 ## 消息的可靠性保障
-Storm 通过 Trident 对保证消息处理提供了不同的 level ，包括 best effort（尽力而为），at least once （至少一次）和exactly once（至少一次）. 这张页面描述如何保证至少处理一次.
+Storm 通过 Trident 对保证消息处理提供了不同的 level ，包括 best effort（尽力而为），at least once （至少一次）和exactly once（恰好一次）. 这张页面描述如何保证至少处理一次.
 
 ## 一条信息被完全处理是什么意思
 一个 tuple 从 spout 流出，可能会导致数以千计的 tuple 被创建.例如，下面 streaming word count的 topology（拓扑）：

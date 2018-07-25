@@ -13,7 +13,7 @@
     - [事务操作](#事务操作)
     - [Watcher](#watcher)
     - [ACL](#acl)
-    - [ZAB协议](#zab协议)
+    - [ZAB(ZooKeeper Atomic Broadcast)协议](#zabzookeeper-atomic-broadcast协议)
         - [概览](#概览)
         - [ZAB协议介绍](#zab协议介绍)
     - [Zookeeper典型应用场景](#zookeeper典型应用场景)
@@ -149,7 +149,7 @@ ZooKeeper采用ACL（Access Control Lists）策略来进行权限控制。ZooKee
 
 ## ZAB(ZooKeeper Atomic Broadcast)协议
 ### 概览
-ZooKeeper是Chubby的开源实现，而Chubby是Paxos的工程实现，所以很多人以为ZooKeeper也是Paxos算法的工程实现。事实上，ZooKeeper并没有完全采用Paxos算法，而是使用了一种称为ZooKeeper Atomic Broadcast（ZAB，ZooKeeper原子广播协议）的协议作为其数据一致性的核心算法。
+ZooKeeper是Google Chubby的开源实现，而Chubby是Paxos的工程实现，所以很多人以为ZooKeeper也是Paxos算法的工程实现。事实上，ZooKeeper并没有完全采用Paxos算法，而是使用了一种称为**ZooKeeper Atomic Broadcast**（ZAB，ZooKeeper原子广播协议）的协议作为其数据一致性的核心算法。
 
 ZAB协议并不像Paxos算法和Raft协议一样，是通用的分布式一致性算法，它是一种特别为ZooKeeper设计的崩溃可恢复的原子广播算法。
 

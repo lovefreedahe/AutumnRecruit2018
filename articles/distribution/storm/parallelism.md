@@ -19,7 +19,7 @@ Storm 区分以下 3 个主要的实体, 它们在 Storm 集群中用于实际�
 * Tasks
 
 这是一个简单的例子, 以说明他们之间的关系
-<div align="center"><img src="../../resources/images/storm/relationships-worker-processes-executors-tasks.png"></div>
+<div align="center"><img src="../../../resources/images/storm/relationships-worker-processes-executors-tasks.png"></div>
 
 一个 worker 进程 执行一个 topology（拓扑）的子集. 一个 worker 进程属于一个指定 topology（拓扑）, 并且针对该 topology 的一个或多个组件（spouts 或 bolts）来说会运行一个或更多的 executors（执行器）. 一个正在运行的 topology 由许多这样的进程组成, 它们运行在 Storm 集群的多个机器上.
 
@@ -60,7 +60,7 @@ topologyBuilder.setBolt("green-bolt", new GreenBolt(), 2)
 
 ## 运行 topology 的示例
 下图显示了简单的 topology（拓扑）是如何运行的. 该 topology 由 3 个 components（组件）构成: 一个名为 BlueSpout 的 spout 和两个名为 GreenBolt 和 YellowBolt 的 bolts. 该组件链接, 使得 BlueSpout 将其输出发送到 GreenBolt, 它们将自己的输出发送到 YellowBolt.
-<div align="center"><img src="../../resources/images/storm/example-of-a-running-topology.png"></div>
+<div align="center"><img src="../../../resources/images/storm/example-of-a-running-topology.png"></div>
 该 GreenBolt 按照上面的代码片段进行配置, 而 BlueSpout 和 YellowBolt 只设置了 parallelism hint（执行器数量）. 以下是相关代码:
 ```java
 Config conf = new Config();

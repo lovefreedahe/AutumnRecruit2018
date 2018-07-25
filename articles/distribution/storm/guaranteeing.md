@@ -26,7 +26,7 @@ builder.setBolt("count", new WordCount(), 20)
 ```
 
 这个topology从 Kestrel queue 读取一行行的句子, 将句子按照空格分割成一个个的单词，然后再发送之前计算的单词数量. 从 Spout 中流出的一个tuple 会触发创建许多 tuples: 一个tuple 对应句子的中 word，一个tuple对应每个 word 的 count。消息树像下面这样：
-<div align="center"><img src="../../resources/images/storm/tuple_tree.png"></div>
+<div align="center"><img src="../../../resources/images/storm/tuple_tree.png"></div>
 
 当tuple tree 用完后且每个在 tree中的消息都被处理后，Storm 就认为从 spout 流出的 tuple 被完全处理了.
 
@@ -93,7 +93,7 @@ anchors.add(tuple2);
 _collector.emit(anchors, new Values(1, 2, 3));
 ```
 Multi-anchoring 会添加 output tuple 到 multiple tuple trees.这就可能会破坏树形结构，创建了tuple DAGs，像这样：
-<div align="center"><img src="../../resources/images/storm/tuple-dag.png"></div>
+<div align="center"><img src="../../../resources/images/storm/tuple-dag.png"></div>
 
 Storm 的实现适用于DAG和树（pre-release 只适用于trees,称为“tuple tree”）
 
@@ -133,7 +133,7 @@ Storm 对于 Spout 的 tuple 都有一组特殊的 acker 任务用来跟踪 DAG 
 spout 中的每个 tuple 都知道他们id，并存在于 tuple tree中.当你发送一个新的 tuple 到bolt 的时候，来自于 tuple anchors（锚点）的spout tuple ids会被复制到新的 tuple.当一个tuple被ack后，就会发送一条消息到 acker tasks，告知 tuple tree应该如何改变. 实际上，告诉acker的是“我已经完成了tree中的这个 spout tuple ，这里是 tree中 anchored（锚定） 我的 tuples”。
 
 例如， tuples D和E是基于 tuple C创建的，下面是当 tuple C 被acked后，tree是如何改变的.
-<div align="center"><img src="../../resources/images/storm/ack_tree.png"></div>
+<div align="center"><img src="../../../resources/images/storm/ack_tree.png"></div>
 
 由于 tuple C 从 tree中移除的同时， tuple "D"和"E"都加入到tree中，所以 tree 永远不可能完成.
 

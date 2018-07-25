@@ -23,7 +23,7 @@ DRPCClient client = new DRPCClient("drpc-host", 3772);
 String result = client.execute("reach", "http://twitter.com");
 ```
 Distributed RPC 工作流如下：
-<div align="center"><img src="../../resources/images/storm/drpc-workflow.png"></div>
+<div align="center"><img src="../../../resources/images/storm/drpc-workflow.png"></div>
 客户端发送要调用的函数名称和函数所需参数到 DRPC server。实现该函数的 topology（拓扑）使用一个 DRPCSpout 从 DRPC server 接收一个 function invocation stream （函数调用流）。DRPC sever 每一个函数调用都会给予一个唯一性的 id ， topology（拓扑）计算完结果，使用一个叫做 ReturnResults 的 bolt 连接到DRPC server，根据函数调用的 id 将结果返回。 DRPC sever 使用 id 来匹配client等待的是哪个结果，unblock 等待的client，将结果返回。
 
 ## LinearDRPCTopologyBuilder

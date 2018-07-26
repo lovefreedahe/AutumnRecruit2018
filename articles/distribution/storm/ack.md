@@ -17,6 +17,7 @@ ack机制即， spout发送的每一条消息，
 
 通过conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, pending);设置spout pending数。
 <div align="center"><img src="../../../resources/images/storm/acker_1.png"></div>
+
 # Ack机制原理
 ## 异或
 ```java

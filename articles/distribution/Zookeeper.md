@@ -16,6 +16,7 @@
     - [ZAB(ZooKeeper Atomic Broadcast)协议](#zabzookeeper-atomic-broadcast协议)
         - [概览](#概览)
         - [ZAB协议介绍](#zab协议介绍)
+        - [leader选举过程](#leader选举过程)
     - [Zookeeper典型应用场景](#zookeeper典型应用场景)
         - [数据发布与订阅（配置中心）](#数据发布与订阅配置中心)
         - [命名服务（Naming Service）](#命名服务naming-service)
@@ -29,6 +30,8 @@
                 - [获得锁](#获得锁)
                 - [释放锁](#释放锁)
             - [共享锁](#共享锁)
+    - [Zookeeper在Kafka中的应用](#zookeeper在kafka中的应用)
+        - [Controller选举](#controller选举)
     - [ZooKeeper在HBase中的应用](#zookeeper在hbase中的应用)
         - [HMaster选举与主备切换](#hmaster选举与主备切换)
         - [系统容错](#系统容错)
@@ -171,6 +174,18 @@ ZAB协议包括两种基本的模式，分别是崩溃恢复和消息广播。�
 
 当集群中有过半的Follower服务器完成了和Leader服务器的状态同步，那么整个集群就可以进入消息广播模式了。
 
+### leader选举过程
+leader选举有两种情况
+* 集群刚启动的时候
+* 当前的leader宕机
+
+选举过程：
+* 每个server发起一个自己的投票，内容为(myid,ZXID)
+* 一台server每收到一个投票，就先和当前选票的ZXID比较，如果收到的投票ZXID比当前的大，则更新选票，如果相等再比较myid
+* 统计投票，每次投票后，服务器都会统计投票信息，如果某台server的选票超过集群机器总量的半数，则确定这台server为leader
+
+
+
 ## Zookeeper典型应用场景
 ZooKeeper是一个高可用的分布式数据管理与协调框架。基于对ZAB算法的实现，该框架能够很好地保证分布式环境中数据的一致性。也是基于这样的特性，使得ZooKeeper成为了解决分布式一致性问题的利器。
 
@@ -254,6 +269,11 @@ ZooKeeper上的一个ZNode可以表示一个锁。例如/exclusive_lock/lock节�
 > 共享锁（Shared Locks，简称S锁），又称为读锁。如果事务T1对数据对象O1加上了共享锁，那么T1只能对O1进行读操作，其他事务也能同时对O1加共享锁（不能是排他锁），直到O1上的所有共享锁都释放后O1才能被加排他锁。
 
 总结：可以多个事务同时获得一个对象的共享锁（同时读），有共享锁就不能再加排他锁（因为排他锁是写锁）
+
+## Zookeeper在Kafka中的应用
+### Controller选举
+* 在刚开始的时候，在zkd上建立一个临时节点/controller，创建成功的broker作为controller,其他broker会监听这个节点
+* 如果当前controller挂了，其他broker监听到这个消息，则争相创建此节点，创建成功的broker为新的controller
 
 ## ZooKeeper在HBase中的应用
 

@@ -138,7 +138,18 @@
     * storm 
     ack机制
     * kafka
-    保存在磁盘上
+        * 存储方面
+            * Replication(副本)机制。每个partition有多个副本(replica),他们统称为Assigned Replicas(AR), 其中可以提供服务的脚ISR(in-sync replicas),其余的叫OSR(out-sync replica),在ISR中包含一个leader和多个follower，他们对当前partition进行备份。leader最先收到producer的消息，然后同步给其他replica，并写到日志里。每个副本都保存着当前消息存储的状态，如HW(high watermark)，LEO(log end offset)。LEO为当前replica最新保存到日志的消息位置，HW为所有replica的LEO的最小值，consumer最多能消费HW位置。
+            
+            * 当leader宕机后，controller会重新选举leader，由于consumer最多消费到HW位置，所以数据不会丢失。一般会选举LEO最高的replica为新leader，然后把数据同步到其他follower。
+        * 传输方面
+            * 可靠性配置
+                producer配置request.required.acks
+                * 1 只要leader确认就收到就发送下一条数据
+                * 0 不需要确认
+                * -1 只有等ISR中全部replia都确认才发送(当ISR只有一个replica的时候不能保证数据不会丢失)
+            * at least once
+                如果一条消息被commit后，由于replication机制，就不会丢失，如果网络中断，会进行retry，所以有可能消息会重复。
     * hdfs
 
 * rowkey怎么设计

@@ -140,6 +140,7 @@ ACID(关系型数据库采纳的原则) 要求强一致性，通常运用在传�
 
 如下图，Acceptor X 在收到 [n=2, v=8] 的提议请求时，由于之前没有接收过提议，因此就发送一个 [no previous] 的提议响应，设置当前接收到的提议为 [n=2, v=8]，并且保证以后不会再接受序号小于 2 的提议。其它的 Acceptor 类似。
 <div align="center"><img src="../../resources/images/distribution/Paxos_3.jpg"></div>
+
 ### 第三步
 如果 Acceptor 接收到一个提议请求，包含的提议为 [n2, v2]，并且之前已经接收过提议 [n1, v1]。如果 n1 > n2，那么就丢弃该提议请求；否则，发送提议响应，该提议响应包含之前已经接收过的提议 [n1, v1]，设置当前接收到的提议为 [n2, v2]，并且保证以后不会再接受序号小于 n2 的提议。
 
@@ -188,6 +189,7 @@ Raft主要用来竞选主节点。
 
 * 之后Leader(Node A)会周期性的发送心跳包给Follower(B && C)， Follower收到心跳包会重新开始计时。
 <div align="center"><img src="../../resources/images/distribution/raft_4.gif" width="600"></div>
+
 ## 多个Candidate竞选
 * 如果有多个Follower成为Candidate， 并且获得的投票数相同，那么就要重新开始投票，例如下图中Candidate B和Candidate D都获得两票，因此需要重新开始投票。
 <div align="center"><img src="../../resources/images/distribution/raft_5.gif" width="600"></div>  

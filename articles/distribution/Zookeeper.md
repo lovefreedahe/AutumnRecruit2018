@@ -17,6 +17,7 @@
         - [概览](#概览)
         - [ZAB协议介绍](#zab协议介绍)
         - [leader选举过程](#leader选举过程)
+        - [Leader选举算法分析](#leader选举算法分析)
     - [Zookeeper典型应用场景](#zookeeper典型应用场景)
         - [数据发布与订阅（配置中心）](#数据发布与订阅配置中心)
         - [命名服务（Naming Service）](#命名服务naming-service)
@@ -38,6 +39,7 @@
         - [RootRegion管理](#rootregion管理)
         - [Region管理](#region管理)
         - [分布式SplitWAL任务管理](#分布式splitwal任务管理)
+- [Zookeeper 常见面试题](#zookeeper-常见面试题)
 - [参考](#参考)
 
 <!-- /TOC -->
@@ -184,6 +186,45 @@ leader选举有两种情况
 * 一台server每收到一个投票，就先和当前选票的ZXID比较，如果收到的投票ZXID比当前的大，则更新选票，如果相等再比较myid
 * 统计投票，每次投票后，服务器都会统计投票信息，如果某台server的选票超过集群机器总量的半数，则确定这台server为leader
 
+### Leader选举算法分析
+在3.4.0后的Zookeeper的版本只保留了TCP版本的FastLeaderElection选举算法。当一台机器进入Leader选举时，当前集群可能会处于以下两种状态
+
+* 集群中已经存在Leader。
+* 集群中不存在Leader。
+
+对于集群中已经存在Leader而言，此种情况一般都是某台机器启动得较晚，在其启动之前，集群已经在正常工作，对这种情况，该机器试图去选举Leader时，会被告知当前服务器的Leader信息，对于该机器而言，仅仅需要和Leader机器建立起连接，并进行状态同步即可。而在集群中不存在Leader情况下则会相对复杂，其步骤如下
+1. 第一次投票。
+无论哪种导致进行Leader选举，集群的所有机器都处于试图选举出一个Leader的状态，即LOOKING状态，LOOKING机器会向所有其他机器发送消息，该消息称为投票。投票中包含了SID（服务器的唯一标识）和ZXID（事务ID），(SID, ZXID)形式来标识一次投票信息。假定Zookeeper由5台机器组成，SID分别为1、2、3、4、5，ZXID分别为9、9、9、8、8，并且此时SID为2的机器是Leader机器，某一时刻，1、2所在机器出现故障，因此集群开始进行Leader选举。在第一次投票时，每台机器都会将自己作为投票对象，于是SID为3、4、5的机器投票情况分别为(3, 9)，(4, 8)， (5, 8)。
+2. 变更投票。
+    每台机器发出投票后，也会收到其他机器的投票，每台机器会根据一定规则来处理收到的其他机器的投票，并以此来决定是否需要变更自己的投票，这个规则也是整个Leader选举算法的核心所在，其中术语描述如下
+
+    * vote_sid：接收到的投票中所推举Leader服务器的SID。
+    
+    * vote_zxid：接收到的投票中所推举Leader服务器的ZXID。
+
+    * self_sid：当前服务器自己的SID。
+
+    * self_zxid：当前服务器自己的ZXID。
+
+    每次对收到的投票的处理，都是对(vote_sid, vote_zxid)和(self_sid, self_zxid)对比的过程。
+
+    * 规则一：如果vote_zxid大于self_zxid，就认可当前收到的投票，并再次将该投票发送出去。
+
+    * 规则二：如果vote_zxid小于self_zxid，那么坚持自己的投票，不做任何变更。
+
+    * 规则三：如果vote_zxid等于self_zxid，那么就对比两者的SID，如果vote_sid大于self_sid，那么就认可当前收到的投票，并再次将该投票发送出去。
+
+    * 规则四：如果vote_zxid等于self_zxid，并且vote_sid小于self_sid，那么坚持自己的投票，不做任何变更。
+
+　　结合上面规则，给出下面的集群变更过程。
+
+<div align="center"><img src="../../resources/images/zookeeper/fast_leader_election.png" ></div>
+
+3. 确定leader
+经过第二轮投票后，集群中的每台机器都会再次接收到其他机器的投票，然后开始统计投票，如果一台机器收到了超过半数的相同投票，那么这个投票对应的SID机器即为Leader。此时Server3将成为Leader。
+
+由上面规则可知，通常那台服务器上的数据越新（ZXID会越大），其成为Leader的可能性越大，也就越能够保证数据的恢复。如果ZXID相同，则SID越大机会越大。
+
 
 
 ## Zookeeper典型应用场景
@@ -309,9 +350,53 @@ HBase里的Region会经常发生变更，这些变更的原因来自于系统故
 由于单个RegionServer的日志量相对庞大（可能有上千个Region，上GB的日志），而用户又往往希望系统能够快速完成日志的恢复工作。因此一个可行的方案是将这个处理WAL的任务分给多台RegionServer服务器来共同处理，而这就又需要一个持久化组件来辅助HMaster完成任务的分配。当前的做法是，HMaster会在ZooKeeper上创建一个SplitWAL节点（默认情况下，是/hbase/SplitWAL节点），将"哪个RegionServer处理哪个Region"这样的信息以列表的形式存放到该节点上，然后由各个RegionServer服务器自行到该节点上去领取任务并在任务执行成功或失败后再更新该节点的信息，以通知HMaster继续进行后面的步骤。ZooKeeper在这里担负起了分布式集群中相互通知和信息持久化的角色。
 
 
+# Zookeeper 常见面试题
 
+* zookeeper是什么
+分布式的、开源的分布式应用程序协调服务，原本是Hadoop、HBase的一个重要组件。它为分布式应用提供一致性服务的软件，包括：配置维护、域名服务、分布式同步、组服务等。
 
+* zookeeper是如何保证事务的一致性的
+zookeeper采用了递增的事务Id来标识，所有的proposal都在被提出的时候加上了zxid，zxid实际上是一个64位的数字，高32位是epoch用来标识leader是否发生改变，如果有新的leader产生出来，epoch会自增，低32位用来递增计数。当新产生proposal的时候，会依据数据库的两阶段过程，首先会向其他的server发出事务执行请求，如果超过半数的机器都能执行并且能够成功，那么就会开始执行
+
+* Paxos算法& Zookeeper使用协议
+    相同点:
+    * 一个Leader协调N个Follower
+    * Leader需要等待超过半数的Follower做出正确反馈后才能进行提案
+    不同点:
+    * ZAB用来构建高可用的分布式数据主备系统（Zookeeper），Paxos是用来构建分布式一致性状态机系统。
+    * 
+
+* leader选举过程
+
+* znode类型
+    * 持久化目录节点
+    创建之后一直存在，除非有删除操作，创建节点的客户端会话失效也不影响此节点。
+    * 持久化顺序编号目录节点
+    跟持久一样，就是父节点在创建下一级子节点的时候，记录每个子节点创建的先后顺序，会给每个子节点名加上一个数字后缀。
+    * 临时节点
+    创建客户端会话失效（注意是会话失效，不是连接断了），节点也就没了。不能建子节点。**不能创建子节点。**
+    * 临时顺序编号节点
+
+* Zookeeper对节点的watch监听通知是永久的吗？
+zk不保证性能，所以不能是永久的。
+client会对某个node建立watcher事件,当这些znode发生变化是，会通知client,然后client会做出相应的策略。
+官方声明：一个Watch事件是一个**一次性**的触发器，当被设置了Watch的数据发生了改变的时候，则服务器将这个改变发送给设置了Watch的客户端，以便通知它们。
+
+* zk的配置管理
+程序分布式的部署在不同的机器上，将程序的配置信息放在zk的znode下，当有配置发生改变时，也就是znode发生变化时，可以通过改变zk中某个目录节点的内容，利用water通知给各个客户端 从而更改配置。
+
+* zk命名服务
+命名服务是指通过指定的名字来获取资源或者服务的地址，利用zk创建一个全局的路径，这个路径就可以作为一个名字，指向集群中的集群，提供的服务的地址，或者一个远程的对象等等。
+
+* 一个客户端修改了某个节点的数据，其它客户端能够马上获取到这个最新数据吗
+如果需要，调用sync()
+
+* 临时节点什么时候被删除？
+连接断了之后，ZK不会马上移除临时数据，只有当**SESSIONEXPIRED**之后，才会把这个会话建立的临时数据移除。因此，用户需要谨慎设置**Session_TimeOut**
 
 
 # 参考
 * [ZooKeeper原理与应用](https://www.jianshu.com/p/84ad63127cd1)
+* [raft对比ZAB](https://blog.csdn.net/weixin_36145588/article/details/78477159?locationNum=10&fps=1)
+* [【分布式】Zookeeper的Leader选举](http://www.cnblogs.com/leesf456/p/6107600.html)
+* [zk面试专题](https://blog.csdn.net/qq_29842085/article/details/79443128)

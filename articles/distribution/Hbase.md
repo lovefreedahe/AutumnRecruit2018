@@ -19,6 +19,7 @@
         - [RowKey散列原则](#rowkey散列原则)
         - [RowKey唯一原则](#rowkey唯一原则)
         - [什么是热点](#什么是热点)
+- [HBase面试](#hbase面试)
 - [参考书籍](#参考书籍)
 
 <!-- /TOC -->
@@ -191,7 +192,49 @@ HBase中的行是按照rowkey的字典顺序排序的，这种设计优化了sca
 
 * 冗长的属性名虽然可读性好，但是更短的属性名存储在HBase中会更好
 
- 
+
+# HBase面试
+* HBase特点是什么
+    * 分布式列式存储的数据库，数据存储在HDFS中，依靠Zookeeper进行管理
+    * 适合存储半结构化或非结构化数据,小文件数据
+    * cell不存储null值
+    * 表中包含rowkey，时间戳和列族，可以保存数据的历史版本
+    * 主从架构，HMater是主节点，HRegionServer是从节点
+* HBase的Rowkey设计原则
+    * 唯一性原则
+    * 长度原则
+        建议16个字节
+        * 如果太长会占用更多HFile和Memstore空间，影响查询效率。
+        * 64位系统，内存8字节对其，更好地发挥系统性能
+    * 散列原则
+        如果需要时间戳，需要放在rowkey的后面，前面加入散列值，防止出现热点问题，影响写入和查询效率。
+* scan和get的功能以及实现的异同
+    * get
+    获取指定行的记录
+    * scan
+        1. 设置缓存，以空间换时间
+        2. start row和end row范围扫描
+        3. setFilter
+* scan对象的setCache和setBatch方法的使用
+    * setCache
+    每次rpc请求的次数，
+    * setCache
+    每次的column size，有些row特别大，所以要分批发给client
+
+* 如何解决region设置太大或太小带来的冲突
+
+* 以start.sh为起点，Hbase启动的流程是什么
+
+* 每天百亿数据，如何保证数据的存储正确和在规定的时间里全部录入完毕，不残留数据
+    要求
+    * 百亿数据：证明数据量非常大
+    * 存入HBase：证明是跟HBase的写入数据有关
+    * 保证数据的正确：要设计正确的数据结构保证正确性
+    * 在规定时间内完成：对存入速度是有要求的
+    分析
+    * Bulkload(直接生成HFile)
+    * rowkey设计
+
 
 # 参考书籍  
 * 《HBase权威指南》  

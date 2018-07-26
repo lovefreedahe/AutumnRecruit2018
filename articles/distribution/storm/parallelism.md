@@ -25,7 +25,7 @@ Storm 区分以下 3 个主要的实体, 它们在 Storm 集群中用于实际�
 
 一个 executor（执行器） 是一个线程, 它是由 worker 进程产生的. 它可能针对相同的组件（spout 或 blot）运行一个或多个 tasks（任务）.
 
-一个 task 执行实际的数据处理 - 在您代码中实现的每个 spout 或 bolt 在整个集群上都执行了许多的 taskk（任务）. 组件的 task（任务）数量在 topology（拓扑）的整个生命周期中总是相同的, 但组件的 executors（线程）数量可能会随时间而变化. 这意味着以下条件成立: #threads ≤ #tasks. 默认情况下, 默认情况下，tasks（任务）数量与 executors（执行器）设置成一样, 例如. Storm 在每个线程上运行一个 task（任务）.
+一个 task 执行实际的数据处理 - 在您代码中实现的每个 spout 或 bolt 在整个集群上都执行了许多的 task（任务）. 组件的 task（任务）数量在 topology（拓扑）的整个生命周期中总是相同的, 但组件的 executors（线程）数量可能会随时间而变化. 这意味着以下条件成立: #threads ≤ #tasks. 默认情况下, 默认情况下，tasks（任务）数量与 executors（执行器）设置成一样, 例如. Storm 在每个线程上运行一个 task（任务）.
 
 ## 配置 topology 的 parallelism（并行度）
 请注意, 在 Storm 的术语中, "parallelism（并行度）" 特别用于描述所谓的 parallelism hint, 它表示组件的 executor（线程）的初始化数量. 在本文档中, 虽然我们在一般意义上使用术语 "parallelism（并行度）" 来描述如何配置的不仅只有 executor（执行器）的数量, 还可以配置 worker 进程的数量以及 Storm topology 的 tasks（任务）数量. We will specifically call out when "parallelism" is used in the normal, narrow definition of Storm.

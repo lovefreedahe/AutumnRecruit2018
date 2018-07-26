@@ -47,11 +47,11 @@
 HBase最基本的单位是列(column)。一列或多列形成一行(row)，并由唯一的行键(row key)来确定存储。反过来，一个表(table)中有若干行，其中每列有**多个版本**，在每一个单元格(cell)中存储了不同的值。  
 所有行键按照**字典序**进行排序存储
 
-<div align="center"><img  src="../resources/images/hbase/hbase_row_column.jpg" width="600"></div>
+<div align="center"><img  src="../../resources/images/hbase/hbase_row_column.jpg" width="600"></div>
 
 以下两图表示单元格被写入的时间戳tn可视化了时间组件，圣墟显示了这些值被插入的不同时间。
-<div align="center"><img src="../resources/images/hbase/httpatomoreillycomsourceoreillyimages889236.png" width="600"></div>
-<div align="center"><img src="../resources/images/hbase/httpatomoreillycomsourceoreillyimages889238.png" width="600"></div>
+<div align="center"><img src="../../resources/images/hbase/httpatomoreillycomsourceoreillyimages889236.png" width="600"></div>
+<div align="center"><img src="../../resources/images/hbase/httpatomoreillycomsourceoreillyimages889238.png" width="600"></div>
 
 
 ## 自动分区
@@ -59,7 +59,7 @@ HBase扩展和负载均衡的基本单元成为**region**，region本质上是�
 连续存储的区间。如果region太大，系统会把他们进行拆分，相反的，就把多个region进行合并，以减少存储文件数量。  
 一张表初始的时候只有一个region，用户开始向表中插入数据时，系统会检查这个region的大小，确保其不超过配置的最大值。如果超过了这个限制，系统会在中间键(middle key)处将这个region拆分成两个大致相等的子region。  
 每一个region只能有一个服务器加载，每一台服务器可以加载多个region。如下图：   
-<div align="center"><img src="../resources/images/hbase/httpatomoreillycomsourceoreillyimages889240.png" width="600"></div>
+<div align="center"><img src="../../resources/images/hbase/httpatomoreillycomsourceoreillyimages889240.png" width="600"></div>
 
 ## 存储
 * 数据存储在存储文件(store file)中，成为HFile，HFile中存储的是经过排序的键值映射结构。文件内部有连续的块组成，块的索引信息存储在文件尾部。当打开HFile并加载到内存中时，索引信息会优先加载到内存中，每个块默认大小是64K，可以配置。  
@@ -77,12 +77,12 @@ minor是将多个HFile合并为一个HFile，只是一个多路归并的过程�
 * major压缩合并(majar compaction)  
 major是将一个region中一个列族的若干HFile重写为一个新HFile，与minor相比，major会扫描所有键值对，顺序重写全部数据，过滤掉有删除标记以及超过版本号限制的数据。
 
-<div align="center"><img src="../resources/images/hbase/hbase-files.png" width="600"></div>
+<div align="center"><img src="../../resources/images/hbase/hbase-files.png" width="600"></div>
 
 
 ## 架构
 > HBase3个主要组件：客户端库、一台主服务器(master)、多台region服务器。
-<div align="center"><img src="../resources/images/hbase/httpatomoreillycomsourceoreillyimages889242.png" ></div>
+<div align="center"><img src="../../resources/images/hbase/httpatomoreillycomsourceoreillyimages889242.png" ></div>
 
 * **Master server**  
 负责跨region server的全局region的负载均衡，将繁忙的region server中的region移到负载较轻的region server中。不参与数据存储或检索服务，仅提供负载均衡和集群管理，因此是轻量级服务器。提供元数据的管理操作，如建表和创建列族。
@@ -95,7 +95,7 @@ major是将一个region中一个列族的若干HFile重写为一个新HFile，�
     * B+树优点  
         * B+树能够通过主键对记录进行高效插入、查找和删除，并且提供高效的范围扫描功能。
         * B+树叶节点相互连接并且按主键有序，扫描时避免了耗时的遍历树操作。
-        <div align="center"><img src="../resources/images/hbase/400px-Bplustree.png" ></div>  
+        <div align="center"><img src="../../resources/images/hbase/400px-Bplustree.png" ></div>  
 
     * B+树缺点  
         * 页表在磁盘中不一定是相邻的，范围查询可能跨页表的时候，效率很低。
@@ -111,7 +111,7 @@ major是将一个region中一个列族的若干HFile重写为一个新HFile，�
     * 优点
         * 存储文件组织与B树类似，不过其为磁盘顺序读取做了优化，所有节点都是满的并且按页存储。系统将现有的页与内存刷写数据混合在一起进行管理，指导数据达到容量。  
 
-        <div align="center"><img src="../resources/images/hbase/2mw8nky.jpg" ></div>  
+        <div align="center"><img src="../../resources/images/hbase/2mw8nky.jpg" ></div>  
 
         * 查询时先查找内存，在查找磁盘。
         * 查询次数在可预测的范围内，成本透明。
@@ -195,7 +195,7 @@ HBase中的行是按照rowkey的字典顺序排序的，这种设计优化了sca
 
 # 参考书籍  
 * 《HBase权威指南》  
-    <div align="center"><img src="../resources/images/hbase/hbase_definitive.jpg" height="400" width="300"></div>
+    <div align="center"><img src="../../resources/images/hbase/hbase_definitive.jpg" height="400" width="300"></div>
 
 * 《HBase应用架构》   
-    <div align="center"><img src="../resources/images/hbase/hbase_arch.jpg" height="400" width = 300></div>
+    <div align="center"><img src="../../resources/images/hbase/hbase_arch.jpg" height="400" width = 300></div>

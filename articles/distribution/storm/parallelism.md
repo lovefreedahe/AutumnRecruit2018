@@ -52,6 +52,7 @@ Storm 区分以下 3 个主要的实体, 它们在 Storm 集群中用于实际�
     * ComponentConfigurationDeclarer#setNumTasks()
 
 以下是在练习中显示这些设置的示例代码片段:
+
 ```java
 topologyBuilder.setBolt("green-bolt", new GreenBolt(), 2)
                .setNumTasks(4)
@@ -62,6 +63,7 @@ topologyBuilder.setBolt("green-bolt", new GreenBolt(), 2)
 下图显示了简单的 topology（拓扑）是如何运行的. 该 topology 由 3 个 components（组件）构成: 一个名为 BlueSpout 的 spout 和两个名为 GreenBolt 和 YellowBolt 的 bolts. 该组件链接, 使得 BlueSpout 将其输出发送到 GreenBolt, 它们将自己的输出发送到 YellowBolt.
 <div align="center"><img src="../../../resources/images/storm/example-of-a-running-topology.png"></div>
 该 GreenBolt 按照上面的代码片段进行配置, 而 BlueSpout 和 YellowBolt 只设置了 parallelism hint（执行器数量）. 以下是相关代码:
+
 ```java
 Config conf = new Config();
 conf.setNumWorkers(2); // use two worker processes

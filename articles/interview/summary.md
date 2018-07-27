@@ -75,9 +75,10 @@
 * jdk1.8之前抽象类方法默认权限为protected，1.8默认为default；
 
 说一下Java中的4中修饰符的访问权限
+
 访问权限 |  类 |  包 | 子类 | 其他包|
 -- | -- | -- | -- | -- | 
-public  |   ∨ |  ∨ |  ∨ |    ∨|
+public  | ∨ |  ∨ |  ∨ | ∨|
 protected  |  ∨ |  ∨  | ∨  |   ×|
 default  |  ∨ |  ∨  |  ×  |   ×|
 private  |  ∨ |  ×  |   ×  |   ×|

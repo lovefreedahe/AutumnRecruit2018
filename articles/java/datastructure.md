@@ -366,7 +366,7 @@ public class Customer implements Comparable{
 -- | -- | -- | -- | -- | -- | 
 HashSet | 无序 | HashMap | O(1) | 不安全 | 允许 | 
 TreeSet | 有序 | TreeMap | O(log n) | 不安全 | 不允许 |
-
+LinkedHashSet | 有序(插入顺序) | LinkedHashMap | O(1) | 不安全 | 允许 |
 #### 总结
 名称 | 优点 | 缺点 | 
 -- | -- | -- | 
@@ -377,3 +377,4 @@ LinkedList | 插入和删除很快，没有resize的问题 | 基于双向链表�
 * [Java 8系列之重新认识HashMap](https://tech.meituan.com/java-hashmap.html)
 * [集合类HashMap，HashTable，ConcurrentHashMap区别？](https://juejin.im/post/5add97a46fb9a07aa212f4c0)
 * [Java基础 ArrayList与LinkedList区别](https://www.jianshu.com/p/30a8195f0b81)
+* [HashMap? ConcurrentHashMap? 相信看完这篇没人能难住你！](https://crossoverjie.top/2018/07/23/java-senior/ConcurrentHashMap/?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)

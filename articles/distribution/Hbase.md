@@ -11,6 +11,7 @@
     - [存储](#存储)
     - [文件合并](#文件合并)
     - [架构](#架构)
+        - [HMaster和HRegionServer作用](#hmaster和hregionserver作用)
         - [树结构比较](#树结构比较)
             - [**查找与排序和合并的性能瓶颈**](#查找与排序和合并的性能瓶颈)
     - [客户端API](#客户端api)
@@ -86,10 +87,25 @@ major是将一个region中一个列族的若干HFile重写为一个新HFile，�
 <div align="center"><img src="../../resources/images/hbase/httpatomoreillycomsourceoreillyimages889242.png" ></div>
 
 * **Master server**  
-负责跨region server的全局region的负载均衡，将繁忙的region server中的region移到负载较轻的region server中。不参与数据存储或检索服务，仅提供负载均衡和集群管理，因此是轻量级服务器。提供元数据的管理操作，如建表和创建列族。
+    * 负责跨region server的全局region的负载均衡，将繁忙的region server中的region移到负载较轻的region server中。不参与数据存储或检索服务，仅提供负载均衡和集群管理，因此是轻量级服务器。提供元数据的管理操作，如建表和创建列族。
+    * HMaster负责维护表和region元数据，不参与输入输出操作，具体操作有region server负责。
+    * HMaster失效仅仅导致元数据无法被修改，但是数据的读写还是正常的。
 
 * **Region server**   
 负责region的读写请求，提供拆分超过配置大小region的接口。客户端直接与region server通信，处理所有数据相关操作。
+
+### HMaster和HRegionServer作用
+* HMaster
+    * 为Region server分配region
+    * 负责Region server的负载均衡
+    * 发现失效的Region server并重新分配其上的region
+    * HDFS上的垃圾文件回收
+    * 处理schema更新请求
+* HRegionServer
+    * 维护master分配给他的region，处理对这些region的io请求
+    * 负责切分正在运行过程中变的过大的region
+
+client访问hbase上的数据并不需要master参与（寻址访问zookeeper和region server，数据读写访问region server），master仅仅维护table和region的元数据信息（table的元数据信息保存在zookeeper上），负载很低。
 
 ### 树结构比较
 * [从B树、B+树、B*树谈到R 树](https://www.cnblogs.com/hdk1993/p/5840599.html)  
@@ -235,7 +251,12 @@ HBase中的行是按照rowkey的字典顺序排序的，这种设计优化了sca
     * Bulkload(直接生成HFile)
     * rowkey设计
 
-
+* HBase 中实现了两种 compaction 的方式：minor and major. 这两种 compaction 方式的区别是：
+    * minor
+        将多个HFile合并成一个，多路归并的过程。随着数据的不断写入，memstore会不断flush成HFile，HFile也越来越多，影响读取效率，所以通过当前IO操作换取后面的读性能提升。openregion和memstore flush都会判断是否需要minor compression。
+    * major
+    对一个region下面所有的HFile进行整理，期间会清除有删除标记的字段，把所有HFile合并成一个文件。一般取消自动major compression，定期手动整理。
+    
 # 参考书籍  
 * 《HBase权威指南》  
     <div align="center"><img src="../../resources/images/hbase/hbase_definitive.jpg" height="400" width="300"></div>

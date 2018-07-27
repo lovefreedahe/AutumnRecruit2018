@@ -1,6 +1,10 @@
 package com.wangrupeng.thread;
 
+import com.wangrupeng.basic.queue.priority.PriorityQueueExample;
+
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -24,7 +28,7 @@ public class ThreadSafeTest {
             executorService.shutdown();
             System.out.println(example.get());
         }
-        ConcurrentHashMap<Integer, String>
+        //LinkedHashSet<Integer, String>
     }
 
     static class ThreadUnsafeExample {

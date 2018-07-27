@@ -228,7 +228,7 @@ private  |  ∨ |  ×  |   ×  |   ×|
     thread.start();
     ```
 * Callable接口
-    * 相比较于Runnable，run函数有返回值，可以用FutureTast封装
+    * 相比较于Runnable，run函数有返回值，抛出异常，可以用FutureTast封装
     ```java
     class ThreadTest implements Callable<Integer> {
 

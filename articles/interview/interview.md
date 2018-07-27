@@ -186,3 +186,38 @@
 
 * java线程安全
 * linux进程查看
+
+## 百度深研面试
+* 项目介绍
+* storm消息一致性算法
+* storm和hadoop区别
+    * 定义与架构   
+    hadoop是海量数据分布式处理；storm是实时分布流式处理框架
+    * 应用场景  
+    hadoop主要用于批处理，较多用于数据挖掘和分析;storm分布式实时计算，主要用于实时性要求较高的场景
+    * 数据计算方式
+    hadoop是磁盘级运算，需要依赖HDFS和HBase；storm是内存级运算
+    * 数据处理方面有哪些不同？
+        * 数据来源
+        hadoop使用的是HDFS中的数据,数据量比较大;storm的数据是实时增加的
+        * 处理过程
+        Hadoop是Map和Reduce；Storm的Spout和Bolt都可以处理数据，自定义逻辑
+        * 是否结束
+        Hadoop最后一定会结束；Storm没有结束状态，有新数据传入在重新开始
+        * 处理速度
+        hadoop是处理海量数据，比较慢；Storm只处理实时更新的数据，比较快。
+        * 适用场景
+        hadoop处理一批数据，对时效性要求不高，需要处理就提交一个JOB；Storm主要处理一条数据，失效性要求高。
+        
+* zookeeper ZAB 有哪些应用 还知道zookeeper的哪些
+    * HBase HMaster选举 HRegionServer维护
+* 求TopN 用Storm
+* final关键字
+* 排序算法  性能  主要应用场景
+* linux shell统计脚本传入参数数量  linux排序指令
+* TCP UDP区别
+* TCP/IP协议 几层分别是什么
+* HashMap结构 是不是线程安全的 
+* ConcurrentHashMap和HashTable线程安全怎么实现的
+* 红黑树
+* 有没有用过Spring和线程池  没有

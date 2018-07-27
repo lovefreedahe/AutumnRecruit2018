@@ -29,3 +29,4 @@
 
 # 参考
 1. [倒排索引原理和实现](https://blog.csdn.net/u011239443/article/details/60604017)
+2. [深入浅出LSH](http://www.cppblog.com/humanchao/archive/2018/02/24/215521.html)

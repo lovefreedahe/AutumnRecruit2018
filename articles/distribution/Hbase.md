@@ -22,6 +22,7 @@
         - [什么是热点](#什么是热点)
 - [HBase面试](#hbase面试)
 - [参考书籍](#参考书籍)
+- [参考文章](#参考文章)
 
 <!-- /TOC -->
 
@@ -126,7 +127,7 @@ client访问hbase上的数据并不需要master参与（寻址访问zookeeper和
         * 小文件多了之后，后台线程会自动将小文件 聚合成大文件。
         * 删除添加标记，并不是实际的从磁盘中删除。
     * 优点
-        * 存储文件组织与B树类似，不过其为磁盘顺序读取做了优化，所有节点都是满的并且按页存储。系统将现有的页与内存刷写数据混合在一起进行管理，指导数据达到容量。  
+        * 存储文件组织与B树类似，不过其为磁盘顺序读取做了优化，所有节点都是满的并且按页存储。系统将现有的页与内存刷写数据混合在一起进行管理，直到数据达到容量。  
 
         <div align="center"><img src="../../resources/images/hbase/2mw8nky.jpg" ></div>  
 
@@ -256,10 +257,16 @@ HBase中的行是按照rowkey的字典顺序排序的，这种设计优化了sca
         将多个HFile合并成一个，多路归并的过程。随着数据的不断写入，memstore会不断flush成HFile，HFile也越来越多，影响读取效率，所以通过当前IO操作换取后面的读性能提升。openregion和memstore flush都会判断是否需要minor compression。
     * major
     对一个region下面所有的HFile进行整理，期间会清除有删除标记的字段，把所有HFile合并成一个文件。一般取消自动major compression，定期手动整理。
-    
+
+* HBase 
+
 # 参考书籍  
 * 《HBase权威指南》  
     <div align="center"><img src="../../resources/images/hbase/hbase_definitive.jpg" height="400" width="300"></div>
 
 * 《HBase应用架构》   
     <div align="center"><img src="../../resources/images/hbase/hbase_arch.jpg" height="400" width = 300></div>
+
+# 参考文章
+* [HBase面试问题](https://www.cnblogs.com/yuguoshuo/p/6265639.html)
+* [【面试】HBase面试题](https://www.jianshu.com/p/e405ed781cab)

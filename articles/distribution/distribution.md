@@ -171,7 +171,6 @@ Acceptor 接收到接受请求时，如果序号大于等于该 Acceptor 承诺�
 Paxos 协议能够让 Proposer 发送的提议朝着能被大多数 Acceptor 接受的那个提议靠拢，因此能够保证可终止性。
 
 
-
 # Raft协议
 Raft是一种分布式一致性协议，Raft和Paxos类似，但是更容易理解和实现。
 Raft主要用来竞选主节点。

@@ -77,3 +77,4 @@ Map<Long, Long> _anchorsToIds;
 
 # 参考
 * [JStorm高级应用](http://www.jstorm.io/ProgrammingGuide_cn/AdvancedUsage/Theory/Acker.html)
+* [jstorm进阶-ack机制及KafkaSpout](http://www.voidcn.com/article/p-yxdeotkc-boz.html)

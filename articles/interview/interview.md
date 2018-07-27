@@ -127,7 +127,7 @@
 * 三次握手和四次挥手
     * 三次握手
         * 请求发起的主机(client)，根据目的主机(server)的ip和端口发送连接请求，具体为一个SYN的包
-        * server收到这个请求，并处理，然后返回SYN和ACK包进行确认，表示server接收client的这个连接请求，并且同意连接，
+        * server收到这个请求，并处理，然后返回SYN和ACK包进行确认，表示server接收client的这个连接请求，并且同意连接。
         * 然后等待client发送SYN确认包，以确定client收到了server的确认包，三次握手完成
     * 四次挥手
         * client向server发送断开连接请求

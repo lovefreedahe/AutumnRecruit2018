@@ -95,22 +95,22 @@ private  |  ∨ |  ×  |   ×  |   ×|
     * IDE自动补全和提示
 * 忽略权限检查，导致安全问题
 * 使用
-    * 获得class对象
+    * 获得class对象  
         * Class.forName("")
         JDBC加载数据库驱动
         Class.forName(driver);
-        * 直接获取某个类的class
+        * 直接获取某个类的class  
         Class<?> c1 = int.class;
         Class<?> c2 = Integer.class;
-        * 调用对象的getClass()方法
+        * 调用对象的getClass()方法  
         String str = "";
         Class<?> strC = str.getClass();
-    * isInstance()
+    * isInstance()  
         ```java
         public native boolean isInstance(Object obj);
         ```
     * 创建对象
-        * 使用反射得到的类
+        * 使用反射得到的类  
         ```java
         Class<?> c  = String.calss;
         Object str = c.getInstance();

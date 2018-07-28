@@ -19,14 +19,13 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.apache.storm/storm-core
-    //compile  group: 'org.apache.storm', name: 'storm-core', version: '1.1.2'
+    compile  group: 'org.apache.storm', name: 'storm-core', version: '1.1.1'
     // https://mvnrepository.com/artifact/org.apache.storm/storm-kafka
-    //compile  group: 'org.apache.storm', name: 'storm-kafka', version: '1.1.2'
-    compile 'org.apache.storm:storm-core:1.1.0'
-    // https://mvnrepository.com/artifact/ring-cors/ring-cors
-    compile group: 'ring-cors', name: 'ring-cors', version: '0.1.5'
+    //compile  group: 'org.apache.storm', name: 'storm-kafka', version: '1.1.1'
+    compile 'com.google.guava:guava:25.1-jre'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-collections4
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
 
-    //compile 'org.apache.storm:storm-kafka:1.1.0'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 

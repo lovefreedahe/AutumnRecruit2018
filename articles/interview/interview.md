@@ -212,6 +212,14 @@
 * zookeeper ZAB 有哪些应用 还知道zookeeper的哪些
     * HBase HMaster选举 HRegionServer维护
 * 求TopN 用Storm
+    遇到这个问题的时候可以思考，如果用普通的算法怎么实现，可以通过维护一个最大堆，或者数据量很大的时候可以将数据分成多个小份，分别求topN，然后在合并结果。
+    场景
+    * 统计出搜索热度最高的词
+    * 点击率最高的广告
+    步骤
+    * spout负责emit关键字--"word"
+    * 下一级多个平行的bolt通过 fieldGrouping 分别统计TopN
+    * 最后再由bolt进行汇总统计得到的信息
 * final关键字
     * 类
     不能被继承
@@ -225,10 +233,12 @@
     ```bash
     #!/bin/bash
 
-    if [ $# -gt 0 ]; then
-        echo "参数个数为$#个"
-    else
-        echo "没有参数"
+    # $0是脚本名称
+    echo Script name: $0
+    echo $# arguments
+    # 注意[]里面的参数要加空格
+    if [ $# -ne 2 ];
+    then echo "illegal number of parameters"
     fi
     ```
 * linux排序指令

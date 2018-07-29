@@ -103,7 +103,7 @@
 
 
 ### 2.9 面试总结
-* [面试题目汇总](articles/interview/个人汇总.md)
+* [面试题目汇总](articles/interview/total.md)
 * [个人面试总结](articles/interview/interview.md)
 * [面试准备](articles/interview/summary.md)
 

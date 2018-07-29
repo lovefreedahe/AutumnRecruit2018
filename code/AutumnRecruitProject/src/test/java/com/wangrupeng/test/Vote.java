@@ -6,6 +6,9 @@ package com.wangrupeng.test;
  * @author <a href="http://datacoder.top">王汝鹏</a>
  */
 public class Vote {
+    final int a = 1;
 
-
+    public static void main(String[] args) {
+        
+    }
 }

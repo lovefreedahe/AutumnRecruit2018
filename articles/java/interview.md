@@ -24,6 +24,7 @@
     - [快速失败(fast-failed)和快速安全(fast-safe)](#快速失败fast-failed和快速安全fast-safe)
     - [Comparable和Comparator](#comparable和comparator)
     - [HashMap和HashTable却别](#hashmap和hashtable却别)
+    - [java.util.Collection](#javautilcollection)
     - [java两种异常](#java两种异常)
         - [unchecked && checked](#unchecked--checked)
         - [Exception && Error](#exception--error)
@@ -33,10 +34,9 @@
         - [try-catch-finally-return执行顺序](#try-catch-finally-return执行顺序)
     - [Java服务器网络开发时， 请说明通讯中阻塞（blocking）/非阻塞（non-blocking 与 同步/异步IO的区别。](#java服务器网络开发时-请说明通讯中阻塞blocking非阻塞non-blocking-与-同步异步io的区别)
 - [操作系统](#操作系统)
-    - [进程和线程的却别](#进程和线程的却别)
+    - [进程和线程的区别](#进程和线程的区别)
     - [死锁](#死锁)
     - [如何确保N个线程可以访问N个资源同时又不导致死锁？](#如何确保n个线程可以访问n个资源同时又不导致死锁)
-    - [java.util.Collection](#javautilcollection)
 
 <!-- /TOC -->
 
@@ -392,7 +392,7 @@ Enumeration速度是Iterator的2倍，占用内存更小，但是Iterator比Enum
     * 异步非阻塞
     银行开通了一项新的存款业务，吧存款提交到银行就可以直接离开，当存款进账之后会收到短信通知。
 ## 操作系统
-### 进程和线程的却别
+### 进程和线程的区别
 * 地址空间和其他资源：
     进程是相互独立的应用，进程可以有多个线程，进程内的线程在其他进程中不可见
 * 通信：

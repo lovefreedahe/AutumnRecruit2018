@@ -167,7 +167,7 @@ public class Main {
 }
 ```
 #### StringBuffer
-相比较于StringBuilder，加了synchronize 线程安全。
+相比较于StringBuilder，StringBuffer函数加了synchronize ，线程安全。
 
 
 #### 常见面试题

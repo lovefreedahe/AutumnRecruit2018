@@ -296,6 +296,7 @@
 * [豆瓣](https://www.douban.com/note/618521432/)
     * 一面
         1. java的垃圾回收机制
+        [参考答案](https://www.jianshu.com/p/5261a62e4d29)
         2. 如何实现java的代理
         3. java和C/C++的区别
         4. 异步加载和延迟加载的实现、兼容性问题
@@ -411,7 +412,15 @@
         6. JVM调优，命令行工具jstack jmap
         7. 倒排索引
         8. A4纸写算法：n个球队，每个球队有一个自己的水平值，写一个随机函数，每次随机获取一个球队，要求球队的分布情况和他们的水平成正比
-
+* [牛客网](https://www.nowcoder.com/discuss/74151?type=2&order=3&pos=415&page=1)
+    * 二面
+        1. 自我介绍，项目(会被问的很深)
+        2. JVM类的加载机制
+        3. java中的锁
+        4. 反射,怎么实现
+        5. 快排思想
+        6. HashMap结构，红黑树插入
+        7. 
 ### 美团
 * [牛客网](https://www.nowcoder.com/discuss/74573?type=2&order=3&pos=368&page=1)
     * 一面

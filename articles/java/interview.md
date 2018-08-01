@@ -121,7 +121,7 @@ clone()和finalized()
 详情见[java数据结构-Object](datastructure.md#object)
 
 ### 接口和抽象类的区别
-* 接口不能实例化，抽象类可以
+* 都不能实例化
 * 一个类可以继承(implements)多个接口，但只能继承(extends)一个类
 * 接口中声明的变量默认为final，抽象类中的可以不是final
 * 接口中的方法都是public，抽象类的方法可以是private, protected或者public

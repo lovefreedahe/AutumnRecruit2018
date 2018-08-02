@@ -1,7 +1,5 @@
-package com.wangrupeng.Sort;
-
 import java.util.Stack;
-public class QuickSortTest {
+public class QuickSort {
 
     public void sort(int[] array) {
         quickSort(array, 0, array.length - 1);
@@ -24,26 +22,18 @@ public class QuickSortTest {
         if(start < end) {
             Stack<Record> stack = new Stack<>();
             int position = partition(array, start, end);
-            if(start <= position - 1) {
-                stack.push(new Record(start, position - 1));
-            }
-            if (end >= position + 1) {
-                stack.push(new Record(position + 1, end));
-            }
+            stack.push(new Record(start, position - 1));
+            stack.push(new Record(position + 1, stack));
             while(!stack.isEmpty()) {
                 Record record = stack.pop();
                 position = partition(array, record.left, record.right);
-                if (record.left <= position - 1) {
-                    stack.push(new Record(record.left, position - 1));
-                }
-                if (record.right >= position + 1) {
-                    stack.push(new Record(position + 1, record.right));
-                }
+                stack.push(array, record.left, position - 1);
+                stack.push(array, position + 1, record.right);
             }
         }
     }
 
-    private int partition(int[] array, int start, int end) {
+    private void partition(int[] array, int start, int end) {
         int right = end;
         int mark = array[end];
 
@@ -57,7 +47,7 @@ public class QuickSortTest {
             if(start < end) {
                 swap(array, start, end);
             }
-        }
+        }    
 
         if(right != end) {
             swap(array, right, end);
@@ -88,15 +78,13 @@ public class QuickSortTest {
     }
 
     public static void main(String[] args) {
-        QuickSortTest quickSort = new QuickSortTest();
+        QuickSort quickSort = new QuickSort();
         int[] array = {3, 1, 2, 6, 4, 2};
         int[] array2 = {3, 1, 2, 6, 4, 2};
         quickSort.sort(array);
         System.out.println("Quick sort with recursive:");
-
         quickSort.printArray(array);
         quickSort.sortNonRecursive(array2);
-        System.out.println("Quick sort with non-recursive:");
         quickSort.printArray(array2);
     }
 

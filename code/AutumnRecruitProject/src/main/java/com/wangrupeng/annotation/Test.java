@@ -1,6 +1,5 @@
 package com.wangrupeng.annotation;
 
-import afu.org.checkerframework.checker.oigj.qual.O;
 
 import java.util.Arrays;
 import java.util.List;

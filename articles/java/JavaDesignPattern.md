@@ -329,7 +329,7 @@ private EagerInitializationSingleton() {
 ```
 #### 防止序列化破坏单例模式
 ```java
-public class SerializedSingleton implements Serializable{
+public class SerializedSingleton implements Serializable {
     private static final long serialVersionUID = -7604766932017737115L;
     private SerializedSingleton() {}
     private static class SingletonHelper {

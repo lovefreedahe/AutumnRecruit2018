@@ -303,23 +303,153 @@
 
     * 二面
         1. GET和POST的区别
+            * GET参数放在URL上，URL长度限制2048个字符，POST长度没有限制
+            * GET只能发送ASCII字符，POST可以发二进制
+            * GET安全性较差
+            * GET请求会被浏览器缓存，刷新不会被重新提交，POST会重新提交
         2. Goagent怎么实现的
         3. 数据库事务隔离机制有什么特点
         4. java的灵活性体现在什么机制上
+        反射机制，可以动态创建对象和编译。
         5. 设计模式有哪些
+            * 创建型
+                * 单例模式
+                * 简单工厂模式
+                * 静态工厂模式
+                * 
+            * 行为性
+                * 迭代器模式
+                * 观察者模式
+                * 代理模式
+                * 
+            * 结构性
+                * 桥接模式
         6. 实现多线程有多少种方式
+            * Thread
+            * Runnable
+            * Callable
         7. HashMap与线程安全的问题
-        8. 怎么检测死循环
-        
+            ConcurrentHashMap和HashTable
+        8. 怎么检测死循环  
+            * JPS 或 ps -ef | grep java得到占用CPU过高的java进程的PID(假如为21425)
+            * top -Hp $PID 查看CPU过高的线程ID(假如为21426), 并转换为十六进制53b2
+            * jstack把对应PID的stack信息导出来jstack -l $PID < stack.txt
+            * 在stack.txt中查找53b2,可以看到如下信息:
+                ```bash
+                "main" #1 prio=5 os_prio=0 tid=0x00007faf6800a000 nid=0x53b2 runnable [0x00007faf6e4ec000]
+                    java.lang.Thread.State: RUNNABLE
+                        at com.oceanai.HashMapTest.test(HashMapTest.java:29)
+                        at com.oceanai.HashMapTest.main(HashMapTest.java:36)
+                ```
 * [南京秋招](https://www.aliyun.com/jiaocheng/312209.html)
     * 一面
         你觉得最优的排序算法是什么？
+        快排。
+        ```java
+        import java.util.Stack;
+        public class QuickSortTest {
+            public void sort(int[] array) {
+                quickSort(array, 0, array.length - 1);
+            }
+
+            public void sortNonRecursive(int[] array) {
+                quickNonRecursive(array, 0, array.length - 1);
+            }
+
+            private void quickSort(int [] array, int start, int end) {
+                if(start < end) {
+                    int position = partition(array, start, end);
+                    quickSort(array, start, position - 1);
+                    quickSort(array, position + 1, end);
+                }
+            }
+
+            private void quickNonRecursive(int[] array, int start, int end) {
+                if(start < end) {
+                    Stack<Record> stack = new Stack<>();
+                    int position = partition(array, start, end);
+                    if(start <= position - 1) {
+                        stack.push(new Record(start, position - 1));
+                    }
+                    if(end >= position + 1) {
+                        stack.push(new Record(position + 1, end));
+                    }
+                    while(!stack.isEmpty()) {
+                        Record record = stack.pop();
+                        position = partition(array, record.left, record.right);
+                        if(record.left <= position - 1) {
+                            stack.push(new Record(record.left, position - 1));
+                        }
+                        if(record.right >= position + 1) {
+                            stack.push(new Record(position + 1, record.right));
+                        }
+                    }
+                }
+            }
+
+            private int partition(int[] array, int start, int end) {
+                int right = end;
+                int mark = array[end];
+                while(start < end) {
+                    while(start < end && array[start] <= mark) {
+                        ++start;
+                    }
+                    while(start < end && array[end] >= mark) {
+                        --end;
+                    }
+                    if(start < end) {
+                        swap(array, start, end);
+                    }
+                }
+                if(right != end) {
+                    swap(array, right, end);
+                }
+                return end;
+            }
+
+            private void swap(int[] array, int a, int b) {
+                int temp = array[a];
+                array[a] = array[b];
+                array[b] = temp;
+            }
+
+            private class Record {
+                int left;
+                int right;
+                private Record(int left, int right) {
+                    this.left = left;
+                    this.right = right;
+                }
+            }
+
+            public static void main(String[] args) {
+                QuickSortTest test = new QuickSortTest();
+                int[] array = {34, 32, 43, 12, 11, 32, 22, 21, 32};
+                test.sort(array);
+                System.out.println("Quick sort with recurtion:");
+                for(int i : array) {
+                    System.out.print(i + " ");
+                }
+                System.out.println("Quick sort with non-recurtion");
+                test.sortNonRecursive(array);
+                for(int i : array) {
+                    System.out.print(i + " ");
+                }
+            }
+        }
+
+        ```
     * 二面
         大数据
 
 * [牛客网](https://www.nowcoder.com/discuss/76173?type=2&order=3&pos=112&page=1)
     * 三面
         1. 乐观锁和悲观锁，我说到了cas，然后问我java中有哪些地方用到了cas，然后我说concurrenthashmap，然后是咋用的，这个类是怎么保证线程安全的，他还说了一个put啥东西我没注意，就说不知道
+            * 悲观锁：
+            一个事务执行的某个操作对数据加了锁，其他事务只能等当前事务释放锁，才能够对此数据进行操作。
+            * 乐观锁：
+            认为所有事务在处理时不会相互影响，每个事务在读取数据后会判断是否有其他事务对此数据进行了修改，如果其他事务有更新的话就回滚当前事务。比如CAS。
+
         2. 序列化，远程过程调用
 * [牛客网2菜鸟](https://www.nowcoder.com/discuss/76132?type=2&order=3&pos=114&page=1)
     * 一面

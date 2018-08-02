@@ -86,12 +86,9 @@ public class Sort {
 
         quickSort(array, start, position - 1);
         quickSort(array, position + 1, end);
-
-
     }
 
-    int partition(int arr[], int low, int high)
-    {
+    int partition(int arr[], int low, int high) {
         int pivot = arr[high];
         int i = (low-1); // index of smaller element
         for (int j=low; j<high; j++) {

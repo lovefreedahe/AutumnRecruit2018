@@ -92,6 +92,5 @@ public class QuickSort {
         for(int i : array) {
             System.out.print(i + " ");
         }
-        
     }
 }

@@ -300,7 +300,6 @@
         2. 如何实现java的代理
         3. java和C/C++的区别
         4. 异步加载和延迟加载的实现、兼容性问题
-
     * 二面
         1. GET和POST的区别
             * GET参数放在URL上，URL长度限制2048个字符，POST长度没有限制
@@ -437,7 +436,6 @@
                 }
             }
         }
-
         ```
     * 二面
         大数据
@@ -451,10 +449,15 @@
             认为所有事务在处理时不会相互影响，每个事务在读取数据后会判断是否有其他事务对此数据进行了修改，如果其他事务有更新的话就回滚当前事务。比如CAS。
 
         2. 序列化，远程过程调用
+        [RPC和restful选择](https://www.zhihu.com/search?type=content&q=rpc%20restful)
+        [RPC和消息队列的区别](https://www.zhihu.com/search?type=content&q=rpc%20%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97)
 * [牛客网2菜鸟](https://www.nowcoder.com/discuss/76132?type=2&order=3&pos=114&page=1)
     * 一面
         1. ArrayList和LinkedList区别，ArrayList会不会越界
+        ArrayList会越界
+        * add(int index, E element) index如果大于当前的size，就会抛出异常。
         2. ArrayList和HashSet区别，HashSet数据是有序的吗
+        * ArrayList允许存在重复元素，HashSet不允许重复
         3. volatile和synchronize
         4. 数据库中乐观锁和悲观锁应用场景
         5. 排序算法的复杂度,快速排序非递归实现

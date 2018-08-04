@@ -459,9 +459,16 @@
         2. ArrayList和HashSet区别，HashSet数据是有序的吗
         * ArrayList允许存在重复元素，HashSet不允许重复
         3. volatile和synchronize
+            * volatile告诉JVM当前变量在寄存器(工作内存)中的值是不准确的，需要从主存中读取，synchronize会锁定当前变量，只有当前线程可以访问，其它线程会阻塞。
+            * volatile只能修饰变量，synchronize可以修饰变量、方法、类
+            * volatile不保证原子性，只保证修改可见性；synchronize都可以保证
+            * volatile不会阻塞线程
+            * volatile修饰的变量编译时不会被优化，synchronize会被优化
         4. 数据库中乐观锁和悲观锁应用场景
         5. 排序算法的复杂度,快速排序非递归实现
+            * O(n^2) 选择(不稳定)，插入(稳定)，冒泡(稳定)；O(nlogn) 快排(稳定)，堆(不稳定)，归并(稳定);O(n)~O(n^2) 希尔排序
         6. 海量数据过滤,黑名单过滤一个url，布隆过滤器
+        hash
 * [牛客网3天猫]
     * 一面
         项目

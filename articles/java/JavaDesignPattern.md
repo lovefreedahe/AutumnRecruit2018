@@ -3173,4 +3173,4 @@ public class PersistantNetDecorator extends PersistantDecorator {
 
 ## 参考
 * [Java中的23种设计模式详解](http://blog.anxpp.com/index.php/archives/489/)
-* [Effective Java]
+* 《Effective Java》

@@ -419,9 +419,6 @@ public void mergeSort(int[] array) {
     * 如果数据初始顺序为基本有序
     插入排序，冒泡排序或随机的快速排序
 
-    
-
-
 
 # 参考
 * [Java排序算法](https://www.jianshu.com/p/4dac9c141bd5)

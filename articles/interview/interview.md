@@ -474,6 +474,36 @@
         项目
     * 二面
         1. equals实现方法，如果没看过，该怎么实现
+            * 自反性
+            * 一致性
+            * 对称性
+            * 传递性
+            * e.equals(null) 返回 null
+            ```java
+            @Override
+            //参数类型要是Object，如果是Employee，则是重写
+            public boolean equals(Object otherObject){
+                //a quick test to see if the object are identical
+                if(this == otherObject){
+                    return true;
+                }
+                //must return false if the explicit param is null
+                if(otherObject == null){
+                    return false;
+                }
+                //if the class des't match, they cannot be equal
+                if(this.getClass() != otherObject.getClass()){
+                    return false;
+                }
+                //now we the the otherObject is non-null Employee
+                Employee other = (Employee)otherObject;
+                
+                //test whether the fields hava identical values
+                return name.equals(other.name)
+                        &&salary == other.salary
+                        &&hireDay == other.hireDay;
+            }
+            ```
         2. hashmap和hashtable比较
         3. 设计模式了解哪些
         4. 观察者模式还能说说吗

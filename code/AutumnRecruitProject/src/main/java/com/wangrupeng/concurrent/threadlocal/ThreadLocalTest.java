@@ -6,11 +6,29 @@ package com.wangrupeng.concurrent.threadlocal;
  * @author <a href="http://datacoder.top">王汝鹏</a>
  */
 public class ThreadLocalTest {
-    private static ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
 
     public static void main(String[] args) {
-        threadLocal.set(100);
-        System.out.println(threadLocal.get());
+        ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
+        Thread thread1 = new Thread() {
+            @Override
+            public void run() {
+                threadLocal.set(100);
+                try {
+                    Thread.sleep(1000);
+                    System.out.println(threadLocal.get());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Thread thread2 = new Thread() {
+            @Override
+            public void run() {
+                threadLocal.set(200);
+            }
+        };
+        thread1.start();
+        thread2.start();
     }
 
 }

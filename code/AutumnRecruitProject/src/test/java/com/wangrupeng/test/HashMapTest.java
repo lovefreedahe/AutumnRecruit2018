@@ -11,6 +11,7 @@ public class HashMapTest {
         LinkedHashMap<Integer, String> linkedHashMap = new LinkedHashMap<>();
         TreeMap<Integer, String> treeMap = new TreeMap<>();
         ConcurrentHashMap<Integer, String> concurrentHashMap = new ConcurrentHashMap<>();
+        concurrentHashMap.put(new Integer(1), "test");
         Hashtable<Integer, String> hashtable = new Hashtable<>();
         hashtable.put(12, "");
         String str = "1231";

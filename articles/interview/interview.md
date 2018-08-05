@@ -281,3 +281,361 @@
 * 有没有用过Spring  没有
 * 线程池
     * 
+* 进程与线程的区别
+    * 地址空间和其他资源：
+    进程是相互独立的应用，进程可以有多个线程，进程内的线程在其他进程中不可见
+    * 通信：
+    进程间通信IPC，线程间可以通过全局变量来通信---需要进程同步和互斥手段保持数据一致性。
+    * 调度和切换
+        线程的上下文切换比进程快得多
+    * 多线程OS中，进程是不可执行的实体。
+
+
+## 公司实际面试题目汇总
+### 阿里
+* [豆瓣](https://www.douban.com/note/618521432/)
+    * 一面
+        1. java的垃圾回收机制
+        [参考答案](https://www.jianshu.com/p/5261a62e4d29)
+        2. 如何实现java的代理
+        3. java和C/C++的区别
+        4. 异步加载和延迟加载的实现、兼容性问题
+    * 二面
+        1. GET和POST的区别
+            * GET参数放在URL上，URL长度限制2048个字符，POST长度没有限制
+            * GET只能发送ASCII字符，POST可以发二进制
+            * GET安全性较差
+            * GET请求会被浏览器缓存，刷新不会被重新提交，POST会重新提交
+        2. Goagent怎么实现的
+        3. 数据库事务隔离机制有什么特点
+        4. java的灵活性体现在什么机制上
+        反射机制，可以动态创建对象和编译。
+        5. 设计模式有哪些
+            * 创建型
+                * 单例模式
+                * 简单工厂模式
+                * 静态工厂模式
+                * 
+            * 行为性
+                * 迭代器模式
+                * 观察者模式
+                * 代理模式
+                * 
+            * 结构性
+                * 桥接模式
+        6. 实现多线程有多少种方式
+            * Thread
+            * Runnable
+            * Callable
+        7. HashMap与线程安全的问题
+            ConcurrentHashMap和HashTable
+        8. 怎么检测死循环  
+            * JPS 或 ps -ef | grep java得到占用CPU过高的java进程的PID(假如为21425)
+            * top -Hp $PID 查看CPU过高的线程ID(假如为21426), 并转换为十六进制53b2
+            * jstack把对应PID的stack信息导出来jstack -l $PID < stack.txt
+            * 在stack.txt中查找53b2,可以看到如下信息:
+                ```bash
+                "main" #1 prio=5 os_prio=0 tid=0x00007faf6800a000 nid=0x53b2 runnable [0x00007faf6e4ec000]
+                    java.lang.Thread.State: RUNNABLE
+                        at com.oceanai.HashMapTest.test(HashMapTest.java:29)
+                        at com.oceanai.HashMapTest.main(HashMapTest.java:36)
+                ```
+* [南京秋招](https://www.aliyun.com/jiaocheng/312209.html)
+    * 一面
+        你觉得最优的排序算法是什么？
+        快排。
+        ```java
+        import java.util.Stack;
+        public class QuickSortTest {
+            public void sort(int[] array) {
+                quickSort(array, 0, array.length - 1);
+            }
+
+            public void sortNonRecursive(int[] array) {
+                quickNonRecursive(array, 0, array.length - 1);
+            }
+
+            private void quickSort(int [] array, int start, int end) {
+                if(start < end) {
+                    int position = partition(array, start, end);
+                    quickSort(array, start, position - 1);
+                    quickSort(array, position + 1, end);
+                }
+            }
+
+            private void quickNonRecursive(int[] array, int start, int end) {
+                if(start < end) {
+                    Stack<Record> stack = new Stack<>();
+                    int position = partition(array, start, end);
+                    if(start <= position - 1) {
+                        stack.push(new Record(start, position - 1));
+                    }
+                    if(end >= position + 1) {
+                        stack.push(new Record(position + 1, end));
+                    }
+                    while(!stack.isEmpty()) {
+                        Record record = stack.pop();
+                        position = partition(array, record.left, record.right);
+                        if(record.left <= position - 1) {
+                            stack.push(new Record(record.left, position - 1));
+                        }
+                        if(record.right >= position + 1) {
+                            stack.push(new Record(position + 1, record.right));
+                        }
+                    }
+                }
+            }
+
+            private int partition(int[] array, int start, int end) {
+                int right = end;
+                int mark = array[end];
+                while(start < end) {
+                    while(start < end && array[start] <= mark) {
+                        ++start;
+                    }
+                    while(start < end && array[end] >= mark) {
+                        --end;
+                    }
+                    if(start < end) {
+                        swap(array, start, end);
+                    }
+                }
+                if(right != end) {
+                    swap(array, right, end);
+                }
+                return end;
+            }
+
+            private void swap(int[] array, int a, int b) {
+                int temp = array[a];
+                array[a] = array[b];
+                array[b] = temp;
+            }
+
+            private class Record {
+                int left;
+                int right;
+                private Record(int left, int right) {
+                    this.left = left;
+                    this.right = right;
+                }
+            }
+
+            public static void main(String[] args) {
+                QuickSortTest test = new QuickSortTest();
+                int[] array = {34, 32, 43, 12, 11, 32, 22, 21, 32};
+                test.sort(array);
+                System.out.println("Quick sort with recurtion:");
+                for(int i : array) {
+                    System.out.print(i + " ");
+                }
+                System.out.println("Quick sort with non-recurtion");
+                test.sortNonRecursive(array);
+                for(int i : array) {
+                    System.out.print(i + " ");
+                }
+            }
+        }
+        ```
+    * 二面
+        大数据
+
+* [牛客网](https://www.nowcoder.com/discuss/76173?type=2&order=3&pos=112&page=1)
+    * 三面
+        1. 乐观锁和悲观锁，我说到了cas，然后问我java中有哪些地方用到了cas，然后我说concurrenthashmap，然后是咋用的，这个类是怎么保证线程安全的，他还说了一个put啥东西我没注意，就说不知道
+            * 悲观锁：
+            一个事务执行的某个操作对数据加了锁，其他事务只能等当前事务释放锁，才能够对此数据进行操作。
+            * 乐观锁：
+            认为所有事务在处理时不会相互影响，每个事务在读取数据后会判断是否有其他事务对此数据进行了修改，如果其他事务有更新的话就回滚当前事务。比如CAS。
+
+        2. 序列化，远程过程调用
+        [RPC和restful选择](https://www.zhihu.com/search?type=content&q=rpc%20restful)
+        [RPC和消息队列的区别](https://www.zhihu.com/search?type=content&q=rpc%20%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97)
+* [牛客网2菜鸟](https://www.nowcoder.com/discuss/76132?type=2&order=3&pos=114&page=1)
+    * 一面
+        1. ArrayList和LinkedList区别，ArrayList会不会越界
+        ArrayList会越界
+        * add(int index, E element) index如果大于当前的size，就会抛出异常。
+        2. ArrayList和HashSet区别，HashSet数据是有序的吗
+        * ArrayList允许存在重复元素，HashSet不允许重复
+        3. volatile和synchronize
+            * volatile告诉JVM当前变量在寄存器(工作内存)中的值是不准确的，需要从主存中读取，synchronize会锁定当前变量，只有当前线程可以访问，其它线程会阻塞。
+            * volatile只能修饰变量，synchronize可以修饰变量、方法、类
+            * volatile不保证原子性，只保证修改可见性；synchronize都可以保证
+            * volatile不会阻塞线程
+            * volatile修饰的变量编译时不会被优化，synchronize会被优化
+        4. 数据库中乐观锁和悲观锁应用场景
+        5. 排序算法的复杂度,快速排序非递归实现
+            * O(n^2) 选择(不稳定)，插入(稳定)，冒泡(稳定)；O(nlogn) 快排(稳定)，堆(不稳定)，归并(稳定);O(n)~O(n^2) 希尔排序
+        6. 海量数据过滤,黑名单过滤一个url，布隆过滤器
+        hash
+* [牛客网3天猫]
+    * 一面
+        项目
+    * 二面
+        1. equals实现方法，如果没看过，该怎么实现
+            * 自反性
+            * 一致性
+            * 对称性
+            * 传递性
+            * e.equals(null) 返回 null
+            ```java
+            @Override
+            //参数类型要是Object，如果是Employee，则是重写
+            public boolean equals(Object otherObject){
+                //a quick test to see if the object are identical
+                if(this == otherObject){
+                    return true;
+                }
+                //must return false if the explicit param is null
+                if(otherObject == null){
+                    return false;
+                }
+                //if the class des't match, they cannot be equal
+                if(this.getClass() != otherObject.getClass()){
+                    return false;
+                }
+                //now we the the otherObject is non-null Employee
+                Employee other = (Employee)otherObject;
+                
+                //test whether the fields hava identical values
+                return name.equals(other.name)
+                        &&salary == other.salary
+                        &&hireDay == other.hireDay;
+            }
+            ```
+        2. hashmap和hashtable比较
+        3. 设计模式了解哪些
+        4. 观察者模式还能说说吗
+        5. TCP三次握手原理
+        6. 有什么想问的
+    * 三面
+        1. HashMap,ArrayList原理
+        2. Concurrent包里的类了解吗,原理是什么
+        3. 项目中印象最深刻的是哪一个,然后针对项目提到的技术点提问
+        4. 有什么想问的
+    * 四面
+        1. 自我介绍
+        2. 系统如何提高并发性
+        3. 学java多久了
+        4. java基本类型有哪几种, 列举
+        5. int和Integer区别
+        6. 学过操作系统吗
+        7. 操作系统的内存碎片怎么理解,有什么解决办法
+        8. 有什么想问的
+    * 五面
+        1. 自我介绍
+        2. 用什么语言比较多
+        3. synchronize锁普通类和静态类的区别，ThreadLocal,Java8新特性
+        4. 系统CPU占用比较高是什么原因 
+        5. 3：15时针和分针夹角多少度
+        6. 了解什么新的技术趋势
+        7. 目前对什么技术了解
+        8. redis看多源码吗
+        9. redis为什么是单线程的
+    * HR面
+        1. 介绍下能体现你的技术水平的实践/学习经历
+        2. 你认为最能学到东西的实践是哪个？然后针对提到的技术点开始追问：异步怎么处理数据一致性？数据库怎么实现分布式事务？2PC的脑裂问题你有什么想法？。。。
+        3. 你的未来职业规划是怎么样的
+        4. 你对应聘的岗位/部门了解吗
+        5. 你有什么想问的
+
+* [牛客网](https://www.nowcoder.com/discuss/74573?type=2&order=3&pos=368&page=1)
+    * 一面
+        1. 大量数据高并发访问如何优化
+        2. 热点数据访问优化
+        3. 频繁修改数据如何保证一致性NWR模型，CAP理论等
+        4. 平时如何学习
+        5. 有没有参与过开源项目
+        6. java基本类型有哪些
+        7. 实现多线程的三种方式，线程池
+        8. 线程是不是开的越多越好？开多少合适？如何减少上下文切换开销，如何写个shell脚本获取上下文切换开销
+        9. 乐观锁实现
+        10. JVM内存模型，1.6,1.7,1.8有哪些不同
+        11. GC算法，可达性分析
+        12. 考虑对于老年代如何解决互联网应用中GC停顿的问题,怎么解决内存碎片的问题
+        13. 约瑟夫问题O(n)的算法
+        14. 看过什么框架源码
+
+    * 二面
+        1. 自我介绍
+        2. 学过哪些课程
+        3. 介绍项目
+        4. 排序算法，qsort
+        5. AVL树怎么构建,怎么调整
+        6. 最短路径算法，迪杰斯特拉，堆优化，正确性分析,SPDFA
+        7. 锁，sync,Lock(公平锁，非公平锁)读写锁，CAS,AQS
+        8. java泛型的理解,实现和C++的不同
+        9. 设计模式？你用过那些设计模式
+        10. HashMap,HashTable，1.8优化，ConcurrentHashMap1.8优化
+        11. 1.8 新特性
+        12. 对IOC的理解
+        13. 谈谈对数据库优化的理解？反范式合理冗余数据，合理建索引，使用覆盖索引，问需不需要结合项目说？不用，谈谈就可以。
+        14. 介绍一下nio，他好在哪里，epoll实现 红黑树，和select poll的不同。介绍一下aio
+        15. 
+    * 三面
+        1. 自我介绍
+        2. 项目
+        3. redis
+        4. ES分词算法
+        5. TF/IDF算法
+        6. JVM调优，命令行工具jstack jmap
+        7. 倒排索引
+        8. A4纸写算法：n个球队，每个球队有一个自己的水平值，写一个随机函数，每次随机获取一个球队，要求球队的分布情况和他们的水平成正比
+* [牛客网](https://www.nowcoder.com/discuss/74151?type=2&order=3&pos=415&page=1)
+    * 二面
+        1. 自我介绍，项目(会被问的很深)
+        2. JVM类的加载机制
+        3. java中的锁
+        4. 反射,怎么实现
+        5. 快排思想
+        6. HashMap结构，红黑树插入
+        7. 
+### 美团
+* [牛客网](https://www.nowcoder.com/discuss/74573?type=2&order=3&pos=368&page=1)
+    * 一面
+        1. 自我介绍
+
+        2. 项目介绍
+
+        3. es倒排索引
+
+        4. es分词选型。ik分词器
+
+        5. volatile关键字
+
+        6. hashmap原理
+
+        7. 数据库的锁
+
+        8. 乐观锁悲观锁适用场景，怎么避免死锁
+
+        9. 如何实现lru
+
+        10. 聚簇索引和二级索引的加锁区别
+
+## 百度
+* [牛客网](https://www.nowcoder.com/discuss/74573?type=2&order=3&pos=368&page=1)
+    * 一面
+        1. 自我介绍
+        2. arraylist和linkedlist的区别
+        3. map
+        4. bio和nio
+        5. 处理粘包拆包问题
+        6. 设计模式
+        7. 单例模式的双重校验，为什么使用volatile关键字
+        8. 对于spring的理解
+        9. 说一说锁，原子变量怎么实现的
+        10. 阻塞队列
+        11. 说说线程池
+        12. threadlocal实现，如何结局的内存泄漏问题
+        13. 说说对于数据库设计优化的理解
+        14. redis和elasticsearch
+    * 二面
+        1. 自我介绍
+        2. 项目
+        3. 两个文件都是10G，里面存着32位整数型，给8G内存，怎么求交集
+        4. TF/IDF算法
+        5. 一个表有id和mark两个字段，给定一个用户id，一个sql查出来他的排名，
+        6. gc算法，内存模型
+        7. AOP原理，好处

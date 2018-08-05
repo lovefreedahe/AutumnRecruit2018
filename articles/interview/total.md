@@ -1,5 +1,6 @@
 <!-- TOC -->
 
+- [说明](#说明)
 - [java基础](#java基础)
     - [基础](#基础)
         - [java性质](#java性质)
@@ -42,6 +43,9 @@
 
 <!-- /TOC -->
 
+# 说明
+本文仅为面试题目汇总，参考答案见[此处](total_answer.md),在复习的时候不能仅仅把这些题目做对就行了，还要举一反三，比如，刚解决一个线程安全的问题，最好能够在吧线程的知识重新复习一遍。
+
 # java基础
 ## 基础
 ### java性质
@@ -72,20 +76,6 @@
 ##### String
 1. String str=”aaa”,与String str=new String(“aaa”)一样吗？
 2. String的常用方法
-    ```java
-    charAt：返回指定索引处的字符
-    indexOf()：返回指定字符的索引
-    replace()：字符串替换
-    trim()：去除字符串两端空白
-    split()：分割字符串，返回一个分割后的字符串数组
-    getBytes()：返回字符串的byte类型数组
-    length()：返回字符串长度
-    toLowerCase()：将字符串转成小写字母
-    toUpperCase()：将字符串转成大写字符
-    substring()：截取字符串
-    format()：格式化字符串
-    equals()：字符串比较
-    ```
 3. String反转
 
 ### 装箱拆箱
@@ -103,13 +93,6 @@
 1. java最顶级父类，其常用方法以及访问权限, 有哪些是protected的
 2. StringBuffer, StringBuilder对比
 3. Math类有哪些常用方法
-    ```java
-    pow()：幂运算
-    sqrt()：平方根
-    round()：四舍五入
-    abs()：求绝对值
-    random()：生成一个0-1的随机数，包括0不包括1
-    ```
 4. Iterator和ListIterator区别
 5. Emuration和Iterator的区别
 6. fast-failed和fast-safe
@@ -250,6 +233,7 @@
 
 # 设计模式
 1. 用过哪些设计模式？实际应用场景？
+
 2. 对设计模式的看法和认知？
 
 # Linux

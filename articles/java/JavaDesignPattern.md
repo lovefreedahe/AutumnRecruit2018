@@ -329,7 +329,7 @@ private EagerInitializationSingleton() {
 ```
 #### 防止序列化破坏单例模式
 ```java
-public class SerializedSingleton implements Serializable{
+public class SerializedSingleton implements Serializable {
     private static final long serialVersionUID = -7604766932017737115L;
     private SerializedSingleton() {}
     private static class SingletonHelper {
@@ -3173,4 +3173,4 @@ public class PersistantNetDecorator extends PersistantDecorator {
 
 ## 参考
 * [Java中的23种设计模式详解](http://blog.anxpp.com/index.php/archives/489/)
-* [Effective Java]
+* 《Effective Java》

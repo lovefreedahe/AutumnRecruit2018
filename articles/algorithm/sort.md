@@ -26,6 +26,8 @@
 * 时间复杂度
 O(n^2)
 * 过程演示
+<div align="center"><img src="../../resources/images/algorithm/select_sort.gif"></div></br> 
+
 ```shell
 |1 3 5 7 9 2 4 6 8 0  选择第一小的数与0位交换
 i j
@@ -77,6 +79,8 @@ i                 j
 * 时间复杂度
 O(n^2)。
 * 过程演示
+<div align="center"><img src="../../resources/images/algorithm/insert_sort.gif"></div></br> 
+
 ```shell
 1 3 5 7 9 2 4 6 8 0
 1 3 5 7 9 9 4 6 8 0  temp=2
@@ -186,6 +190,8 @@ O(n^2)。
 * 时间复杂度
 O(n^2)。
 * 过程演示
+<div align="center"><img src="../../resources/images/algorithm/bubble_sort.gif"></div></br> 
+
 ```shell
 |1 3 5 7 9 2 4 6 8 0
 |1 3 5 7 9 2 4 6 0 8
@@ -305,6 +311,8 @@ it.
 * 时间复杂度
 时间复杂度为O(nlogn)，需要O(n)额外空间
 * 过程演示
+<div align="center"><img src="../../resources/images/algorithm/merge_sort.gif"></div></br> 
+
 ```shell
                         {1 3 5 7 9 2 4 6 8 0}
 第一层递归         {1 3 5 7 9}    |     {2 4 6 8 0}

@@ -17,6 +17,7 @@
     - [红黑树](#红黑树)
     - [B树 B+树](#b树-b树)
     - [二叉树遍历](#二叉树遍历)
+    - [AVL(平衡二叉查找树)](#avl平衡二叉查找树)
 - [链表List](#链表list)
     - [vector, ArrayList和LinkedList比较](#vector-arraylist和linkedlist比较)
 - [队列(Queue)](#队列queue)
@@ -221,12 +222,68 @@ __CAS__ 有3个操作数，分别为内存值V、旧的期望值A和新值B。�
 ## 树
 
 ### 红黑树
-* 性质
-    1. 所有节点不是黑就是红
-    2. root节点是黑色
-    3. 所有叶节点(null)都是黑色
-    4. 红色节点的两个子节点都是黑色
-    5. 任意一个节点到每个叶节点过程中经过的黑色节点数目都是相同的
+* java 有哪些数据结构用到了红黑树
+    HashMap, ConcurrentHashMap, HashTable, HashSet, TreeMap, TreeSet
+
+* 红黑树数据结构是怎么定义的？
+    ```java
+    class Color {
+        static int READ = 0;
+        static int BLACK = 1;
+    }
+    class RBTreeNode<T> {
+        RBTreeNode left,right, parent;
+        T value;
+        int color;
+    }
+    ```
+* 红黑树有哪些性质
+    * 节点分为两类：红色和黑色
+    * 根节点是黑色
+    * 所有的叶子节点(值为null)都是黑色的
+    * 所有的红色节点的两个子节点都是黑色
+    * 任意一个节点到达叶子节点的所有路径总，黑色节点数量都是一样的
+
+* 红黑树相对于BST和AVL树有哪些优点
+    * 红黑树牺牲了严格的高度平衡的优越条件为代价，只要求部分达到平衡，降低了平衡的要求，提高了性能。红黑树能够以O(logn)的时间复杂度完成查找,插入,删除操作，任何不平衡都能在三次旋转内解决。
+    * 红黑树左右子树中，最长路径的长度不会大于最短路径长度的两倍， BST不保证这一点，红黑树搜索最差时间复杂度是O(logn), BST是O(n)
+    * 红黑树和AVL树的最差时间复杂度都是O(logn)，但是红黑树不必维护树的高度平衡，所以红黑树的代价更小，如果插入的数据是比较随机的可以用AVL。
+
+* 红黑树和哈希表,在选择的时候有什么依据？
+    权衡三个因素: 查找速度, 数据量, 内存使用，可扩展性。
+
+    总体来说，hash查找速度会比map快，而且查找速度基本和数据量大小无关，属于常数级别;而map的查找速度是log(n)级别。并不一定常数就比log(n) 小，hash还有hash函数的耗时，明白了吧，如果你考虑效率，特别是在元素达到一定数量级时，考虑考虑hash。但若你对内存使用特别严格， 希望程序尽可能少消耗内存，那么一定要小心，hash可能会让你陷入尴尬，特别是当你的hash对象特别多时，你就更无法控制了，而且 hash的构造速度较慢。
+
+    红黑树并不适应所有应用树的领域。如果数据基本上是静态的，那么让他们待在他们能够插入，并且不影响平衡的地方会具有更好的性能。如果数据完全是静态的，例如，做一个哈希表，性能可能会更好一些。
+
+    在实际的系统中，例如，需要使用动态规则的防火墙系统，使用红黑树而不是散列表被实践证明具有更好的伸缩性。Linux内核在管理vm_area_struct时就是采用了红黑树来维护内存块的。
+
+    红黑树通过扩展节点域可以在不改变时间复杂度的情况下得到结点的秩。
+    
+* 如何扩展红黑树来获得比某个结点小的元素有多少个？
+    这其实就是求节点元素的顺序统计量，当然任意的顺序统计量都可以需要在O(lgn)时间内确定。
+
+    在每个节点添加一个size域，表示以结点 x 为根的子树的结点树的大小，则有
+
+    size[x] = size[[left[x]] + size [right[x]] + 1;
+
+    这时候红黑树就变成了一棵顺序统计树。
+
+    利用size域可以做两件事：
+    * 找到第i小的节点
+        ```java
+        OS-SELECT(x;,i)
+        r = size[left[x]] + 1;
+        if i == r
+            return x
+        elseif i < r
+            return OS-SELECT(left[x], i)
+        else return OS-SELECT(right[x],  i)
+        ```
+    * 确定某个节点之前有多少个节点
+        ```java
+            
+        ```
 
 ### B树 B+树 
 * B树
@@ -277,6 +334,25 @@ __CAS__ 有3个操作数，分别为内存值V、旧的期望值A和新值B。�
     1. 后序遍历左子树
     2. 后序遍历右子树
     3. 访问根节点
+
+### AVL(平衡二叉查找树)
+* 概念
+    * AVL树是二叉查找树
+    * AVL任意节点的左右子树高度差不超过1
+
+* 失衡调整
+    * 左单旋转
+    <div align="center"><img src="../../resources/images/java/datastructure/AVL1.png"></div>  
+
+    * 右单旋转
+    <div align="center"><img src="../../resources/images/java/datastructure/AVL2.png"></div>  
+
+    * 先左旋后右旋
+    <div align="center"><img src="../../resources/images/java/datastructure/AVL3.png"></div>  
+
+    * 现右旋后左旋
+    <div align="center"><img src="../../resources/images/java/datastructure/AVL4.png"></div>  
+
 
 ## 链表List
 

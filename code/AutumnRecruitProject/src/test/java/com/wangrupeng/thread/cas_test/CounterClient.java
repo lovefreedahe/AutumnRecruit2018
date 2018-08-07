@@ -21,7 +21,7 @@ public class CounterClient implements Runnable {
         }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         int NUM_OF_THREADS = 100;
         int NUM_OF_INCREMENT = 1000000;
         ExecutorService service = Executors.newFixedThreadPool(NUM_OF_THREADS);

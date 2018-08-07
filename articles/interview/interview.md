@@ -598,16 +598,21 @@
         2. 学过哪些课程
         3. 介绍项目
         4. 排序算法，qsort
-        5. AVL树怎么构建,怎么调整
+        5. AVL树怎么构建,怎么调整,红黑树
         6. 最短路径算法，迪杰斯特拉，堆优化，正确性分析,SPDFA
         7. 锁，sync,Lock(公平锁，非公平锁)读写锁，CAS,AQS
+        ReentrantLock
         8. java泛型的理解,实现和C++的不同
         9. 设计模式？你用过那些设计模式
         10. HashMap,HashTable，1.8优化，ConcurrentHashMap1.8优化
         11. 1.8 新特性
         12. 对IOC的理解
         13. 谈谈对数据库优化的理解？反范式合理冗余数据，合理建索引，使用覆盖索引，问需不需要结合项目说？不用，谈谈就可以。
-        14. 介绍一下nio，他好在哪里，epoll实现 红黑树，和select poll的不同。介绍一下aio
+        14. 介绍一下nio，他好在哪里，epoll实现 ，和select poll的不同。介绍一下aio
+            * epoll是对select和poll的改进
+            * select对监控的socket集合大小做了限制(fds), 1024, poll没有长度限制
+            * select和poll都会对fds进行拷贝，从用户态到内核态，epoll不需要
+            * epoll不需要遍历整个fds，而是更精细的知道哪些是有可读事件的。
         15. 
     * 三面
         1. 自我介绍

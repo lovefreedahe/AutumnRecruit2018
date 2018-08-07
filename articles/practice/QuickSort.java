@@ -1,7 +1,6 @@
 
 import java.util.Stack;
 public class QuickSort {
-
     public void sort(int[] array) {
         quickSort(array, 0, array.length - 1);
     }
@@ -22,20 +21,20 @@ public class QuickSort {
         if(start < end) {
             Stack<Record> stack = new Stack<>();
             int position = partition(array, start, end);
-            if(start <= position - 1) {
-                stack.put(new Record(start, position - 1));
+            if(start < position -1) {
+                stack.push(new Record(start, position - 1));
             }
-            if(end >= position + 1) {
-                stack.put(new Record(position + 1, end));
+            if(end > position + 1) {
+                stack.push(new Record(position + 1, end));
             }
             while(!stack.isEmpty()) {
                 Record record = stack.pop();
                 position = partition(array, record.left, record.right);
-                if(record.left <= position - 1) {
-                    partition(array, record.left, position - 1);
+                if(record.left < position - 1) {
+                    stack.push(new Record(record.left, position - 1));
                 }
-                if(record.right >= position + 1) {
-                    partition(array, position + 1, record.right);
+                if(record.right > position + 1) {
+                    stack.push(new Record(position + 1, record.right));
                 }
             }
         }
@@ -61,7 +60,6 @@ public class QuickSort {
         return end;
     }
 
-
     private void swap(int[] array, int a, int b) {
         int temp = array[a];
         array[a] = array[b];
@@ -69,27 +67,27 @@ public class QuickSort {
     }
 
     private class Record {
-        private int left;
-        private int right;
-        private Record(int left, int right) {
-            this.left = left;
-            this.right = right;
-        }
+        int left;
+        int right;
+	    private Record(int left, int right) {
+		    this.left = left;
+		    this.right = right;
+	    }
     }
 
+
     public static void main(String[] args) {
-        QuickSort quickSort = new QuickSort();
+        QuickSort qsort = new QuickSort();
         int[] array = {1, 3, 5, 7, 9, 2, 4, 6, 8, 0};
-        quickSort.sort(array);
+        qsort.sort(array);
         System.out.println("Quick sort with recursive:");
-        for(int i : array) {
+        for(int i:array) {
             System.out.print(i + " ");
         }
-        System.out.println("\n");
-        array = {1, 3, 5, 7, 9, 2, 4, 6, 8, 0};
-        quickSort.sortNonRecursive(array);
+        System.out.println();
+        int[] array2 = {1, 3, 5, 7, 9, 2, 4, 6, 8, 0};
         System.out.println("Quick sort with non-recursive:");
-        for(int i : array) {
+        for(int i:array2) {
             System.out.print(i + " ");
         }
     }

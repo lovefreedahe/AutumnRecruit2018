@@ -10,11 +10,19 @@ public class PriorityQueueExample {
             customers.add(new Customer(new Integer(random.nextInt(100)), "customer-" + i));
         }
 
+        Iterator<Customer> iterator = customers.iterator();
+        while (iterator.hasNext()) {
+            Customer customer = iterator.next();
+            System.out.println(customer.getName() + " " +  customer.getId());
+        }
+
+        System.out.println();
+
         for (int i = 0;i < 10;i++) {
             Customer customer = customers.poll();
             System.out.println(customer.getName() + " " +  customer.getId());
         }
-
+        /*
         PriorityQueue<Customer> customers1 = new PriorityQueue<>(10, idComparator);
         for (int i = 0;i < 10;i++) {
             customers1.add(new Customer(new Integer(random.nextInt(100)), "customer-" + i));
@@ -23,7 +31,7 @@ public class PriorityQueueExample {
         for (int i = 0;i < 10;i++) {
             Customer customer = customers1.poll();
             System.out.println(customer.getName() + " " +  customer.getId());
-        }
+        }*/
     }
 
     public static Comparator<Customer> idComparator = new Comparator<Customer>() {

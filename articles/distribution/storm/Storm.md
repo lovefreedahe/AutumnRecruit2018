@@ -12,6 +12,10 @@
 * [常用模式](common_topology_patterns.md)
 * [分布式RPC](distributed_rpc.md)
 
+# 补充
+* [ACK机制详解](ack.md)
+* [KafkaSpout](KafkaSpout.md)
+
 # 参考资料
 * [Apache Storm 1.1.0官方文档](http://storm.apachecn.org/releases/cn/1.1.0/)
 * [Apache Storm 0.9.x官方文档译文](https://github.com/weyo/Storm-Documents)

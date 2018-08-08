@@ -53,7 +53,7 @@ public class Solution {
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        System.out.println(solution.Fibonacci(6));
+        System.out.println(solution.Fibonacci(20));
         System.out.println(solution.FibonacciEffective(6));
         System.out.println(solution.FibonacciArray(6));
     }

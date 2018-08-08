@@ -87,6 +87,5 @@ public class Main {
             String word = scanner.next();
             ma.process(strings,word, m, n);
         }
-
     }
 }

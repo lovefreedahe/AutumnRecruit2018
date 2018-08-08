@@ -64,9 +64,7 @@ public class Main {
 
         for (int i = 0;i < number;i++) {
             str = scanner.next();
-            long start = System.currentTimeMillis();
             System.out.println(m.process(str));
-            System.out.println(System.currentTimeMillis() - start);
         }
     }
 }

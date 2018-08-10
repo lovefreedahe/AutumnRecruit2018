@@ -110,3 +110,16 @@ Command 2>&-|	关闭标准错误输出，和 2>/dev/null 有类似功效
         -k : 以KB列出容量显示；
 
         -m : 以MB列出容量显示。
+
+# chmod
+
+Read 4
+Write 2
+Execute 1
+RWX 7
+RW 6
+RX 5
+当前用户：用户所在组：其他组
+755
+user group other all
+chmod o+w file

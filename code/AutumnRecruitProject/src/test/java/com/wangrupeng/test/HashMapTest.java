@@ -13,6 +13,7 @@ public class HashMapTest {
         ConcurrentHashMap<Integer, String> concurrentHashMap = new ConcurrentHashMap<>();
         concurrentHashMap.put(new Integer(1), "test");
         Hashtable<Integer, String> hashtable = new Hashtable<>();
+
         hashtable.put(12, "");
         String str = "1231";
         System.out.println(str.hashCode() >>> 16);

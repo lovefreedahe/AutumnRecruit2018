@@ -206,9 +206,31 @@ Executor 管理多个异步任务的执行，而无需程序员显式地管理�
 
 主要有三种 Executor：
 
-* CachedThreadPool：一个任务创建一个线程；
-* FixedThreadPool：所有任务只能使用固定大小的线程；
-* SingleThreadExecutor：相当于大小为 1 的 FixedThreadPool。
+* newCachedThreadPool：一个任务创建一个线程，若线程池的线程超过需要，则灵活回收线程
+    ```java
+    public static ExecutorService newCachedThreadPool() {
+        return new ThreadPoolExecutor(0, Integer.MAX_VALUE,
+                                      60L, TimeUnit.SECONDS,
+                                      new SynchronousQueue<Runnable>());
+    }
+    ```
+
+    使用的是SynchronousQueue，SynchronousQueue不存储数据，插入的数据会在之前的数据消费掉之后才加入队列，否则，插入就会被一直堵塞。
+* newFixedThreadPool：所有任务只能使用固定大小的线程；
+    ```java
+    public static ExecutorService newFixedThreadPool(int nThreads) {
+        return new ThreadPoolExecutor(nThreads, nThreads,
+                                      0L, TimeUnit.MILLISECONDS,
+                                      new LinkedBlockingQueue<Runnable>());
+    }
+    ```
+
+    使用的是LinkedBlockingQueue，吞吐量更高。
+* newSingleThreadExecutor：相当于大小为 1 的 FixedThreadPool。同时只有一个线程在工作，如果当前线程挂了，则重新开一个线程，会按照任务提交的顺序进行
+    使用的也是LinkedBlockingQueue，只不过大小为1
+
+* newScheduleThreadPool
+    定长，所有任务会定时以及周期性的运行。
 
 ```java
 public static void main(String[] args) {
@@ -299,7 +321,7 @@ public void run() {
 ```
 
 ## yield()
-对静态方法 Thread.yield() 的调用声明了当前线程已经完成了生命周期中最重要的部分，可以切换给其它线程来执行。该方法只是对线程调度器的一个建议，而且也只是建议具有相同优先级的其它线程可以运行。
+对静态方法 Thread.yield() 的调用声明了当前线程已经完成了生命周期中最重要的部分，可以切换给其它线程来执行。该方法只是对线程调度器的一个建议，而且也只是**建议具有相同优先级的其它线程可以运行**。
 ```java
 public void run() {
     Thread.yield();
@@ -310,7 +332,7 @@ public void run() {
 一个线程执行完毕之后会自动结束，如果在运行过程中发生异常也会提前结束。
 
 ## InterruptedException
-通过调用一个线程的 interrupt() 来中断该线程，如果该线程处于阻塞、限期等待或者无限期等待状态，那么就会抛出 InterruptedException，从而提前结束该线程。但是不能中断 I/O 阻塞和 synchronized 锁阻塞。
+通过调用一个线程的 interrupt() 来中断该线程，如果该线程处于阻塞、限期等待或者无限期等待状态，那么就会抛出 InterruptedException，从而提前结束该线程。但是**不能中断 I/O 阻塞和 synchronized 锁阻塞**。
 
 对于以下代码，在 main() 中启动一个线程之后再中断它，由于线程中调用了 Thread.sleep() 方法，因此会抛出一个 InterruptedException，从而提前结束线程，不执行之后的语句。
 ```java
@@ -400,7 +422,7 @@ java.lang.InterruptedException: sleep interrupted
     at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
     at java.lang.Thread.run(Thread.java:745)
 ```
-如果只想中断 Executor 中的一个线程，可以通过使用 submit() 方法来提交一个线程，它会返回一个 Future<?> 对象，通过调用该对象的 cancel(true) 方法就可以中断线程。
+**如果只想中断 Executor 中的一个线程，可以通过使用 submit() 方法来提交一个线程，它会返回一个 Future<?> 对象，通过调用该对象的 cancel(true) 方法就可以中断线程。**
 
 Future<?> future = executorService.submit(() -> {
     // ..
@@ -610,12 +632,16 @@ B
 
 ## wait() notify() notifyAll()
 调用 wait() 使得线程等待某个条件满足，线程在等待时会被挂起，当其他线程的运行使得这个条件满足时，其它线程会调用 notify() 或者 notifyAll() 来唤醒挂起的线程。
+* notify()
+    只唤醒一个线程，如果有多个线程，那么唤醒哪一个取决于操作系统对多线程管理的实现
+* notifyAll()
+    唤醒所有线程，唤醒的顺序取决于操作系统对多线程管理的实现。
 
 它们都属于 Object 的一部分，而不属于 Thread。
 
 只能用在同步方法或者同步控制块中使用，否则会在运行时抛出 IllegalMonitorStateExeception。
 
-使用 wait() 挂起期间，线程会释放锁。这是因为，如果没有释放锁，那么其它线程就无法进入对象的同步方法或者同步控制块中，那么就无法执行 notify() 或者 notifyAll() 来唤醒挂起的线程，造成死锁。
+**使用 wait() 挂起期间，线程会释放锁**。这是因为，如果没有释放锁，那么其它线程就无法进入对象的同步方法或者同步控制块中，那么就无法执行 notify() 或者 notifyAll() 来唤醒挂起的线程，造成死锁。
 ```java
 public class WaitNotifyExample {
     public synchronized void before() {
@@ -648,7 +674,7 @@ after
 * wait() 会释放锁，sleep() 不会。
 
 ## await() signal() signalAll()
-java.util.concurrent 类库中提供了 Condition 类来实现线程之间的协调，可以在 Condition 上调用 await() 方法使线程等待，其它线程调用 signal() 或 signalAll() 方法唤醒等待的线程。相比于 wait() 这种等待方式，await() 可以指定等待的条件，因此更加灵活。
+java.util.concurrent 类库中提供了 Condition 类来实现线程之间的协调，可以在 Condition 上调用 await() 方法使线程等待，其它线程调用 signal() 或 signalAll() 方法唤醒等待的线程。**相比于 wait() 这种等待方式，await() 可以指定等待的条件，因此更加灵活**。
 
 使用 Lock 来获取一个 Condition 对象。
 ```java
@@ -693,7 +719,7 @@ after
 # 七、J.U.C - AQS
 java.util.concurrent（J.U.C）大大提高了并发性能，AQS 被认为是 J.U.C 的核心。
 ## CountdownLatch
-用来控制一个线程等待多个线程。
+**用来控制一个线程等待多个线程。**
 
 维护了一个计数器 cnt，每次调用 countDown() 方法会让计数器的值减 1，减到 0 的时候，那些因为调用 await() 方法而在等待的线程就会被唤醒。
 <div align="center"><img src="../../resources/images/java/concurrency/CountdownLatch.png" ></div>
@@ -720,7 +746,7 @@ public class CountdownLatchExample {
 run..run..run..run..run..run..run..run..run..run..end
 ```
 ## CyclicBarrier
-用来控制多个线程互相等待，只有当多个线程都到达时，这些线程才会继续执行。
+**用来控制多个线程互相等待，只有当多个线程都到达时，这些线程才会继续执行。**
 
 和 CountdownLatch 相似，都是通过维护计数器来实现的。但是它的计数器是递增的，每次执行 await() 方法之后，计数器会加 1，直到计数器的值和设置的值相等，等待的所有线程才会继续执行。和 CountdownLatch 的另一个区别是，CyclicBarrier 的计数器可以循环使用，所以它才叫做循环屏障。
 
@@ -1280,7 +1306,9 @@ public final int getAndAddInt(Object var1, long var2, int var4) {
     return var5;
 }
 ```
-ABA ：如果一个变量初次读取的时候是 A 值，它的值被改成了 B，后来又被改回为 A，那 CAS 操作就会误认为它从来没有被改变过。J.U.C 包提供了一个带有标记的原子引用类“AtomicStampedReference”来解决这个问题，它可以通过控制变量值的版本来保证 CAS 的正确性。大部分情况下 ABA 问题不会影响程序并发的正确性，如果需要解决 ABA 问题，改用传统的互斥同步可能会比原子类更高效。
+ABA ：如果一个变量初次读取的时候是 A 值，它的值被改成了 B，后来又被改回为 A，那 CAS 操作就会误认为它从来没有被改变过。**J.U.C 包提供了一个带有标记的原子引用类“AtomicStampedReference”来解决这个问题，它可以通过控制变量值的版本来保证 CAS 的正确性。大部分情况下 ABA 问题不会影响程序并发的正确性，如果需要解决 ABA 问题，改用传统的互斥同步可能会比原子类更高效。**
+
+**在更新A的时候不光更新值，也更新版本号。**
 
 ### 3.无同步方案
 要保证线程安全，并不是一定就要进行同步，两者没有因果关系。同步只是保证共享数据争用时的正确性的手段，如果一个方法本来就不涉及共享数据，那它自然就无须任何同步措施去保证正确性，因此会有一些代码天生就是线程安全的。
@@ -1476,19 +1504,19 @@ JDK 1.6 引入了偏向锁和轻量级锁，从而让锁拥有了四个状态：
 <div align="center"><img src="../../resources/images/java/concurrency/bias_lock.jpg" ></div>
 
 # 十三、多线程开发良好的实践
-* 给线程起个有意义的名字，这样可以方便找 Bug。
+* **给线程起个有意义的名字**，这样可以方便找 Bug。
 
-* 缩小同步范围，例如对于 synchronized，应该尽量使用同步块而不是同步方法。
+* **缩小同步范围**，例如对于 synchronized，应该尽量使用同步块而不是同步方法。
 
-* 多用同步类少用 wait() 和 notify()。首先，CountDownLatch, Semaphore, CyclicBarrier 和 Exchanger 这些同步类简化了编码操作，而用 wait() 和 notify() 很难实现对复杂控制流的控制。其次，这些类是由最好的企业编写和维护，在后续的 JDK 中它们还会不断优化和完善，使用这些更高等级的同步工具你的程序可以不费吹灰之力获得优化。
+* **多用同步类少用 wait() 和 notify()**。首先，CountDownLatch, Semaphore, CyclicBarrier 和 Exchanger 这些同步类简化了编码操作，而用 wait() 和 notify() 很难实现对复杂控制流的控制。其次，这些类是由最好的企业编写和维护，在后续的 JDK 中它们还会不断优化和完善，使用这些更高等级的同步工具你的程序可以不费吹灰之力获得优化。
 
-* 多用并发集合少用同步集合。并发集合比同步集合的可扩展性更好，例如应该使用 ConcurrentHashMap 而不是 Hashtable。
+* **多用并发集合少用同步集合**。并发集合比同步集合的可扩展性更好，例如应该使用 ConcurrentHashMap 而不是 Hashtable。
 
-* 使用本地变量和不可变类来保证线程安全。
+* **使用本地变量和不可变类来保证线程安全。**
 
-* 使用线程池而不是直接创建 Thread 对象，这是因为创建线程代价很高，线程池可以有效地利用有限的线程来启动任务。
+* **使用线程池而不是直接创建 Thread 对象**，这是因为创建线程代价很高，线程池可以有效地利用有限的线程来启动任务。
 
-* 使用 BlockingQueue 实现生产者消费者问题。
+* **使用 BlockingQueue 实现生产者消费者问题。**
 
 # 参考资料
 - BruceEckel. Java 编程思想: 第 4 版 [M]. 机械工业出版社, 2007.

@@ -108,8 +108,10 @@
 5. 双向链表
 ### 树
 1. B树, B+树
+[理解B+树算法和Innodb索引](http://www.niceru.com/topic/420.html)
 2. 红黑树
 3. 二叉查找树和二叉排序树
+4. LSM相比较于B+树B树的优势和劣势是什么
 
 ### 栈(Stack)
 

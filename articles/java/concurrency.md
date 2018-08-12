@@ -15,6 +15,12 @@
     - [实现接口 VS 继承 Thread](#实现接口-vs-继承-thread)
 - [三、基础线程机制](#三基础线程机制)
     - [Executor](#executor)
+        - [ExecutorService 方法](#executorservice-方法)
+            - [execute(Runnable)](#executerunnable)
+            - [submit(Runnable)](#submitrunnable)
+            - [submit(Callable)](#submitcallable)
+            - [invokeAny()](#invokeany)
+            - [invokeAll()](#invokeall)
     - [Daemon](#daemon)
     - [sleep()](#sleep)
     - [yield()](#yield)
@@ -99,6 +105,7 @@
 等待获取一个排它锁，如果其他线程释放了该锁就结束此状态。Sychronized。
 ## 无限期等待(Waiting)
 等待其他线程显式的唤醒，否则不会被分配CPU时间片。
+
 进入方法 | 退出方法
 -- | --
 没有设置Timeout参数的Object.wait() | Object.notify() / Object.notifyAll()
@@ -195,6 +202,8 @@ public static void main(String[] args) {
 ## Executor
 Executor 管理多个异步任务的执行，而无需程序员显式地管理线程的生命周期。这里的异步是指多个任务的执行互不干扰，不需要进行同步操作。
 
+[线程池](http://ifeve.com/thread-pools/)
+
 主要有三种 Executor：
 
 * CachedThreadPool：一个任务创建一个线程；
@@ -210,6 +219,56 @@ public static void main(String[] args) {
     executorService.shutdown();
 }
 ```
+
+```java
+ExecutorService service = Executors.newCachedThreadPoll();
+ExecutorService service = Executors.newSingleThreadExecutor();
+ExecutorService service = Executors.newFixedThreadPoll(10);
+ExecutorService service = Executors.newScheduledThreadPool(10);
+```
+
+### ExecutorService 方法
+#### execute(Runnable)
+
+```java
+ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+executorService.execute(new Runnable() {
+    public void run() {
+        System.out.println("Asynchronous task");
+    }
+});
+
+executorService.shutdown();
+```
+
+#### submit(Runnable) 
+
+```java
+Future future = executorService.execute(new Runnable() {
+    public void run() {
+        System.out.println("Asynchronous task");
+    }
+});
+future.get(); //returns null
+```
+
+#### submit(Callable)
+
+```java
+Future future = executorService.execute(new Callable() {
+    public String call() {
+        System.out.println("Asynchronous task");
+        return "submit callable";
+    }
+});
+future.get(); //returns "submit callable"
+```
+
+#### invokeAny()
+
+#### invokeAll()
+
 ## Daemon
 守护线程是程序运行时在后台提供服务的线程，不属于程序中不可或缺的部分。
 

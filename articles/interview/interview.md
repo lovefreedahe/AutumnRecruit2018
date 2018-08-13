@@ -680,3 +680,47 @@
         5. 一个表有id和mark两个字段，给定一个用户id，一个sql查出来他的排名，
         6. gc算法，内存模型
         7. AOP原理，好处
+
+## 网易
+作者：DBwater
+链接：https://www.nowcoder.com/discuss/38183
+来源：牛客网
+
+* 一面：
+    聊项目
+    聊实习经历
+    tcp的三次握手画出来
+    http和https的区别
+    http1.0和http1.1的区别
+    tcp协议的缓冲区什么情况下应该设置的大一些，什么时候应该小一些
+    tcp的内部的一些变量你改过么
+    python学的如何
+    tcp和udp的区别
+    哪些程序用了udp协议你知道么
+    tcp协议的阻塞和流量控制
+    select和epoll的区别
+    http的状态码
+* 二面：
+    聊实习经历
+    聊项目
+    指针和引用的区别
+    const的几种用法
+    c 的内存池
+    c 11的一些新特性
+    linux上的一些命令top,ps之类的
+    vim上一些常用的命令
+    虚函数的内存分布
+    topK问题
+* hr面：
+    聊人生
+
+## 阿里云
+* synchronize在语言层面上是怎么实现的
+* 常用的垃圾回收算法，详细介绍每一个
+* interface相比较于类的优势在哪里
+* 流式计算框架为什么用storm而不是flink和spark
+* storm的消息一致性
+* storm ack对项目性能有没有影响
+* storm消息处理不过来怎么办
+* 有没有遇到项目崩溃的问题 怎么解决的
+

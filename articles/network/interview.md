@@ -270,7 +270,11 @@ UDP报文的字节长度（包括首部和数据）
 8. TCP三次握手、四次挥手（这个问题真的要回答吐了，不过真的是面试官最喜欢问的，建议每天手撸一遍，而且不只是每次请求的过程，各种FIN_WAIT、TIME_WAIT状态也要掌握）。
 * 三次握手  
     <div align="center"><img src="../../resources/images/network/tcp_handshake.gif" width="400"></div> 
+    
     <div align="center"><img src="../../resources/images/network/tcp_handshake.png" width="400"></div> 
+
+    <div align="center"><img src="../../resources/images/network/tcp_handshake2.png" ></div> 
+
     所谓三次握手(Three-way Handshake)，是指建立一个TCP连接时，需要客户端和服务器总共发送3个包。三次握手的目的是连接服务器指定端口，建立TCP连接,并同步连接双方的序列号和确认号并交换 TCP 窗口大小信息.在socket编程中，客户端执行connect()时。将触发三次握手 
 
     * 第一次握手  

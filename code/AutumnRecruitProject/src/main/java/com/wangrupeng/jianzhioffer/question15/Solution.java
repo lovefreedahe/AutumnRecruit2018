@@ -11,13 +11,23 @@ class ListNode {
 
 public class Solution {
     public ListNode ReverseList(ListNode head) {
-        if (head.next == null) {
+        if (head == null) {
+            return null;
+        }
+
+        if (head.next == null){
             return head;
         }
-        ListNode temp = ReverseList(head.next);
-        head.next = null;
-        temp.next = head;
-        return head;
+
+        ListNode temp = head;
+        ListNode preNode = null;
+        while (temp != null) {
+            ListNode nextNode = temp.next;
+            temp.next = preNode;
+            preNode = temp;
+            temp = nextNode;
+        }
+        return preNode;
     }
 
     public static void main(String[] args) {

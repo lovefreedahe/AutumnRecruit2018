@@ -1,7 +1,9 @@
 package com.wangrupeng.jianzhioffer.question6;
 
+import com.wangrupeng.jianzhioffer.model.TreeNode;
+
 public class Solution {
-    public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+    public TreeNode reConstructBinaryTree(int [] pre, int [] in) {
         TreeNode root = new TreeNode(pre[0]);
         int i = 0;
         for (;  i < in.length ; i++) {

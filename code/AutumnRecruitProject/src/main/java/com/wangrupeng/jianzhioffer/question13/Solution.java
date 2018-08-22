@@ -2,14 +2,6 @@ package com.wangrupeng.jianzhioffer.question13;
 
 public class Solution {
 
-    class Node {
-        int value;
-        Node next;
-    }
-
-    class List {
-
-    }
     public void reOrderArray(int [] array) {
         int length = array.length;
         int[] uneven = new int[length];

@@ -1,7 +1,5 @@
 package com.wangrupeng.jianzhioffer.question18;
 
-import afu.org.checkerframework.checker.igj.qual.I;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

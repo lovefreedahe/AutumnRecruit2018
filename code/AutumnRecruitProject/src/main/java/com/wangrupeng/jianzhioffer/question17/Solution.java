@@ -1,21 +1,10 @@
 package com.wangrupeng.jianzhioffer.question17;
 
-import com.wangrupeng.pattern.responsibility.Handler;
+import com.wangrupeng.jianzhioffer.model.TreeNode;
 
-class TreeNode {
-    int val = 0;
-    TreeNode left = null;
-    TreeNode right = null;
-
-    public TreeNode(int val) {
-        this.val = val;
-
-    }
-
-}
 public class Solution {
 
-    public boolean HasSubtree(TreeNode root1,TreeNode root2) {
+    public boolean HasSubtree(TreeNode root1, TreeNode root2) {
         boolean hasSubTree = false;
         if (root1 != null && root2 != null) {
             hasSubTree = exactlyHasSubTree(root1, root2);

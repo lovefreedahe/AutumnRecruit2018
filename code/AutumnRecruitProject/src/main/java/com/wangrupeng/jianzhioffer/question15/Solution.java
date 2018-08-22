@@ -1,13 +1,6 @@
 package com.wangrupeng.jianzhioffer.question15;
 
-class ListNode {
-    int val;
-    ListNode next;
-
-    ListNode(int val) {
-        this.val = val;
-    }
-}
+import com.wangrupeng.jianzhioffer.model.ListNode;
 
 public class Solution {
     public ListNode ReverseList(ListNode head) {

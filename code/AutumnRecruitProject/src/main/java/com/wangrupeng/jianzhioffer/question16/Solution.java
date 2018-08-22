@@ -1,16 +1,10 @@
 package com.wangrupeng.jianzhioffer.question16;
 
-public class Solution {
-    static class ListNode {
-        int val;
-        ListNode next;
-        ListNode(){}
-        ListNode(int val) {
-            this.val = val;
-        }
-    }
+import com.wangrupeng.jianzhioffer.model.ListNode;
 
-    public ListNode Merge(ListNode list1,ListNode list2) {
+public class Solution {
+
+    public ListNode Merge(ListNode list1, ListNode list2) {
         if (list1 == null) {
             return list2;
         }

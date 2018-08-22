@@ -1,5 +1,7 @@
 package com.wangrupeng.jianzhioffer.question5;
 
+import com.wangrupeng.jianzhioffer.model.ListNode;
+
 import java.util.ArrayList;
 
 /**

@@ -11,6 +11,12 @@ public class Solution {
     }
 
     public ListNode Merge(ListNode list1,ListNode list2) {
+        if (list1 == null) {
+            return list2;
+        }
+        if (list2 == null) {
+            return list1;
+        }
         ListNode head = new ListNode();
         ListNode next = new ListNode();
         head.next = next;
@@ -46,7 +52,7 @@ public class Solution {
             }
         }
 
-        if (temp1 != null && temp1 == null ) {
+        if (temp1 != null && temp2 == null ) {
             while (temp1 != null) {
                 next.val = temp1.val;
                 temp1 = temp1.next;
@@ -61,7 +67,7 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        int i = 0;
+        /*int i = 0;
         ListNode head = new ListNode(i);
         i=i+2;
         head.next = new ListNode(i);
@@ -85,7 +91,15 @@ public class Solution {
         i=i+2;
         list2.next.next.next.next = new ListNode(i);
         i=i+2;
-        list2.next.next.next.next.next = new ListNode(i);
+        list2.next.next.next.next.next = new ListNode(i);*/
+
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(3);
+        head.next.next = new ListNode(5);
+        ListNode list2 = new ListNode(1);
+        list2.next = new ListNode(3);
+        list2.next.next = new ListNode(5);
+
         Solution solution = new Solution();
         solution.Merge(head,list2);
     }

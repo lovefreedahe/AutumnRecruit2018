@@ -13,7 +13,7 @@ ack机制即， spout发送的每一条消息，
 * 在规定的时间内，spout没有收到Acker的ack响应，就出发fail动作，认为该tuple处理失败
 * 收到Acker发送的fail响应tuple，也认为失败，触发fail动作
 
-另外Ack机制还常用于限流：为了避免spout发送数据太快，而bolt处理太慢，常常设置pending数，当spout有等于或超过pending数的tuple没有收到ack或fail响应时，跳过执行nextTuple,从而限制spout发送数据。
+**另外Ack机制还常用于限流：为了避免spout发送数据太快，而bolt处理太慢，常常设置pending数，当spout有等于或超过pending数的tuple没有收到ack或fail响应时，跳过执行nextTuple,从而限制spout发送数据。**
 
 通过conf.put(Config.TOPOLOGY_MAX_SPOUT_PENDING, pending);设置spout pending数。
 <div align="center"><img src="../../../resources/images/storm/acker_1.png"></div>

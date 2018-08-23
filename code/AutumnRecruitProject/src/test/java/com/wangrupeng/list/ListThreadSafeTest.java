@@ -1,9 +1,5 @@
 package com.wangrupeng.list;
 
-import org.apache.logging.log4j.core.util.ExecutorServices;
-import sun.net.www.http.ChunkedOutputStream;
-
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

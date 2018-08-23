@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+}
+
+group 'wangrupeng'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        //url 'https://mvnrepository.com/artifact/org.apache.storm/storm-core'
+        url 'http://clojars.org/repo/'
+    }
+}
+
+dependencies {
+    compile  group: 'org.apache.storm', name: 'storm-core', version: '1.1.1'
+    compile  group: 'org.apache.storm', name: 'storm-kafka', version: '1.1.1'
+    // https://mvnrepository.com/artifact/org.apache.zookeeper/zookeeper
+    compile group: 'org.apache.zookeeper', name: 'zookeeper', version: '3.4.10', ext: 'pom'
+    compile 'com.google.guava:guava:25.1-jre'
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'StormExamples',
+                'Implementation-Version': version
+        attributes "Class-Path": configurations.compile.collect { it.getName() }.join(' dependencies/')
+    }
+}
+
+task copyJar(type: Copy){
+    from configurations.runtime
+    into ('build/libs/dependencies')
+}
+
+task "create-dir" << {
+    sourceSets*.java.srcDirs*.each {
+        it.mkdirs()
+    }
+    sourceSets*.resources.srcDirs*.each {
+        it.mkdirs()
+    }
+}

@@ -1,9 +1,7 @@
 package com.wangrupeng.QuickSort;
 
-import org.apache.logging.log4j.core.async.ArrayBlockingQueueFactory;
 
 import java.util.*;
-import java.util.concurrent.*;
 
 public class QuickSort {
 

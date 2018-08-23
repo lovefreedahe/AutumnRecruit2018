@@ -2,8 +2,8 @@ package com.wangrupeng.concurrent.thread_pool;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import org.apache.storm.shade.org.eclipse.jetty.util.BlockingArrayQueue;
 
 /**
  * Created by WangRupeng on 2018/8/12.
@@ -15,7 +15,7 @@ public class ThreadPool {
     private List<PoolThread> threadList = new ArrayList<>();
     private boolean isStopped = false;
     public ThreadPool(int number) {
-        blockingQueue = new BlockingArrayQueue<>();
+        blockingQueue = new ArrayBlockingQueue<>(number);
         for (int i = 0;i < number;i++) {
             threadList.add(new PoolThread(blockingQueue));
         }

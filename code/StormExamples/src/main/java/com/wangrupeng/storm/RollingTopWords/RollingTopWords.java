@@ -24,6 +24,9 @@ import com.wangrupeng.storm.RollingTopWords.util.StormRunner;
 import org.apache.log4j.Logger;
 import org.apache.storm.Config;
 import org.apache.storm.testing.TestWordSpout;
+import org.apache.storm.topology.BasicBoltExecutor;
+import org.apache.storm.topology.IBasicBolt;
+import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.tuple.Fields;
 
@@ -48,7 +51,6 @@ public class RollingTopWords {
     this.topologyName = topologyName;
     topologyConfig = createTopologyConfiguration();
     runtimeInSeconds = DEFAULT_RUNTIME_IN_SECONDS;
-
     wireTopology();
   }
 

@@ -110,6 +110,7 @@
 * [面试题目汇总答案](articles/interview/total_answer.md)
 * [个人面试总结](articles/interview/interview.md)
 * [面试准备](articles/interview/summary.md)
+* [每日复习总结](articles/interview/everyday.md)
 
 ## 3 招聘信息
 
@@ -330,3 +331,6 @@ Java语言基础 -> 分布式计算框架理解和应用
     2. 熟悉常用的开源框架和开源服务(Spring, MyBatis, Netty, MySQL,Redis等) 
     3. **熟悉JVM，对JVM调优、性能优化有经验者优先**
     4. 熟悉 Linux体系结构，Shell、Python 等脚本语言优先
+
+2018.8.24
+* 计算机网络

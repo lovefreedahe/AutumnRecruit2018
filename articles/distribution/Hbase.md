@@ -258,7 +258,20 @@ HBase中的行是按照rowkey的字典顺序排序的，这种设计优化了sca
     * major
     对一个region下面所有的HFile进行整理，期间会清除有删除标记的字段，把所有HFile合并成一个文件。一般取消自动major compression，定期手动整理。
 
-* HBase 
+* HBase 优化策略
+1. 写
+put批量写入或者如果允许数据丢失的话，put在客户端缓存到一定大小一次性写入
+2. rowkey设计
+    * 散列原则
+    * 长度原则
+    * 唯一性原则
+
+3. memstore配置优化
+    * 列族过多会导致一个Region有多个memstore，更容易达到limit，然后flush
+    * 
+
+4. Store中的HFile数量是否大于配置参数blockingStoreFile
+在写入很快的集群，HFile数量如果大于配置数值，则会执行major compaction,整个HStore的写入。
 
 # 参考书籍  
 * 《HBase权威指南》  

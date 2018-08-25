@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group 'wangrupeng'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'StormExamples',
+                'Implementation-Version': version
+        attributes "Class-Path": configurations.compile.collect { it.getName() }.join(' dependencies/')
+    }
+}
+
+task copyJar(type: Copy){
+    from configurations.runtime
+    into ('build/libs/dependencies')
+}
+
+task "create-dir" << {
+    sourceSets*.java.srcDirs*.each {
+        it.mkdirs()
+    }
+    sourceSets*.resources.srcDirs*.each {
+        it.mkdirs()
+    }
+}

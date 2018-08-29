@@ -1,6 +1,9 @@
+package com.wangrupeng.Sort;
 
+
+import java.util.Random;
 import java.util.Stack;
-public class QuickSort {
+public class QuickTest {
     public void sort(int[] array) {
         quickSort(array, 0, array.length - 1);
     }
@@ -20,7 +23,7 @@ public class QuickSort {
     private void quickSortNonRecursive(int[] array, int start, int end) {
         if(start < end) {
             Stack<Record> stack = new Stack<>();
-            int position = paritition(array, start, end);
+            int position = partition(array, start, end);
             if(start <= position - 1) {
                 stack.push(new Record(start, position - 1));
             }
@@ -29,7 +32,7 @@ public class QuickSort {
             }
             while(!stack.isEmpty()) {
                 Record record = stack.pop();
-                position = paritition(array, record.left, record.right);
+                position = partition(array, record.left, record.right);
                 if(record.left <= position - 1) {
                     stack.push(new Record(record.left, position - 1));
                 }
@@ -37,7 +40,7 @@ public class QuickSort {
                     stack.push(new Record(position + 1, record.right));
                 }
             }
-        }        
+        }
     }
 
     class Record {
@@ -53,21 +56,22 @@ public class QuickSort {
     private int partition(int[] array, int start, int end) {
         int right = end;
         int mark = array[end];
-        while(start < end) {
-            while(start < end && array[start] <= mark) {
+        while (start < end) {
+            while (start < end && array[start] <= mark) {
                 ++start;
             }
-            while(start < end && array[end] >= mark) {
+            while (start < end && array[end] >= mark) {
                 --end;
             }
-            if(start < end) {
+            if (start < end) {
                 swap(array, start, end);
             }
-            if(right != end) {
-                swap(array, right, end);
-            }
-            return end;
+
         }
+        if (right != end) {
+            swap(array, right, end);
+        }
+        return end;
     }
 
     private void swap(int[] array, int a, int b) {
@@ -75,15 +79,26 @@ public class QuickSort {
         array[a] = array[b];
         array[b] = temp;
     }
-
     public static void main(String[] args) {
-        QuickSort qsort = new QuickSort();
+        QuickTest qsort = new QuickTest();
         int[] array = {1, 3, 5, 7, 9, 2, 4, 6, 8, 0};
-        qsort.sort(array);
+        int[] test = new int[10];
+        Random random = new Random();
+        for (int i = 0;i < 10;i++) {
+            test[i] = random.nextInt(10);
+        }
+        long start = System.currentTimeMillis();
+        qsort.sort(test);
+        System.out.println("Time used:" + (System.currentTimeMillis() - start));
         System.out.println("Quick sort with recursive:");
-        for(int i:array) {
+        for(int i:test) {
             System.out.print(i + " ");
         }
         System.out.println();
+        /*int[] array2 = {1, 3, 5, 7, 9, 2, 4, 6, 8, 0};
+        System.out.println("Quick sort with non-recursive:");
+        for(int i:array2) {
+            System.out.print(i + " ");
+        }*/
     }
 }

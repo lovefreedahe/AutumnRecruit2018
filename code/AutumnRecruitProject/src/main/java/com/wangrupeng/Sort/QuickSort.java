@@ -6,12 +6,12 @@ import java.util.Stack;
 public class QuickSort {
 
 
-    public void sort(int[] array) {
-        //quickSort(array, 0, array.length - 1);
-        quickNonRecursive(array, 0, array.length - 1);
+    public void sort(char[] array) {
+        quickSort(array, 0, array.length - 1);
+        //quickNonRecursive(array, 0, array.length - 1);
     }
 
-    public void quickSort(int[] array, int start, int end) {
+    public void quickSort(char[] array, int start, int end) {
         if (start < end) {
             int position = partition(array, start, end);
             quickSort(array, start, position - 1);
@@ -19,7 +19,7 @@ public class QuickSort {
         }
     }
 
-    public void quickNonRecursive(int[] array, int start, int end) {
+    public void quickNonRecursive(char[] array, int start, int end) {
         if (start < end) {
             Stack<Record> stack = new Stack<>();
             int position = partition(array, start, end);
@@ -44,7 +44,7 @@ public class QuickSort {
         }
     }
 
-    private int partition(int[] array, int start, int end) {
+    private int partition(char[] array, int start, int end) {
         int mark = getPivot(array, start, end);
         int right = end;
         while (start < end) {
@@ -65,7 +65,7 @@ public class QuickSort {
         return end;
     }
 
-    private int getPivot(int[] array, int start, int end) {
+    private int getPivot(char[] array, int start, int end) {
         int middle = start + (end - start) / 2;
         if (array[start] > array[middle]) {
             swap(array, start, end);
@@ -79,8 +79,8 @@ public class QuickSort {
         return array[end];
     }
 
-    private void swap(int[] array, int a, int b) {
-        int temp = array[a];
+    private void swap(char[] array, int a, int b) {
+        char temp = array[a];
         array[a] = array[b];
         array[b] = temp;
     }
@@ -95,7 +95,7 @@ public class QuickSort {
     }
 
     public static void main(String[] args) {
-        int[] array = {8,7,6,5, 3,2,1};
+        char[] array = {'C','T','S'};
         QuickSort quickSort = new QuickSort();
         quickSort.sort(array);
         for (int i : array) {

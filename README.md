@@ -112,6 +112,9 @@
 * [面试准备](articles/interview/summary.md)
 * [每日复习总结](articles/interview/everyday.md)
 
+### 2.10 总复习
+[总复习](articles/复习.md)
+
 ## 3 招聘信息
 
 ### 目前已经公布的公司招聘计划

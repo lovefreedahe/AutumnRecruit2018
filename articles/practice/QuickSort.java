@@ -20,25 +20,35 @@ public class QuickSort {
     private void quickSortNonRecursive(int[] array, int start, int end) {
         if(start < end) {
             Stack<Record> stack = new Stack<>();
-            int position = partition(array, start, end);
-            if(start < position -1) {
+            int position = paritition(array, start, end);
+            if(start <= position - 1) {
                 stack.push(new Record(start, position - 1));
             }
-            if(end > position + 1) {
+            if(end >= position + 1) {
                 stack.push(new Record(position + 1, end));
             }
             while(!stack.isEmpty()) {
                 Record record = stack.pop();
-                position = partition(array, record.left, record.right);
-                if(record.left < position - 1) {
+                position = paritition(array, record.left, record.right);
+                if(record.left <= position - 1) {
                     stack.push(new Record(record.left, position - 1));
                 }
-                if(record.right > position + 1) {
+                if(record.right >= position + 1) {
                     stack.push(new Record(position + 1, record.right));
                 }
             }
+        }        
+    }
+
+    class Record {
+        int left;
+        int right;
+        private Record(int left, int right) {
+            this.left = left;
+            this.right = right;
         }
     }
+
 
     private int partition(int[] array, int start, int end) {
         int right = end;
@@ -53,11 +63,11 @@ public class QuickSort {
             if(start < end) {
                 swap(array, start, end);
             }
+            if(right != end) {
+                swap(array, right, end);
+            }
+            return end;
         }
-        if(right != end) {
-            swap(array, right, end);
-        }
-        return end;
     }
 
     private void swap(int[] array, int a, int b) {
@@ -65,16 +75,6 @@ public class QuickSort {
         array[a] = array[b];
         array[b] = temp;
     }
-
-    private class Record {
-        int left;
-        int right;
-	    private Record(int left, int right) {
-		    this.left = left;
-		    this.right = right;
-	    }
-    }
-
 
     public static void main(String[] args) {
         QuickSort qsort = new QuickSort();
@@ -85,10 +85,5 @@ public class QuickSort {
             System.out.print(i + " ");
         }
         System.out.println();
-        int[] array2 = {1, 3, 5, 7, 9, 2, 4, 6, 8, 0};
-        System.out.println("Quick sort with non-recursive:");
-        for(int i:array2) {
-            System.out.print(i + " ");
-        }
     }
 }

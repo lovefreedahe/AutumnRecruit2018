@@ -18,5 +18,6 @@ public class ThreadTest extends Thread {
         Thread.sleep(1000);
         threadTest.stop();
         Executors.newFixedThreadPool(10);
+        StringBuffer buffer = new StringBuffer();
     }
 }

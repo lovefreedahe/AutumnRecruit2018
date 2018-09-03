@@ -68,7 +68,15 @@ Map<Long, Long> _anchorsToIds;
     ```java
     config.setNumAckers(1);
     ```
-* 在bolt中完成处理tuple时，执行OutputCollector.ack(tuple),当失败处理时，执行OutputCollector.fail(tuple);推荐使用IBasicBolt自动封装了OutputCollector.ack(tuple),处理失败时，跑出FailedException，则自动执行OutputCollector.fail(tuple)
+* 在bolt中完成处理tuple时，执行
+    ```java
+    OutputCollector.ack(tuple)；
+    ```
+    当失败处理时，执行
+    ```java
+    OutputCollector.fail(tuple);
+    ```
+    推荐使用IBasicBolt自动封装了OutputCollector.ack(tuple),处理失败时，抛出FailedException，则自动执行OutputCollector.fail(tuple)
 
 # 如何关闭
 * spout不带msgid

@@ -12,7 +12,7 @@ public class Solution {
             } else if (first == ch){
                 first = 128;
             }
-        } 
+        }
     }
     //return the first appearence once char in current stringstream
     public char FirstAppearingOnce() {

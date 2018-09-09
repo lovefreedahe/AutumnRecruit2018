@@ -1,27 +1,23 @@
 package com.wangrupeng.jianzhioffer.question50;
 
-import java.util.ArrayList;
-
 public class Solution {
     private char[] chars = new char[128];
-    private char index = 1;
+    private char first = 128;
     //Insert one char from stringstream
     public void Insert(char ch) {
-        if (chars[ch] == 0) {
-            chars[ch] = index++;
-        } else if( chars[ch] > 0 && chars[ch] < 128) {
-            chars[ch] = 128;
+        chars[ch]++;
+        if (chars[ch] == 1) {
+            if (first == 128) {
+                first = ch;
+            } else if (first == ch){
+                first = 128;
+            }
         }
     }
     //return the first appearence once char in current stringstream
     public char FirstAppearingOnce() {
-        int minIndex = 128;
-        char first = '#';
-        for (int i = 0;i < 128;i++) {
-            if (chars[i] != 0 && chars[i] < minIndex) {
-                minIndex = chars[i];
-                first = (char)i;
-            }
+        if (first == 128) {
+            return '#';
         }
         return first;
     }

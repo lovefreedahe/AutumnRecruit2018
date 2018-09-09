@@ -20,6 +20,8 @@
     - [泛型的优点](#泛型的优点)
     - [泛型类型擦除](#泛型类型擦除)
     - [java和C++的最大区别](#java和c的最大区别)
+- [源码](#源码)
+    - [Math](#math)
 
 <!-- /TOC -->
 
@@ -166,3 +168,24 @@ class Test {
 ## java和C++的最大区别
 * c++中模板实例化会对每种类型产生一套不同的代码，这就是代码膨胀
 * java并不会产生这个问题，JVM中没有泛型类型的对象，所有对象都是普通类。
+
+# 源码
+## Math
+```java
+Math.sqrt(a) // 平方根
+Math.cbrt(a) // 立方根
+Math.pow(a, b) // a^b
+Math.max(a, b) // 计算最大值
+Math.min(a, b) // 计算最小值
+
+Math.abs(a) // 绝对值
+
+//ceil是天花板的意思，返回大的整数值 比如-10.1 -> -10  10.1->11 
+Math.ceil(a) 
+//floor地板的意思
+Math.floor(a)
+
+Math.random() //大于等于0小于1的数
+Math.rint() //四舍五入 返回double
+Math.round() //四舍五入,float返回int,double返回long
+```
